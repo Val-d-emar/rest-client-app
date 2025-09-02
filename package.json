@@ -6,10 +6,15 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint",
+    "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "prettier": "prettier --check .",
-    "prettier:fix": "prettier --write ."
+    "format:fix": "prettier --write .",
+    "format:check": "prettier --check .",
+    "type:check": "tsc --noEmit -p tsconfig.json",
+    "prepare": "husky",
+    "docs": "npx tsx scripts/doc-source.ts",
+    "strip-comments": "npx tsx scripts/strip-comments.ts `git ls-files`",
+    "test:run": "echo \"Tests are not implemented yet.\" && exit 0"
   },
   "dependencies": {
     "next": "15.5.2",
@@ -21,11 +26,16 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/strip-comments": "^2.0.4",
+    "dotenv": "^17.2.1",
     "eslint": "^9",
     "eslint-config-next": "15.5.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.6",
     "prettier": "^3.6.2",
+    "strip-comments": "^2.0.1",
     "typescript": "^5"
   }
 }
