@@ -182,6 +182,29 @@ select option {
   font-size: clamp(0.875rem, 0.7788rem + 0.3846vw, 1.125rem);
 }
 
+.container {
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* изменить при разработке */
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 16px 0;
+}
+
+header,
+footer {
+  width: 100%;
+  padding: 16px 0;
+  text-align: center;
+}
+
 /* пример */
 .card,
 .modal {
@@ -192,11 +215,6 @@ select option {
   margin-bottom: 16px;
 }
 
-.container {
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 0 16px;
-}
 
 /* удалить */
 .image-container {

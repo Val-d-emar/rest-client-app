@@ -1,9 +1,11 @@
 export default function Home() {
   return (
-    <main>
-      <div className="container">
+    <div className="container">
+      <header>
         <h1>H1 REST Client App</h1>
         <h1>H1 Клиент App</h1>
+      </header>
+      <main>
         <br />
         <h2>H2 Client for working with REST API</h2>
         <h2>H2 Клиент для работы с REST API</h2>
@@ -37,7 +39,10 @@ export default function Home() {
           <p>Modal content. Box-shadow и скругление.</p>
         </div>
         <button disabled>Disabled Button</button>
-      </div>
-    </main>
+      </main>
+      <footer>
+        <p>Footer content goes here.</p>
+      </footer>
+    </div>
   );
 }
