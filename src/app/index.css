@@ -1,0 +1,205 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: Roboto, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --font-roboto: 'Roboto', sans-serif;
+  --font-inter: 'Inter', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  --background-color: rgb(214, 214, 212);
+  --color: #0a0a0a;
+  --white-color: #ffffff;
+  --detail-color: rgb(7, 89, 161);
+  --dark-detail-color: rgb(3, 57, 105);
+  --disabled-color: rgba(128, 128, 128, 0.731);
+  --light-disabled-color: rgba(211, 211, 211, 0.731);
+  --red-color: rgb(161, 7, 7);
+}
+
+html {
+  font-family: var(--font-roboto), system-ui, sans-serif;
+  font-size: 16px;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  margin: 0 auto;
+  min-height: 100vh;
+  width: 100%;
+  background: var(--background-color);
+  color: var(--color);
+}
+
+.bold {
+  font-weight: 600;
+  color: var(--color);
+}
+
+.error {
+  font-weight: 600;
+  color: var(--red-color);
+}
+
+a {
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--color);
+  padding: 2px 4px;
+  margin-right: 5px;
+}
+
+
+a:hover {
+  color: var(--detail-color);
+}
+
+
+h1 {
+  font-size: clamp(1.25rem, 0.9615rem + 1.1538vw, 2rem);
+  line-height: 1.1;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  color: var(--color);
+}
+
+h2 {
+  font-size: clamp(1.125rem, 0.8846rem + 0.9615vw, 1.75rem);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  color: var(--color);
+}
+
+h3 {
+  font-size: clamp(1rem, 0.8798rem + 0.4808vw, 1.3125rem);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  color: var(--color);
+}
+
+p {
+  font-size: clamp(0.875rem, 0.7308rem + 0.5769vw, 1.25rem);
+  margin-bottom: 10px;
+  font-weight: 400;
+  color: var(--color);
+}
+
+button {
+  cursor: pointer;
+  padding: 4px 23px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: var(--white-color);
+  background: var(--detail-color);
+  padding: 4px 23px;
+  font-weight: 400;
+  font-size: clamp(0.875rem, 0.7788rem + 0.3846vw, 1.125rem);
+  transition: all 0.25s;
+  user-select: none;
+}
+
+button:disabled {
+  background: var(--disabled-color);
+  color: var(--light-disabled-color);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+button:hover {
+  background-color: var(--dark-detail-color);
+}
+
+button:active {
+  transform: scale(0.98);
+  color: var(--disabled-color);
+  background-color: var(--dark-detail-color);
+}
+
+img {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: hidden;
+}
+
+input,
+select {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  box-sizing: border-box;
+  border: 2px solid var(--detail-color);
+  border-radius: 6px;
+  height: 30px;
+  color: var(--color);
+  background: var(--white-color);
+  font-size: clamp(0.875rem, 0.7788rem + 0.3846vw, 1.125rem);
+}
+
+select option {
+  font-size: clamp(0.875rem, 0.7788rem + 0.3846vw, 1.125rem);
+}
+
+input::placeholder {
+  color: var(--disabled-color);
+  opacity: 1;
+}
+
+select {
+  padding: 0.1rem 1rem;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+a,
+button {
+  transition: color 0.2s, background 0.2s, border-color 0.2s;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background: var(--background-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--detail-color);
+  border-radius: 4px;
+}
+
+select,
+select option {
+  font-size: clamp(0.875rem, 0.7788rem + 0.3846vw, 1.125rem);
+}
+
+/* пример */
+.card,
+.modal {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  background: var(--white-color);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* удалить */
+.image-container {
+  width: 200px;
+  height: 400px;
+}
