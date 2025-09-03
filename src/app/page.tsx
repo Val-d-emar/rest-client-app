@@ -1,10 +1,6 @@
-import { useTranslations } from 'next-intl';
+import { redirect } from '@/i18n/navigation';
+import { routing } from '@/i18n/routing';
 
-export default function Home() {
-  const t = useTranslations('HomePage');
-  return (
-    <main>
-      <h1>{t('title')}</h1>
-    </main>
-  );
+export default function RootPage() {
+  redirect({ href: '/', locale: `${routing.defaultLocale}` });
 }
