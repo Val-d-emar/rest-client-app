@@ -17,6 +17,6 @@ Name reasons of the proposed changes.
 
 ## Related Tasks & Issues
 
-- Closes task #
+- Closes #
 
 ## Screenshot (optional)
