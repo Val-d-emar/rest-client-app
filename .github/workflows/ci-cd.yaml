@@ -117,3 +117,15 @@ jobs:
       - name: Check repository visibility
         run: |
           echo "Value of github.event.repository.private is: ${{ github.event.repository.private }}"
+
+  deploy-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Deploy to Vercel
+        run: vercel deploy --token=${{ secrets.VERCEL_TOKEN }}
