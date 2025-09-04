@@ -10,20 +10,20 @@
 }
 
 :root {
-  font-family: Roboto, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   --font-roboto: 'Roboto', sans-serif;
   --font-inter: 'Inter', sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  --background-color: rgb(214, 214, 212);
+  --background-color: rgb(214 214 212);
   --color: #0a0a0a;
-  --white-color: #ffffff;
-  --detail-color: rgb(7, 89, 161);
-  --dark-detail-color: rgb(3, 57, 105);
-  --disabled-color: rgba(128, 128, 128, 0.731);
-  --light-disabled-color: rgba(211, 211, 211, 0.731);
-  --red-color: rgb(161, 7, 7);
+  --white-color: #fff;
+  --detail-color: rgb(7 89 161);
+  --dark-detail-color: rgb(3 57 105);
+  --disabled-color: rgb(128 128 128 / 73.1%);
+  --light-disabled-color: rgb(211 211 211 / 73.1%);
+  --red-color: rgb(161 7 7);
+
+  font-family: Roboto, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
 }
 
 html {
@@ -35,12 +35,15 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px;
-  margin: 0 auto;
-  min-height: 100vh;
+
   width: 100%;
-  background: var(--background-color);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 10px;
+
   color: var(--color);
+
+  background: var(--background-color);
 }
 
 .bold {
@@ -53,12 +56,21 @@ body {
   color: var(--red-color);
 }
 
+a,
+button {
+  transition:
+    color 0.2s,
+    background 0.2s,
+    border-color 0.2s;
+}
+
 a {
-  font-weight: 500;
-  text-decoration: none;
-  color: var(--color);
-  padding: 2px 4px;
   margin-right: 5px;
+  padding: 2px 4px;
+
+  font-weight: 500;
+  color: var(--color);
+  text-decoration: none;
 }
 
 a:hover {
@@ -66,49 +78,53 @@ a:hover {
 }
 
 h1 {
+  font-family: var(--font-inter), system-ui, sans-serif;
   font-size: clamp(1.25rem, 0.9615rem + 1.1538vw, 2rem);
   line-height: 1.1;
-  font-family: var(--font-inter), system-ui, sans-serif;
   color: var(--color);
 }
 
 h2 {
-  font-size: clamp(1.125rem, 0.8846rem + 0.9615vw, 1.75rem);
   font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: clamp(1.125rem, 0.8846rem + 0.9615vw, 1.75rem);
   color: var(--color);
 }
 
 h3 {
-  font-size: clamp(1rem, 0.8798rem + 0.4808vw, 1.3125rem);
   font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: clamp(1rem, 0.8798rem + 0.4808vw, 1.3125rem);
   color: var(--color);
 }
 
 p {
-  font-size: clamp(0.875rem, 0.7308rem + 0.5769vw, 1.25rem);
   margin-bottom: 10px;
+  font-size: clamp(0.875rem, 0.7308rem + 0.5769vw, 1.25rem);
   font-weight: 400;
   color: var(--color);
 }
 
 button {
   cursor: pointer;
+  user-select: none;
+
+  padding: 4px 23px;
   border: 1px solid transparent;
   border-radius: 8px;
-  color: var(--white-color);
-  background: var(--detail-color);
-  padding: 4px 23px;
-  font-weight: 400;
+
   font-size: clamp(0.875rem, 0.7788rem + 0.3846vw, 1.125rem);
+  font-weight: 400;
+  color: var(--white-color);
+
+  background: var(--detail-color);
+
   transition: all 0.25s;
-  user-select: none;
 }
 
 button:disabled {
-  background: var(--disabled-color);
-  color: var(--light-disabled-color);
   cursor: not-allowed;
+  color: var(--light-disabled-color);
   opacity: 0.6;
+  background: var(--disabled-color);
 }
 
 button:hover {
@@ -122,9 +138,9 @@ button:active {
 }
 
 .image {
+  display: block !important;
   width: 100% !important;
   height: auto !important;
-  display: block !important;
   object-fit: cover;
 }
 
@@ -132,11 +148,14 @@ input,
 select {
   display: flex;
   align-items: center;
+
+  height: 30px;
   padding: 0.5rem 1rem;
   border: 2px solid var(--detail-color);
   border-radius: 6px;
-  height: 30px;
+
   color: var(--color);
+
   background: var(--white-color);
 }
 
@@ -159,27 +178,19 @@ select {
   outline: none;
 }
 
-a,
-button {
-  transition:
-    color 0.2s,
-    background 0.2s,
-    border-color 0.2s;
-}
-
 ::-webkit-scrollbar {
   width: 8px;
   background: var(--background-color);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--detail-color);
   border-radius: 4px;
+  background: var(--detail-color);
 }
 
 .container {
-  max-width: 1440px;
   width: 100%;
+  max-width: 1440px;
   margin: 0 auto;
   padding: 0 16px;
 }
@@ -189,6 +200,7 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
+
   width: 100%;
   padding: 16px 0;
 }
@@ -203,11 +215,12 @@ footer {
 /* пример */
 .card,
 .modal {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  border-radius: 12px;
-  background: var(--white-color);
-  padding: 16px;
   margin-bottom: 16px;
+  padding: 16px;
+  border-radius: 12px;
+
+  background: var(--white-color);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
 }
 
 /* удалить */
