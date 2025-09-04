@@ -10,6 +10,8 @@
     "lint:fix": "eslint --fix .",
     "format:fix": "prettier --write .",
     "format:check": "prettier --check .",
+    "stylelint": "stylelint \"**/*.css\"",
+    "stylelint:fix": "stylelint \"**/*.css\" --fix",
     "type:check": "tsc --noEmit -p tsconfig.test.json",
     "prepare": "husky",
     "docs": "npx tsx scripts/doc-source.ts",
@@ -47,6 +49,9 @@
     "lint-staged": "^16.1.6",
     "prettier": "^3.6.2",
     "strip-comments": "^2.0.1",
+    "stylelint": "^16.23.1",
+    "stylelint-config-clean-order": "^7.0.0",
+    "stylelint-config-standard": "^39.0.0",
     "typescript": "^5",
     "vitest": "^3.2.4"
   }
