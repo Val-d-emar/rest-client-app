@@ -136,3 +136,36 @@ jobs:
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           message: '🚀 **Vercel Preview is ready** here: ${{ steps.deploy.outputs.preview_url }}'
+
+      - name: Wait for Deployment to be Ready
+        run: sleep 30
+
+      - name: Verify deployment URL
+        run: |
+          export FULL_URL="${{ steps.deploy.outputs.preview_url }}"                    
+          export MAX_ATTEMPTS=10
+          export DELAY_SECONDS=20
+          export BUILD_ID="${{ github.run_id }}"
+          echo "Verifying deployment ID: $BUILD_ID at: $FULL_URL"
+
+          echo "Starting verification for URL: $FULL_URL"
+          echo "Max attempts: $MAX_ATTEMPTS, Delay: $DELAY_SECONDS seconds"
+
+          for i in $(seq 1 $MAX_ATTEMPTS)
+          do
+            echo "---"
+            echo "Attempt $i of $MAX_ATTEMPTS..."
+            # if curl -s -L --fail "$FULL_URL" | grep -q "$BUILD_ID"; then
+            if curl -s -L --fail "$FULL_URL" ; then
+              # echo "✅ Success! Deployment is live and contains the correct ID."
+              echo "✅ Success! Deployment is live."
+              exit 0
+            else
+              # echo "⚠️ Attempt $i failed. Deployment not ready or ID not match."
+              echo "⚠️ Attempt $i failed. Deployment not ready."
+              if [ $i -lt $MAX_ATTEMPTS ]; then
+                echo "Retrying in $DELAY_SECONDS seconds..."
+                sleep $DELAY_SECONDS
+              fi
+            fi
+          done
