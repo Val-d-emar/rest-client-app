@@ -228,3 +228,17 @@ footer {
   width: 200px;
   height: 400px;
 }
+
+.sr-only {
+  position: absolute;
+
+  overflow: hidden;
+
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border-width: 0;
+
+  white-space: nowrap;
+}
