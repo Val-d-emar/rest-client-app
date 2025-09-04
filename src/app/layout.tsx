@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { ReactNode } from 'react';
-import { Roboto, Inter } from 'next/font/google';
+import { Roboto, Inter, Ubuntu } from 'next/font/google';
 import './index.css';
 
 const roboto = Roboto({
@@ -16,6 +16,12 @@ const inter = Inter({
   weight: ['100', '300', '400', '500', '700', '900'],
   style: ['normal', 'italic'],
 });
+export const ubuntu = Ubuntu({
+  variable: '--font-ubuntu',
+  subsets: ['latin', 'cyrillic'],
+  weight: ['300', '400', '500', '700'],
+  style: ['normal', 'italic'],
+});
 
 export const metadata: Metadata = {
   title: 'REST Client App',
@@ -25,6 +31,8 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
   },
 };
 
@@ -40,7 +48,10 @@ type Props = {
 export default function RootLayout({ children }: Props) {
   return (
     <html>
-      <body className={`${roboto.variable} ${inter.variable}`}>{children}</body>
+      <head>
+        <link rel='icon' href='/favicon.ico' sizes='any' />
+      </head>
+      <body className={`${roboto.variable} ${inter.variable} ${ubuntu.variable}`}>{children}</body>
     </html>
   );
 }

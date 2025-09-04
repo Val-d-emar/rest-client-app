@@ -2,7 +2,7 @@ import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import { getMessages } from 'next-intl/server';
-import Footer from '@/components/footer';
+import Footer from '@/components/footer/footer';
 
 import { routing } from '@/i18n/routing';
 

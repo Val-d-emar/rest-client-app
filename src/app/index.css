@@ -12,6 +12,7 @@
 :root {
   --font-roboto: 'Roboto', sans-serif;
   --font-inter: 'Inter', sans-serif;
+  --font-ubuntu: 'Ubuntu', sans-serif;
   --background-color: rgb(214 214 212);
   --color: #0a0a0a;
   --white-color: #fff;
@@ -22,7 +23,7 @@
   --red-color: rgb(161 7 7);
   --header-footer-color: rgb(156 200 239);
 
-  font-family: Roboto, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: Roboto, Inter, Ubuntu, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-weight: 400;
   line-height: 1.5;
 }
@@ -202,15 +203,21 @@ main {
   align-items: center;
 
   width: 100%;
-  min-height: 81.5vh;
+  min-height: 74vh;
   padding: 16px 0;
 }
 
-header,
+header {
+  width: 100%;
+  height: 80px;
+  text-align: center;
+}
+
 footer {
   width: 100%;
-  height: 60px;
-  text-align: center;
+  height: 100px;
+  background: var(--header-footer-color);
+  box-shadow: 0 -2px 8px rgb(0 0 0 / 8%);
 }
 
 /* пример */
