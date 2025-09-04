@@ -19,6 +19,13 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'REST Client App',
   description: 'Client for working with REST API',
+  viewport: 'width=device-width, initial-scale=1.0',
+  other: {
+    language: 'en,ru',
+  },
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
@@ -26,14 +33,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const lang = 'en'; // или 'ru', для переключения языка
   return (
-    <html lang={lang}>
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="language" content="en,ru" />
-        <link rel="icon" href="/favicon.ico" />
-      </head>
+    <html lang='en'>
+      <head></head>
       <body className={`${roboto.variable} ${inter.variable}`}>{children}</body>
     </html>
   );
