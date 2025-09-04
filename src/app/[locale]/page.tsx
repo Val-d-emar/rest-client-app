@@ -14,8 +14,12 @@ export default function Home({ params }: Props) {
   const t = useTranslations('HomePage');
 
   return (
-    <main>
-      <h1>{t('title')}</h1>
-    </main>
+    <div className='container'>
+      <header>
+        <h1>{t('title')}</h1>
+      </header>
+      <main></main>
+      <footer></footer>
+    </div>
   );
 }
