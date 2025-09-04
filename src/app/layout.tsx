@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { ReactNode } from 'react';
 import { Roboto, Inter } from 'next/font/google';
 import './index.css';
@@ -20,13 +20,17 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'REST Client App',
   description: 'Client for working with REST API',
-  viewport: 'width=device-width, initial-scale=1.0',
   other: {
     language: 'en,ru',
   },
   icons: {
     icon: '/favicon.ico',
   },
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1.0,
 };
 
 type Props = {
@@ -36,7 +40,6 @@ type Props = {
 export default function RootLayout({ children }: Props) {
   return (
     <html>
-      <head></head>
       <body className={`${roboto.variable} ${inter.variable}`}>{children}</body>
     </html>
   );

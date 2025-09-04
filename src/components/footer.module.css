@@ -1,0 +1,15 @@
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  height: 100%;
+
+  background: var(--header-footer-color);
+}
+
+.rss,
+.year {
+  display: flex;
+  align-items: center;
+}

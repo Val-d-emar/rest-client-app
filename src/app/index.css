@@ -20,6 +20,7 @@
   --disabled-color: rgb(128 128 128 / 73.1%);
   --light-disabled-color: rgb(211 211 211 / 73.1%);
   --red-color: rgb(161 7 7);
+  --header-footer-color: rgb(156 200 239);
 
   font-family: Roboto, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-weight: 400;
@@ -39,7 +40,7 @@ body {
   width: 100%;
   min-height: 100vh;
   margin: 0 auto;
-  padding: 10px;
+  padding: 0 10px;
 
   color: var(--color);
 
@@ -97,7 +98,6 @@ h3 {
 }
 
 p {
-  margin-bottom: 10px;
   font-size: clamp(0.875rem, 0.7308rem + 0.5769vw, 1.25rem);
   font-weight: 400;
   color: var(--color);
@@ -202,13 +202,14 @@ main {
   align-items: center;
 
   width: 100%;
+  min-height: 81.5vh;
   padding: 16px 0;
 }
 
 header,
 footer {
   width: 100%;
-  padding: 16px 0;
+  height: 60px;
   text-align: center;
 }
 
