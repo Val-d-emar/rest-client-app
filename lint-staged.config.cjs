@@ -1,5 +1,5 @@
 module.exports = {
-  '*.{js,mjs,jsx,ts,tsx,css,yaml,json}': (filenames) => {
+  '*.{js,mjs,jsx,ts,tsx,css,yaml,yml,json,md}': (filenames) => {
     const quotedFilenames = filenames.map((name) => `"${name}"`).join(' ');
     const stripCommand = `npx tsx scripts/strip-comments.ts ${quotedFilenames}`;
     const prettierCommand = `npx prettier --write ${quotedFilenames}`;
