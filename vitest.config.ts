@@ -31,7 +31,6 @@ export default defineConfig({
         'src/**/*.spec.{js,jsx,ts,tsx}',
         'src/types/**/*',
         'src/const/**/*',
-        'src/app/**/*', // temporarily disable until we write tests, otherwise CI will crash
       ],
     },
   },
