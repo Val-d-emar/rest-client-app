@@ -14,13 +14,14 @@ This project is the [final assignment](https://github.com/rolling-scopes-school/
 - ✨ **Prettier**
 - 🐶 **Husky**
 - 🚀 **Vitest**
-- 🎨 **Materials UI**
+- 🎨 **CSS**
 
 ---
 
 ## 🚀 Getting Started
 
 To run the app locally:
+
 ```bash
 git clone https://github.com/Val-d-emar/rest-client-app.git
 cd rest-client-app
