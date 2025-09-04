@@ -132,10 +132,10 @@ jobs:
         id: deploy
         run: echo "preview_url=$(vercel deploy --token=${{ secrets.VERCEL_TOKEN }})" >> $GITHUB_OUTPUT
 
-      - name: Post Preview URL to PR
-        uses: marocchino/sticky-pull-request-comment@v2
-        with:
-          message: '🚀 **Vercel Preview is pending** here: ${{ steps.deploy.outputs.preview_url }}'
+      # - name: Post Preview URL to PR
+      #   uses: marocchino/sticky-pull-request-comment@v2
+      #   with:
+      #     message: '🚀 **Vercel Preview is pending** here: ${{ steps.deploy.outputs.preview_url }}'
 
       # - name: Wait for Deployment to be Ready
       #   run: sleep 30
@@ -173,30 +173,25 @@ jobs:
       - name: Wait for Deployment Readiness
         id: wait-for-deployment
         run: |
-          for i in {1..24}; do
-            STATUS=$(vercel inspect ${{ steps.deploy.outputs.preview_url }} --token=${{ secrets.VERCEL_TOKEN }} | grep 'status' | awk '{print $3}')
-            echo "Attempt $i: Deployment status is $STATUS"
+          export STATUS=$(vercel inspect ${{ steps.deploy.outputs.preview_url }} --token=${{ secrets.VERCEL_TOKEN }} --wait --timeout 3m --no-color -l 2>&1 | grep status |  awk '{print $3}')
+          echo "Attempt $i: Deployment status is $STATUS"
 
-            if [ "$STATUS" == "READY" ]; then
-              echo "✅ Deployment is ready!"
-              echo "status=ready" >> $GITHUB_OUTPUT
-              exit 0
-            fi
-
-            if [ "$STATUS" == "ERROR" ] || [ "$STATUS" == "CANCELLED" ]; then
-              echo "❌ Deployment failed with status $STATUS."
-              exit 1
-            fi
-
-            sleep 10
-          done
-
+          if [ "$STATUS" == "Ready" ]; then
+            echo "✅ Deployment is ready!"
+            echo "status=✅ready" >> $GITHUB_OUTPUT
+            exit 0
+          else
+            echo "❌ Deployment failed with status $STATUS."
+            echo "status=❌failed" >> $GITHUB_OUTPUT
+            exit 0
+          fi
           echo "Timed out after 2 minutes waiting for deployment."
-          exit 1
+          echo "status=❌timeout" >> $GITHUB_OUTPUT
+          exit 0
 
       - name: Post Preview URL to PR
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           message: |
-            🚀 **Vercel Preview is ready** here: ${{ steps.deploy.outputs.preview_url }}
+            🚀 **Vercel Preview is** here: ${{ steps.deploy.outputs.preview_url }}
             🚀 Status: `${{ steps.wait-for-deployment.outputs.status }}`
