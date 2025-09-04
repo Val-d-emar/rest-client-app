@@ -1,13 +1,11 @@
+import { redirect } from '@/i18n/navigation';
+import { routing } from '@/i18n/routing';
+
 import { err, log, warn } from '@/log';
 
-export default function Home() {
+export default function RootPage() {
   log('test logging');
   err('test error');
   warn('test warning');
-
-  return (
-    <main>
-      <h1>REST Client App</h1>
-    </main>
-  );
+  redirect({ href: '/', locale: `${routing.defaultLocale}` });
 }
