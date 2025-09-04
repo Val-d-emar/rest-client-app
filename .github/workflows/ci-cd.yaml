@@ -174,7 +174,7 @@ jobs:
         id: wait-for-deployment
         run: |
           for i in {1..24}; do
-            STATUS=$(vercel inspect ${{ steps.deploy.outputs.preview_url }} --token=${{ secrets.VERCEL_TOKEN }} | grep -oP '(?<=state: )[A-Z]+')
+            STATUS=$(vercel inspect ${{ steps.deploy.outputs.preview_url }} --token=${{ secrets.VERCEL_TOKEN }} | grep 'status' | awk '{print $3}'
             echo "Attempt $i: Deployment status is $STATUS"
 
             if [ "$STATUS" == "READY" ]; then
