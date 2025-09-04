@@ -14,7 +14,8 @@
     "prepare": "husky",
     "docs": "npx tsx scripts/doc-source.ts",
     "strip-comments": "npx tsx scripts/strip-comments.ts `git ls-files`",
-    "test:run": "echo \"Tests are not implemented yet.\" && exit 0"
+    "test:run": "echo \"Tests are not implemented yet.\" && exit 0",
+    "test:coverage:run": "echo \"Tests are not implemented yet.\" > coverage-summary.txt && exit 0"
   },
   "dependencies": {
     "next": "15.5.2",
