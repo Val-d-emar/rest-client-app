@@ -11,15 +11,5 @@ export default function Home({ params }: Props) {
 
   setRequestLocale(locale);
 
-  const t = useTranslations('HomePage');
-
-  return (
-    <div className='container'>
-      <header>
-        <h1>{t('title')}</h1>
-      </header>
-      <main></main>
-      <footer></footer>
-    </div>
-  );
+  return <main></main>;
 }
