@@ -2,10 +2,14 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 describe('log utility function', () => {
   let consoleLogSpy: ReturnType<typeof vi.spyOn>;
+  let consoleWarnSpy: ReturnType<typeof vi.spyOn>;
+  let consoleErrSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
     vi.resetModules();
     consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    consoleErrSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
   });
 
   afterEach(() => {
@@ -22,10 +26,10 @@ describe('log utility function', () => {
     expect(consoleLogSpy).not.toHaveBeenCalled();
 
     err('err');
-    expect(consoleLogSpy).not.toHaveBeenCalled();
+    expect(consoleErrSpy).not.toHaveBeenCalled();
 
     warn('warn');
-    expect(consoleLogSpy).not.toHaveBeenCalled();
+    expect(consoleWarnSpy).not.toHaveBeenCalled();
   });
 
   it('should NOT call console.log when MODE is not "development"', async () => {
@@ -37,10 +41,10 @@ describe('log utility function', () => {
     expect(consoleLogSpy).not.toHaveBeenCalled();
 
     err('err');
-    expect(consoleLogSpy).not.toHaveBeenCalled();
+    expect(consoleErrSpy).not.toHaveBeenCalled();
 
     warn('warn');
-    expect(consoleLogSpy).not.toHaveBeenCalled();
+    expect(consoleWarnSpy).not.toHaveBeenCalled();
   });
 
   it('should call console.log when logging is enabled AND mode is development', async () => {
@@ -59,14 +63,14 @@ describe('log utility function', () => {
 
     warn(message, anotherArg);
 
-    expect(consoleLogSpy).toHaveBeenCalledTimes(1);
+    expect(consoleWarnSpy).toHaveBeenCalledTimes(1);
 
-    expect(consoleLogSpy).toHaveBeenCalledWith(message, anotherArg);
+    expect(consoleWarnSpy).toHaveBeenCalledWith(message, anotherArg);
 
     err(message, anotherArg);
 
-    expect(consoleLogSpy).toHaveBeenCalledTimes(1);
+    expect(consoleErrSpy).toHaveBeenCalledTimes(1);
 
-    expect(consoleLogSpy).toHaveBeenCalledWith(message, anotherArg);
+    expect(consoleErrSpy).toHaveBeenCalledWith(message, anotherArg);
   });
 });
