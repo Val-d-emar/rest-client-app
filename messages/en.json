@@ -1,6 +1,9 @@
 {
   "HomePage": {
-    "title": "REST Client App"
+    "title": "REST Client App",
+    "SignInLabel": "Sign In",
+    "SignUpLabel": "Sign Up",
+    "SignOutLabel": "Sign Out"
   },
   "NotFoundPage": {
     "title": "Page not found"

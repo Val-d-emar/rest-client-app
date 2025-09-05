@@ -1,6 +1,9 @@
 {
   "HomePage": {
-    "title": "REST Клиент"
+    "title": "REST Клиент",
+    "SignInLabel": "Войти",
+    "SignUpLabel": "Регистрация",
+    "SignOutLabel": "Выйти"
   },
   "NotFoundPage": {
     "title": "Страница не найдена"

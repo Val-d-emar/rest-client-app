@@ -4,6 +4,8 @@ import LocaleSwitcher from '@/components/LocaleSwitcher';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
+import { Link } from '@/i18n/navigation';
+
 import classes from './Header.module.css';
 
 export default function Header() {
@@ -20,8 +22,17 @@ export default function Header() {
   return (
     <header className={`${classes.header} ${scrolled ? classes.scrolled : ''}`}>
       <div className={`container ${classes['flex-wrapper']}`}>
-        <h1>{t('title')}</h1>
-        <LocaleSwitcher />
+        <Link href='/'>
+          <h1>{t('title')}</h1>
+        </Link>
+
+        <div className={classes.controls}>
+          <LocaleSwitcher />
+          {/* TODO: отображать кнопки в зависимости от состояния юзера */}
+          <button>{t('SignInLabel')}</button>
+          <button>{t('SignUpLabel')}</button>
+          {/* <button>{t('SignOutLabel')}</button> */}
+        </div>
       </div>
     </header>
   );
