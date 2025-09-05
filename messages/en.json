@@ -3,7 +3,9 @@
     "title": "REST Client App"
   },
   "NotFoundPage": {
-    "title": "Page not found"
+    "title": "Page not found",
+    "sorry": "Sorry, the page you are looking for does not exist.",
+    "btn": "Return to Home"
   },
   "LocaleSwitcher": {
     "en": "English",
