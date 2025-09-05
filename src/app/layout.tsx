@@ -1,6 +1,6 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { ReactNode } from 'react';
-import { Roboto, Inter } from 'next/font/google';
+import { Roboto, Inter, Ubuntu } from 'next/font/google';
 import './index.css';
 
 const roboto = Roboto({
@@ -16,17 +16,29 @@ const inter = Inter({
   weight: ['100', '300', '400', '500', '700', '900'],
   style: ['normal', 'italic'],
 });
+export const ubuntu = Ubuntu({
+  variable: '--font-ubuntu',
+  subsets: ['latin', 'cyrillic'],
+  weight: ['300', '400', '500', '700'],
+  style: ['normal', 'italic'],
+});
 
 export const metadata: Metadata = {
   title: 'REST Client App',
   description: 'Client for working with REST API',
-  viewport: 'width=device-width, initial-scale=1.0',
   other: {
     language: 'en,ru',
   },
   icons: {
     icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
   },
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1.0,
 };
 
 type Props = {
@@ -36,8 +48,10 @@ type Props = {
 export default function RootLayout({ children }: Props) {
   return (
     <html>
-      <head></head>
-      <body className={`${roboto.variable} ${inter.variable}`}>{children}</body>
+      <head>
+        <link rel='icon' href='/favicon.ico' sizes='any' />
+      </head>
+      <body className={`${roboto.variable} ${inter.variable} ${ubuntu.variable}`}>{children}</body>
     </html>
   );
 }

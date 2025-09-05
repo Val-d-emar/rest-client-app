@@ -1,6 +1,5 @@
 import { use } from 'react';
 import { setRequestLocale } from 'next-intl/server';
-import { useTranslations } from 'next-intl';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -11,5 +10,9 @@ export default function Home({ params }: Props) {
 
   setRequestLocale(locale);
 
-  return <main></main>;
+  return (
+    <div className='container'>
+      <main></main>
+    </div>
+  );
 }
