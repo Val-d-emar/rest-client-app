@@ -9,5 +9,8 @@
     "en": "English",
     "ru": "Русский",
     "label": "Language"
+  },
+  "Footer": {
+    "developedBy": "Developed by"
   }
 }
