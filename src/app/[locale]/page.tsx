@@ -1,5 +1,6 @@
 import { use } from 'react';
 import { setRequestLocale } from 'next-intl/server';
+import MainPage from '@/components/MainPage/MainPage';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -10,9 +11,5 @@ export default function Home({ params }: Props) {
 
   setRequestLocale(locale);
 
-  return (
-    <div className='container'>
-      <main></main>
-    </div>
-  );
+  return <MainPage isLoggedIn={false} />;
 }
