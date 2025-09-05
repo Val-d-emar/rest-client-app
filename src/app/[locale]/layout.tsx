@@ -25,7 +25,6 @@ export default async function LocaleLayout({ children, params }: Props) {
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       <ErrorBoundary>
-        {children}
         <Header />
         <main>{children}</main>
         <footer>
