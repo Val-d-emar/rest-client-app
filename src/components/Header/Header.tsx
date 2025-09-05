@@ -29,9 +29,13 @@ export default function Header() {
         <div className={classes.controls}>
           <LocaleSwitcher />
           {/* TODO: отображать кнопки в зависимости от состояния юзера */}
-          <button>{t('SignInLabel')}</button>
-          <button>{t('SignUpLabel')}</button>
-          {/* <button>{t('SignOutLabel')}</button> */}
+          <Link href='/auth/signin' className={classes.button}>
+            {t('SignInLabel')}
+          </Link>
+          <Link href='/auth/signup' className={classes.button}>
+            {t('SignUpLabel')}
+          </Link>
+          {/* <Link href='/'>{t('SignOutLabel')}</Link> */}
         </div>
       </div>
     </header>
