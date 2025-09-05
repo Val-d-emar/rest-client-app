@@ -16,7 +16,8 @@ const inter = Inter({
   weight: ['100', '300', '400', '500', '700', '900'],
   style: ['normal', 'italic'],
 });
-export const ubuntu = Ubuntu({
+
+const ubuntu = Ubuntu({
   variable: '--font-ubuntu',
   subsets: ['latin', 'cyrillic'],
   weight: ['300', '400', '500', '700'],
