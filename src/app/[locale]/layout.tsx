@@ -7,7 +7,6 @@ import { routing } from '@/i18n/routing';
 import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary';
 import Header from '@/components/Header';
 
-
 type Props = {
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
@@ -25,7 +24,8 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <ErrorBoundary>{children}
+      <ErrorBoundary>
+        {children}
         <Header />
         <main>{children}</main>
         <footer>
