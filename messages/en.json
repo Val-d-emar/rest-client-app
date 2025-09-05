@@ -3,7 +3,8 @@
     "title": "REST Client App",
     "SignInLabel": "Sign In",
     "SignUpLabel": "Sign Up",
-    "SignOutLabel": "Sign Out"
+    "SignOutLabel": "Sign Out",
+    "logoAlt": "logo"
   },
   "NotFoundPage": {
     "title": "Page not found"

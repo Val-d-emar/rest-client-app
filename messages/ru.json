@@ -3,7 +3,8 @@
     "title": "REST Клиент",
     "SignInLabel": "Войти",
     "SignUpLabel": "Регистрация",
-    "SignOutLabel": "Выйти"
+    "SignOutLabel": "Выйти",
+    "logoAlt": "Логотип"
   },
   "NotFoundPage": {
     "title": "Страница не найдена"

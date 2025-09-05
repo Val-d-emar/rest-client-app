@@ -58,3 +58,9 @@
   color: var(--disabled-color);
   background-color: var(--dark-detail-color);
 }
+
+.logo-wrapper {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
