@@ -1,13 +1,17 @@
 {
   "HomePage": {
-    "title": "REST Клиент"
+    "title": "REST Клиент",
+    "SignInLabel": "Войти",
+    "SignUpLabel": "Регистрация",
+    "SignOutLabel": "Выйти",
+    "logoAlt": "Логотип"
   },
   "NotFoundPage": {
     "title": "Страница не найдена"
   },
   "LocaleSwitcher": {
-    "en": "English",
-    "ru": "Русский",
+    "en": "EN",
+    "ru": "RU",
     "label": "Язык"
   },
   "Footer": {

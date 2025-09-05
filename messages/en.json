@@ -1,13 +1,17 @@
 {
   "HomePage": {
-    "title": "REST Client App"
+    "title": "REST Client App",
+    "SignInLabel": "Sign In",
+    "SignUpLabel": "Sign Up",
+    "SignOutLabel": "Sign Out",
+    "logoAlt": "logo"
   },
   "NotFoundPage": {
     "title": "Page not found"
   },
   "LocaleSwitcher": {
-    "en": "English",
-    "ru": "Русский",
+    "en": "EN",
+    "ru": "RU",
     "label": "Language"
   },
   "Footer": {
