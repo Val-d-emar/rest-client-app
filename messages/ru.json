@@ -6,8 +6,8 @@
     "title": "Страница не найдена"
   },
   "LocaleSwitcher": {
-    "en": "English",
-    "ru": "Русский",
+    "en": "EN",
+    "ru": "RU",
     "label": "Язык"
   }
 }

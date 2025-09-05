@@ -7,6 +7,8 @@ import { ChangeEvent, useTransition } from 'react';
 import { usePathname, useRouter } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
 
+import classes from './LocaleSwitcher.module.css';
+
 export default function LocaleSwitcher() {
   const t = useTranslations('LocaleSwitcher');
   const defaultValue = useLocale();
@@ -27,7 +29,12 @@ export default function LocaleSwitcher() {
   return (
     <label>
       <p className='sr-only'>{t('label')}</p>
-      <select defaultValue={defaultValue} disabled={isPending} onChange={onSelectChange}>
+      <select
+        defaultValue={defaultValue}
+        disabled={isPending}
+        onChange={onSelectChange}
+        className={classes.select}
+      >
         {routing.locales.map((locale) => (
           <option key={locale} value={locale}>
             {t(locale)}

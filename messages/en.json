@@ -6,8 +6,8 @@
     "title": "Page not found"
   },
   "LocaleSwitcher": {
-    "en": "English",
-    "ru": "Русский",
+    "en": "EN",
+    "ru": "RU",
     "label": "Language"
   }
 }
