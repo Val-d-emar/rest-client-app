@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
   compiler: {
     removeConsole: false,
   },
+  turbopack: {
+    root: __dirname,
+  },
 };
 
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');

@@ -19,7 +19,6 @@ export default function Home({ params }: Props) {
         <h1>{t('title')}</h1>
       </header>
       <main></main>
-      <footer></footer>
     </div>
   );
 }
