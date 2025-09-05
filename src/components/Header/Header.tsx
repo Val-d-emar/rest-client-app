@@ -26,7 +26,7 @@ export default function Header() {
           <h1>{t('title')}</h1>
         </Link>
 
-        <div className={classes.controls}>
+        <nav className={classes.controls}>
           <LocaleSwitcher />
           {/* TODO: отображать кнопки в зависимости от состояния юзера */}
           <Link href='/auth/signin' className={classes.button}>
@@ -36,7 +36,7 @@ export default function Header() {
             {t('SignUpLabel')}
           </Link>
           {/* <Link href='/'>{t('SignOutLabel')}</Link> */}
-        </div>
+        </nav>
       </div>
     </header>
   );
