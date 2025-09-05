@@ -4,6 +4,7 @@ import { setRequestLocale } from 'next-intl/server';
 import { getMessages } from 'next-intl/server';
 
 import { routing } from '@/i18n/routing';
+import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary';
 
 type Props = {
   children: React.ReactNode;
@@ -22,7 +23,7 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      {children}
+      <ErrorBoundary>{children}</ErrorBoundary>
     </NextIntlClientProvider>
   );
 }
