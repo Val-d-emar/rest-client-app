@@ -22,7 +22,7 @@ export default function Footer() {
         </Link>
       </div>
       <div className={styles.line2}>
-        <p className={`${styles.school} bold `}>Follow RS School</p>
+        <p className={`${styles.school} bold `}>RS School</p>
         <Link
           className={styles.rss}
           href='https://rs.school/courses/reactjs'
