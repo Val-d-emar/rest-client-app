@@ -4,5 +4,10 @@
   },
   "NotFoundPage": {
     "title": "Page not found"
+  },
+  "LocaleSwitcher": {
+    "en": "English",
+    "ru": "Русский",
+    "label": "Language"
   }
 }
