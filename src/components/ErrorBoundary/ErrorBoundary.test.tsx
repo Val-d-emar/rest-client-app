@@ -37,7 +37,9 @@ describe('ErrorBoundary Component', () => {
       </ErrorBoundary>,
     );
 
-    expect(screen.getByText(/Something went wrong. Please reload the page/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/An unexpected error occurred. Please try to reload the page./i),
+    ).toBeInTheDocument();
 
     expect(screen.queryByText(/I am a good component/i)).not.toBeInTheDocument();
   });

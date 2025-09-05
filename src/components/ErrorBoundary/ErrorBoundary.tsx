@@ -1,4 +1,5 @@
 'use client';
+import router from 'next/router';
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 
 interface Props {
@@ -24,7 +25,15 @@ class ErrorBoundary extends Component<Props, State> {
 
   public render() {
     if (this.state.hasError) {
-      return <h1>Something went wrong. Please reload the page.</h1>;
+      return (
+        <div className='centered-container'>
+          <h2>Something went wrong!</h2>
+          <p>An unexpected error occurred. Please try to reload the page.</p>
+          <button onClick={() => router.reload()} className='error-button'>
+            Reload the page
+          </button>
+        </div>
+      );
     }
 
     return this.props.children;

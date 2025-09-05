@@ -250,3 +250,23 @@ footer {
 
   white-space: nowrap;
 }
+
+/* Может сделать для global-error inline стили? на случай ошибки загрузки стилей */
+.centered-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.error-button {
+  background-color: var(--red-color);
+}
+
+.error-button:hover {
+  background-color: darkred;
+}
