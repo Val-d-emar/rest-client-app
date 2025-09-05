@@ -2,9 +2,11 @@ import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import { getMessages } from 'next-intl/server';
-
+import Footer from '@/components/footer/footer';
 import { routing } from '@/i18n/routing';
 import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary';
+import Header from '@/components/Header';
+
 
 type Props = {
   children: React.ReactNode;
@@ -23,7 +25,13 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <ErrorBoundary>{children}</ErrorBoundary>
+      <ErrorBoundary>{children}
+        <Header />
+        <main>{children}</main>
+        <footer>
+          <Footer />
+        </footer>
+      </ErrorBoundary>
     </NextIntlClientProvider>
   );
 }
