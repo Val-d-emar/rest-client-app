@@ -4,10 +4,6 @@
   grid-template-rows: auto auto;
 
   width: 100%;
-
-  /* align-content: center; */
-
-  /* justify-content: center; */
   max-width: 1440px;
   height: 100%;
   margin: 0 auto;
