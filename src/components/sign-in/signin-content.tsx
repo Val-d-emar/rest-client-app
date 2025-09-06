@@ -25,7 +25,7 @@ const SignInContent: React.FC = () => {
       .matches(/[\p{Ll}]/u, 'Need at least one lowercase letter')
       .matches(/\d/, 'Need at least one digit')
       .matches(/[@#$!^%*?&_-]/, 'Need special character @#$!^%*?&_-')
-      .test('unicode-format', 'Password must be in valid Unicode format', (value) => {
+      .test('unicode-format', 'Must be in valid Unicode format', (value) => {
         if (!value) return false;
         try {
           const encoded = encodeURIComponent(value);
