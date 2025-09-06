@@ -4,7 +4,13 @@
     "SignInLabel": "Войти",
     "SignUpLabel": "Регистрация",
     "SignOutLabel": "Выйти",
-    "logoAlt": "Логотип"
+    "logoAlt": "Логотип",
+    "welcomeUnauth": "Добро пожаловать!",
+    "welcomeAuth": "С возвращением, {user}!",
+    "defaultUser": "пользователь",
+    "clientLink": "REST клиент",
+    "historyLink": "История",
+    "variablesLink": "Переменные"
   },
   "NotFoundPage": {
     "title": "Страница не найдена"
