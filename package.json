@@ -23,6 +23,7 @@
     "test:coverage:run": "vitest run --coverage --run"
   },
   "dependencies": {
+    "firebase": "^12.2.1",
     "next": "15.5.2",
     "next-intl": "^4.3.5",
     "react": "19.1.0",
