@@ -39,7 +39,13 @@ const SignInForm: React.FC = () => {
 
   return (
     <div className={'wrapper'}>
-      <FormContent onSignIn={handleSignIn} />
+      <FormContent
+        onSignIn={handleSignIn}
+        error={null}
+        setError={function (error: string | null): void {
+          throw new Error('Function not implemented.');
+        }}
+      />
     </div>
   );
 };
