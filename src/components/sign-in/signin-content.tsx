@@ -21,10 +21,20 @@ const SignInContent: React.FC = () => {
     password: Yup.string()
       .required('Password is required')
       .min(8, 'At least 8 characters')
-      .matches(/[A-Z]/, 'Need at least one title letter')
-      .matches(/[a-z]/, 'Need at least one lowercase letter')
+      .matches(/[\p{Lu}]/u, 'Need at least one uppercase letter')
+      .matches(/[\p{Ll}]/u, 'Need at least one lowercase letter')
       .matches(/\d/, 'Need at least one digit')
-      .matches(/[@#$!^%*?&_-]/, 'Need special character @#$!^%*?&_-'),
+      .matches(/[@#$!^%*?&_-]/, 'Need special character @#$!^%*?&_-')
+      .test('unicode-format', 'Password must be in valid Unicode format', (value) => {
+        if (!value) return false;
+        try {
+          const encoded = encodeURIComponent(value);
+          const decoded = decodeURIComponent(encoded);
+          return decoded === value && value.length > 0;
+        } catch {
+          return false;
+        }
+      }),
     confirmPassword: Yup.string()
       .required('Is required')
       .oneOf([Yup.ref('password')], "Passwords don't match"),
@@ -61,12 +71,12 @@ const SignInContent: React.FC = () => {
 
   return (
     <form id='control' className='form' onSubmit={handleSubmit(onSubmit)} noValidate>
-      <div className='Email inputBlock'>
+      <div className='input-block'>
         <label htmlFor='email'>Email:</label>
         <input id='email' type='email' {...register('email')} tabIndex={1} autoFocus />
         {errors.email && <p className='error'>{errors.email.message}</p>}
       </div>
-      <div className='Password inputBlock'>
+      <div className='input-block'>
         <label htmlFor='password'>Password:</label>
         <div className='password-input-wrapper'>
           <input

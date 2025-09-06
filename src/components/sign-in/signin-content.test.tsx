@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import SignInContent from './signin-content';
 
 vi.mock('next-intl', () => ({
@@ -102,5 +102,102 @@ describe('SignInContent Password Visibility', () => {
     expect(screen.getByLabelText('Confirm Password:')).toBeInTheDocument();
     expect(screen.getByLabelText('Email:')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /submit/i })).toBeInTheDocument();
+  });
+});
+
+describe('SignInContent Unicode Password Validation', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('accepts password with valid Unicode characters', async () => {
+    render(<SignInContent />);
+
+    const passwordInput = screen.getByLabelText('Password:');
+    const emailInput = screen.getByLabelText('Email:');
+    const confirmPasswordInput = screen.getByLabelText('Confirm Password:');
+
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'Test123@пароль' } });
+    fireEvent.change(confirmPasswordInput, { target: { value: 'Test123@пароль' } });
+
+    fireEvent.blur(passwordInput);
+
+    await waitFor(() => {
+      const errorMessages = screen.queryAllByText(/Password must be in valid Unicode format/i);
+      expect(errorMessages).toHaveLength(0);
+    });
+  });
+
+  it('accepts password with Cyrillic uppercase and lowercase letters', async () => {
+    render(<SignInContent />);
+
+    const passwordInput = screen.getByLabelText('Password:');
+    const emailInput = screen.getByLabelText('Email:');
+    const confirmPasswordInput = screen.getByLabelText('Confirm Password:');
+
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'Пароль123@' } });
+    fireEvent.change(confirmPasswordInput, { target: { value: 'Пароль123@' } });
+
+    fireEvent.blur(passwordInput);
+
+    await waitFor(() => {
+      const uppercaseError = screen.queryAllByText(/Need at least one uppercase letter/i);
+      const lowercaseError = screen.queryAllByText(/Need at least one lowercase letter/i);
+      expect(uppercaseError).toHaveLength(0);
+      expect(lowercaseError).toHaveLength(0);
+    });
+  });
+
+  it('accepts password with emoji and special Unicode characters', async () => {
+    render(<SignInContent />);
+
+    const passwordInput = screen.getByLabelText('Password:');
+    const emailInput = screen.getByLabelText('Email:');
+    const confirmPasswordInput = screen.getByLabelText('Confirm Password:');
+
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'Test123@🔒🛡️' } });
+    fireEvent.change(confirmPasswordInput, { target: { value: 'Test123@🔒🛡️' } });
+
+    fireEvent.blur(passwordInput);
+
+    await waitFor(() => {
+      const errorMessages = screen.queryAllByText(/Password must be in valid Unicode format/i);
+      expect(errorMessages).toHaveLength(0);
+    });
+  });
+
+  it('accepts password with various Unicode scripts', async () => {
+    render(<SignInContent />);
+
+    const passwordInput = screen.getByLabelText('Password:');
+    const emailInput = screen.getByLabelText('Email:');
+    const confirmPasswordInput = screen.getByLabelText('Confirm Password:');
+
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'Test123@こんにちは' } });
+    fireEvent.change(confirmPasswordInput, { target: { value: 'Test123@こんにちは' } });
+
+    fireEvent.blur(passwordInput);
+
+    await waitFor(() => {
+      const errorMessages = screen.queryAllByText(/Password must be in valid Unicode format/i);
+      expect(errorMessages).toHaveLength(0);
+    });
+  });
+
+  it('validates empty password correctly', async () => {
+    render(<SignInContent />);
+
+    const passwordInput = screen.getByLabelText('Password:');
+
+    fireEvent.change(passwordInput, { target: { value: '' } });
+    fireEvent.blur(passwordInput);
+
+    await waitFor(() => {
+      expect(screen.getByText('Password is required')).toBeInTheDocument();
+    });
   });
 });
