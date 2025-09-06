@@ -22,10 +22,6 @@
   width: 100%;
 }
 
-p.error {
-  color: var(--red-color);
-}
-
 label {
   padding: 0;
 }
