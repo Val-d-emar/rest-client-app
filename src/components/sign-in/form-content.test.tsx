@@ -1,18 +1,18 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import SignInContent from './signin-content';
+import FormContent from './form-content';
 
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
 }));
 
-describe('SignInContent Password Visibility', () => {
+describe('FormContent Password Visibility', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   it('renders password fields with hidden text by default', () => {
-    render(<SignInContent />);
+    render(<FormContent />);
 
     const passwordInput = screen.getByLabelText('Password:');
     const confirmPasswordInput = screen.getByLabelText('Confirm Password:');
@@ -22,7 +22,7 @@ describe('SignInContent Password Visibility', () => {
   });
 
   it('shows password toggle buttons', () => {
-    render(<SignInContent />);
+    render(<FormContent />);
 
     const passwordToggleButton = screen.getByRole('button', { name: 'Show password' });
     const confirmPasswordToggleButton = screen.getByRole('button', {
@@ -34,7 +34,7 @@ describe('SignInContent Password Visibility', () => {
   });
 
   it('toggles password visibility when clicking toggle button', () => {
-    render(<SignInContent />);
+    render(<FormContent />);
 
     const passwordInput = screen.getByLabelText('Password:');
     const passwordToggleButton = screen.getByRole('button', { name: 'Show password' });
@@ -51,7 +51,7 @@ describe('SignInContent Password Visibility', () => {
   });
 
   it('toggles confirm password visibility independently', () => {
-    render(<SignInContent />);
+    render(<FormContent />);
 
     const passwordInput = screen.getByLabelText('Password:');
     const confirmPasswordInput = screen.getByLabelText('Confirm Password:');
@@ -69,7 +69,7 @@ describe('SignInContent Password Visibility', () => {
   });
 
   it('toggle buttons have proper accessibility attributes', () => {
-    render(<SignInContent />);
+    render(<FormContent />);
 
     const passwordToggleButton = screen.getByRole('button', { name: 'Show password' });
     const confirmPasswordToggleButton = screen.getByRole('button', {
@@ -84,7 +84,7 @@ describe('SignInContent Password Visibility', () => {
   });
 
   it('changes button aria-label when password visibility changes', () => {
-    render(<SignInContent />);
+    render(<FormContent />);
 
     const passwordToggleButton = screen.getByRole('button', { name: 'Show password' });
 
@@ -96,7 +96,7 @@ describe('SignInContent Password Visibility', () => {
   });
 
   it('renders form with all required fields', () => {
-    render(<SignInContent />);
+    render(<FormContent />);
 
     expect(screen.getByLabelText('Password:')).toBeInTheDocument();
     expect(screen.getByLabelText('Confirm Password:')).toBeInTheDocument();
@@ -105,13 +105,13 @@ describe('SignInContent Password Visibility', () => {
   });
 });
 
-describe('SignInContent Unicode Password Validation', () => {
+describe('FormContent Unicode Password Validation', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   it('accepts password with valid Unicode characters', async () => {
-    render(<SignInContent />);
+    render(<FormContent />);
 
     const passwordInput = screen.getByLabelText('Password:');
     const emailInput = screen.getByLabelText('Email:');
@@ -130,7 +130,7 @@ describe('SignInContent Unicode Password Validation', () => {
   });
 
   it('accepts password with Cyrillic uppercase and lowercase letters', async () => {
-    render(<SignInContent />);
+    render(<FormContent />);
 
     const passwordInput = screen.getByLabelText('Password:');
     const emailInput = screen.getByLabelText('Email:');
@@ -151,7 +151,7 @@ describe('SignInContent Unicode Password Validation', () => {
   });
 
   it('accepts password with emoji and special Unicode characters', async () => {
-    render(<SignInContent />);
+    render(<FormContent />);
 
     const passwordInput = screen.getByLabelText('Password:');
     const emailInput = screen.getByLabelText('Email:');
@@ -170,7 +170,7 @@ describe('SignInContent Unicode Password Validation', () => {
   });
 
   it('accepts password with various Unicode scripts', async () => {
-    render(<SignInContent />);
+    render(<FormContent />);
 
     const passwordInput = screen.getByLabelText('Password:');
     const emailInput = screen.getByLabelText('Email:');
@@ -189,7 +189,7 @@ describe('SignInContent Unicode Password Validation', () => {
   });
 
   it('validates empty password correctly', async () => {
-    render(<SignInContent />);
+    render(<FormContent />);
 
     const passwordInput = screen.getByLabelText('Password:');
 

@@ -11,8 +11,11 @@ type FormDataInput = {
   confirmPassword: string;
 };
 type SubmitValues = Omit<FormDataInput, 'confirmPassword'>;
-
-const SignInContent: React.FC = () => {
+type PropsSign = {
+  onSignIn?: (userData: SubmitValues) => Promise<void> | void;
+  onSignUp?: (userData: SubmitValues) => Promise<void> | void;
+};
+const FormContent: React.FC<PropsSign> = ({ onSignIn, onSignUp }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -62,10 +65,20 @@ const SignInContent: React.FC = () => {
         email,
         password,
       };
-      console.log('"userData="', userData);
+
+      if (onSignUp) {
+        await onSignUp(userData);
+        console.log('User registered:', userData.email);
+      } else if (onSignIn) {
+        await onSignIn(userData);
+        console.log('User signed in:', userData.email);
+      } else {
+        console.log('No action function provided, userData:', userData);
+      }
+
       reset();
     } catch (err) {
-      console.error(err);
+      console.error('Form submission error:', err);
     }
   };
 
@@ -204,9 +217,9 @@ const SignInContent: React.FC = () => {
         disabled={!isValid || isSubmitting}
         tabIndex={10}
       >
-        {isSubmitting ? 'Submitting...' : 'Submit'}
+        {isSubmitting ? 'Submitting...' : onSignUp ? 'Sign Up' : onSignIn ? 'Sign In' : 'Submit'}
       </button>
     </form>
   );
 };
-export default SignInContent;
+export default FormContent;

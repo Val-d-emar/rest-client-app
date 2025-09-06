@@ -2,15 +2,20 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import SignInForm from './signin-form';
 
-vi.mock('./signin-content', () => ({
-  default: () => <div data-testid='signin-content'>Mocked SignInContent</div>,
+vi.mock('./form-content', () => ({
+  default: ({ onSignIn }: { onSignIn?: (userData: any) => void }) => (
+    <div data-testid='form-content'>
+      Mocked FormContent
+      {onSignIn && <span data-testid='signin-prop'>onSignIn prop received</span>}
+    </div>
+  ),
 }));
 
 describe('SignInForm Component', () => {
   it('renders without crashing', () => {
     render(<SignInForm />);
 
-    expect(screen.getByTestId('signin-content')).toBeInTheDocument();
+    expect(screen.getByTestId('form-content')).toBeInTheDocument();
   });
 
   it('renders wrapper div with correct className', () => {
@@ -21,21 +26,21 @@ describe('SignInForm Component', () => {
     expect(wrapperDiv).toHaveClass('wrapper');
   });
 
-  it('contains SignInContent component', () => {
+  it('contains FormContent component', () => {
     render(<SignInForm />);
 
-    const signInContent = screen.getByTestId('signin-content');
-    expect(signInContent).toBeInTheDocument();
-    expect(signInContent).toHaveTextContent('Mocked SignInContent');
+    const formContent = screen.getByTestId('form-content');
+    expect(formContent).toBeInTheDocument();
+    expect(formContent).toHaveTextContent('Mocked FormContent');
   });
 
   it('has correct structure', () => {
     const { container } = render(<SignInForm />);
 
     const wrapperDiv = container.querySelector('.wrapper');
-    const signInContent = screen.getByTestId('signin-content');
+    const formContent = screen.getByTestId('form-content');
 
-    expect(wrapperDiv).toContainElement(signInContent);
+    expect(wrapperDiv).toContainElement(formContent);
   });
 
   it('applies CSS classes correctly', () => {
@@ -64,15 +69,15 @@ describe('SignInForm Component', () => {
 
   it('maintains consistent rendering', () => {
     const { unmount } = render(<SignInForm />);
-    const firstRender = screen.getByTestId('signin-content');
+    const firstRender = screen.getByTestId('form-content');
     expect(firstRender).toBeInTheDocument();
 
     unmount();
 
     render(<SignInForm />);
-    const secondRender = screen.getByTestId('signin-content');
+    const secondRender = screen.getByTestId('form-content');
     expect(secondRender).toBeInTheDocument();
-    expect(secondRender).toHaveTextContent('Mocked SignInContent');
+    expect(secondRender).toHaveTextContent('Mocked FormContent');
   });
 
   it('has accessible structure', () => {
@@ -82,5 +87,12 @@ describe('SignInForm Component', () => {
     expect(wrapperDiv).toBeInTheDocument();
 
     expect(wrapperDiv?.tagName).toBe('DIV');
+  });
+
+  it('passes onSignIn prop to FormContent', () => {
+    render(<SignInForm />);
+
+    expect(screen.getByTestId('signin-prop')).toBeInTheDocument();
+    expect(screen.getByText('onSignIn prop received')).toBeInTheDocument();
   });
 });
