@@ -12,7 +12,14 @@ describe('FormContent Password Visibility', () => {
   });
 
   it('renders password fields with hidden text by default', () => {
-    render(<FormContent />);
+    render(
+      <FormContent
+        error={null}
+        setError={function (error: string | null): void {
+          throw new Error('Function not implemented.');
+        }}
+      />,
+    );
 
     const passwordInput = screen.getByLabelText('Password:');
     const confirmPasswordInput = screen.getByLabelText('Confirm Password:');
@@ -22,7 +29,14 @@ describe('FormContent Password Visibility', () => {
   });
 
   it('shows password toggle buttons', () => {
-    render(<FormContent />);
+    render(
+      <FormContent
+        error={null}
+        setError={function (error: string | null): void {
+          throw new Error('Function not implemented.');
+        }}
+      />,
+    );
 
     const passwordToggleButton = screen.getByRole('button', { name: 'Show password' });
     const confirmPasswordToggleButton = screen.getByRole('button', {
@@ -34,7 +48,14 @@ describe('FormContent Password Visibility', () => {
   });
 
   it('toggles password visibility when clicking toggle button', () => {
-    render(<FormContent />);
+    render(
+      <FormContent
+        error={null}
+        setError={function (error: string | null): void {
+          throw new Error('Function not implemented.');
+        }}
+      />,
+    );
 
     const passwordInput = screen.getByLabelText('Password:');
     const passwordToggleButton = screen.getByRole('button', { name: 'Show password' });
@@ -51,7 +72,14 @@ describe('FormContent Password Visibility', () => {
   });
 
   it('toggles confirm password visibility independently', () => {
-    render(<FormContent />);
+    render(
+      <FormContent
+        error={null}
+        setError={function (error: string | null): void {
+          throw new Error('Function not implemented.');
+        }}
+      />,
+    );
 
     const passwordInput = screen.getByLabelText('Password:');
     const confirmPasswordInput = screen.getByLabelText('Confirm Password:');
@@ -69,7 +97,14 @@ describe('FormContent Password Visibility', () => {
   });
 
   it('toggle buttons have proper accessibility attributes', () => {
-    render(<FormContent />);
+    render(
+      <FormContent
+        error={null}
+        setError={function (error: string | null): void {
+          throw new Error('Function not implemented.');
+        }}
+      />,
+    );
 
     const passwordToggleButton = screen.getByRole('button', { name: 'Show password' });
     const confirmPasswordToggleButton = screen.getByRole('button', {
@@ -84,7 +119,14 @@ describe('FormContent Password Visibility', () => {
   });
 
   it('changes button aria-label when password visibility changes', () => {
-    render(<FormContent />);
+    render(
+      <FormContent
+        error={null}
+        setError={function (error: string | null): void {
+          throw new Error('Function not implemented.');
+        }}
+      />,
+    );
 
     const passwordToggleButton = screen.getByRole('button', { name: 'Show password' });
 
@@ -96,7 +138,14 @@ describe('FormContent Password Visibility', () => {
   });
 
   it('renders form with all required fields', () => {
-    render(<FormContent />);
+    render(
+      <FormContent
+        error={null}
+        setError={function (error: string | null): void {
+          throw new Error('Function not implemented.');
+        }}
+      />,
+    );
 
     expect(screen.getByLabelText('Password:')).toBeInTheDocument();
     expect(screen.getByLabelText('Confirm Password:')).toBeInTheDocument();
@@ -111,7 +160,14 @@ describe('FormContent Unicode Password Validation', () => {
   });
 
   it('accepts password with valid Unicode characters', async () => {
-    render(<FormContent />);
+    render(
+      <FormContent
+        error={null}
+        setError={function (error: string | null): void {
+          throw new Error('Function not implemented.');
+        }}
+      />,
+    );
 
     const passwordInput = screen.getByLabelText('Password:');
     const emailInput = screen.getByLabelText('Email:');
@@ -130,7 +186,14 @@ describe('FormContent Unicode Password Validation', () => {
   });
 
   it('accepts password with Cyrillic uppercase and lowercase letters', async () => {
-    render(<FormContent />);
+    render(
+      <FormContent
+        error={null}
+        setError={function (error: string | null): void {
+          throw new Error('Function not implemented.');
+        }}
+      />,
+    );
 
     const passwordInput = screen.getByLabelText('Password:');
     const emailInput = screen.getByLabelText('Email:');
@@ -151,7 +214,14 @@ describe('FormContent Unicode Password Validation', () => {
   });
 
   it('accepts password with emoji and special Unicode characters', async () => {
-    render(<FormContent />);
+    render(
+      <FormContent
+        error={null}
+        setError={function (error: string | null): void {
+          throw new Error('Function not implemented.');
+        }}
+      />,
+    );
 
     const passwordInput = screen.getByLabelText('Password:');
     const emailInput = screen.getByLabelText('Email:');
@@ -170,7 +240,14 @@ describe('FormContent Unicode Password Validation', () => {
   });
 
   it('accepts password with various Unicode scripts', async () => {
-    render(<FormContent />);
+    render(
+      <FormContent
+        error={null}
+        setError={function (error: string | null): void {
+          throw new Error('Function not implemented.');
+        }}
+      />,
+    );
 
     const passwordInput = screen.getByLabelText('Password:');
     const emailInput = screen.getByLabelText('Email:');
@@ -189,7 +266,14 @@ describe('FormContent Unicode Password Validation', () => {
   });
 
   it('validates empty password correctly', async () => {
-    render(<FormContent />);
+    render(
+      <FormContent
+        error={null}
+        setError={function (error: string | null): void {
+          throw new Error('Function not implemented.');
+        }}
+      />,
+    );
 
     const passwordInput = screen.getByLabelText('Password:');
 
