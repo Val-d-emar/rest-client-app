@@ -1,16 +1,21 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { onAuthStateChanged, User } from 'firebase/auth';
+import {
+  onAuthStateChanged,
+  User,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut as firebaseSignOut,
+} from 'firebase/auth';
 import { auth } from '@/lib/firebase/config';
-import { dbg, warn } from '@/log';
+import { dbg, err, warn } from '@/log';
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  // TODO: далее реализовать эти функции
-  signUp: () => Promise<void>;
-  signIn: () => Promise<void>;
+  signUp: (email: string, password: string) => Promise<void>;
+  signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
 }
 
@@ -30,9 +35,35 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => unsubscribe();
   }, []);
 
-  const signUp = async () => warn('signUp not implemented');
-  const signIn = async () => warn('signIn not implemented');
-  const signOut = async () => warn('signOut not implemented');
+  const signUp = async (email: string, password: string) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      dbg('User signed up successfully:', userCredential.user);
+    } catch (error) {
+      err('Error signing up:', error);
+      throw error;
+    }
+  };
+
+  const signIn = async (email: string, password: string) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      dbg('User signed in successfully:', userCredential.user);
+    } catch (error) {
+      err('Error signing in:', error);
+      throw error;
+    }
+  };
+
+  const signOut = async () => {
+    try {
+      await firebaseSignOut(auth);
+      dbg('User signed out successfully');
+    } catch (error) {
+      err('Error signing out:', error);
+      throw error;
+    }
+  };
 
   const value = {
     user,
