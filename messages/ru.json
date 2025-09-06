@@ -12,6 +12,13 @@
     "historyLink": "История",
     "variablesLink": "Переменные"
   },
+  "ClientPage": {
+    "title": "REST Клиент",
+    "requestBar": {
+      "placeholder": "Введите URL",
+      "sendButton": "Отправить"
+    }
+  },
   "NotFoundPage": {
     "title": "Страница не найдена",
     "sorry": "Извините, страница, которую вы ищете, не существует.",
