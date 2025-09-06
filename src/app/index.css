@@ -22,6 +22,8 @@
   --light-disabled-color: rgb(211 211 211 / 73.1%);
   --red-color: rgb(161 7 7);
   --header-footer-color: rgb(156 200 239);
+  --outline-color: #e6dede;
+  --dark-gray-color: #666;
 
   font-family: Roboto, Inter, Ubuntu, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-weight: 400;
@@ -201,6 +203,7 @@ select {
 main {
   display: flex;
   flex-direction: column;
+  gap: 10px;
   flex-grow: 1;
   align-items: center;
   justify-content: center;

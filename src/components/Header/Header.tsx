@@ -24,7 +24,7 @@ export default function Header() {
     <header className={`${classes.header} ${scrolled ? classes.scrolled : ''}`}>
       <nav className={`container ${classes['flex-wrapper']}`}>
         <Link href='/' className={classes['logo-wrapper']}>
-          <Image src='/logo.png' alt={t('logoAlt')} width={60} height={60} />
+          <Image src='/logo.png' alt={t('logoAlt')} width={60} height={60} priority={true} />
           <span className={classes.brandText}>{t('title')}</span>
         </Link>
 
