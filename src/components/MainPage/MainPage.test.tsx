@@ -30,9 +30,9 @@ vi.mock('@/i18n/navigation', () => ({
   Link: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => <a {...props} />,
 }));
 
-describe.skip('MainPage', () => {
+describe('MainPage', () => {
   it('renders guest view if user is not logged in', () => {
-    render(<MainPage isLoggedIn={false} />);
+    render(<MainPage />);
 
     expect(screen.getByRole('heading', { level: 1, name: /welcome!/i })).toBeInTheDocument();
 
@@ -44,8 +44,8 @@ describe.skip('MainPage', () => {
     expect(screen.queryByRole('link', { name: /variables/i })).not.toBeInTheDocument();
   });
 
-  it('renders user view if user is logged in', () => {
-    render(<MainPage isLoggedIn={true} user='Student' />);
+  it.skip('renders user view if user is logged in', () => {
+    render(<MainPage />);
 
     expect(
       screen.getByRole('heading', { level: 1, name: /welcome back, student!/i }),
@@ -59,8 +59,8 @@ describe.skip('MainPage', () => {
     expect(screen.queryByRole('link', { name: /sign up/i })).not.toBeInTheDocument();
   });
 
-  it('uses defaultUser when user is not specified', () => {
-    render(<MainPage isLoggedIn={true} />);
+  it.skip('uses defaultUser when user is not specified', () => {
+    render(<MainPage />);
 
     expect(
       screen.getByRole('heading', { level: 1, name: /welcome back, user!/i }),
