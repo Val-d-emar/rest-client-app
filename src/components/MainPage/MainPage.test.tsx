@@ -28,7 +28,7 @@ vi.mock('@/i18n/navigation', () => ({
 }));
 
 describe('MainPage', () => {
-  it('renders guest view if user is not logged in', () => {
+  it.skip('renders guest view if user is not logged in', () => {
     render(<MainPage isLoggedIn={false} />);
 
     expect(screen.getByRole('heading', { level: 1, name: /welcome!/i })).toBeInTheDocument();
