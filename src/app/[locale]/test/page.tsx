@@ -1,8 +1,11 @@
 'use client';
 
+import { dbg } from '@/log';
 import { toast } from 'react-hot-toast';
 
 export default function TestPage() {
+  const loadDuration = Number(process.env.NEXT_PUBLIC_TOAST_DURATION) || 10000;
+  dbg('loadDuration=', loadDuration);
   const showInlineCustomToast = () => {
     toast.custom(
       (t) => (
@@ -39,6 +42,7 @@ export default function TestPage() {
       ),
       {
         position: 'top-right',
+        duration: loadDuration,
       },
     );
   };
@@ -51,7 +55,14 @@ export default function TestPage() {
       <button type='button' onClick={() => toast.error('Something went wrong!')}>
         Show Test 2
       </button>
-      <button type='button' onClick={() => toast.loading('Loading...')}>
+      <button
+        type='button'
+        onClick={() =>
+          toast.loading('Loading...', {
+            duration: loadDuration,
+          })
+        }
+      >
         Show Test 3
       </button>
       <button type='button' onClick={showInlineCustomToast}>
