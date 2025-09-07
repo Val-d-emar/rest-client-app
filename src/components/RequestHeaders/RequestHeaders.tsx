@@ -53,14 +53,20 @@ export default function RequestHeaders() {
   };
 
   const onHeaderInputChange = (id: string, value: string, key: 'key' | 'value') => {
-    const index = HEADERS.findIndex((header) => header.id === id);
-    HEADERS[index][key] = value;
+    const header = HEADERS.find((header) => header.id === id);
+    if (!header) {
+      return;
+    }
+    header[key] = value;
     setHeaders([...HEADERS]);
   };
 
   const onHeaderEnable = (id: string) => {
-    const index = HEADERS.findIndex((header) => header.id === id);
-    HEADERS[index].enabled = !HEADERS[index].enabled;
+    const header = HEADERS.find((header) => header.id === id);
+    if (!header || !header.key || !header.value) {
+      return;
+    }
+    header.enabled = !header.enabled;
     setHeaders([...HEADERS]);
   };
 
