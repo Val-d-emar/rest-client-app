@@ -12,6 +12,17 @@
     "historyLink": "History",
     "variablesLink": "Variables"
   },
+  "ClientPage": {
+    "title": "REST Client",
+    "requestBar": {
+      "placeholder": "Enter URL",
+      "sendButton": "Send"
+    },
+    "requestHeaders": {
+      "headerKeyPlaceholder": "Header",
+      "headerValuePlaceholder": "Value"
+    }
+  },
   "NotFoundPage": {
     "title": "Page not found",
     "sorry": "Sorry, the page you are looking for does not exist.",
