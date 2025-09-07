@@ -1,5 +1,8 @@
-import { randomUUID } from 'crypto';
+'use client';
+
+import { v4 } from 'uuid';
 import classes from './RequestHeaders.module.css';
+import { useState } from 'react';
 
 export type HeaderItem = {
   id: string;
@@ -11,26 +14,50 @@ export type HeaderItem = {
 // TODO: keep headers in context/Redux state
 const HEADERS: HeaderItem[] = [
   {
-    id: randomUUID(),
+    id: v4(),
     enabled: true,
     key: 'Accept',
     value: '*/*',
   },
   {
-    id: randomUUID(),
+    id: v4(),
     enabled: false,
     key: 'Connection',
     value: 'keep-alive',
   },
 ];
 
+const createEmptyHeader: () => HeaderItem = () => {
+  return {
+    id: v4(),
+    enabled: false,
+    key: '',
+    value: '',
+  };
+};
+
 export default function RequestHeaders() {
+  const [headers, setHeaders] = useState([...HEADERS]);
+
+  const onAddClick = () => {
+    HEADERS.push(createEmptyHeader());
+    setHeaders([...HEADERS]);
+  };
+
+  const onRemove = (id: string) => {
+    const index = HEADERS.findIndex((header) => header.id === id);
+    if (index >= 0) {
+      HEADERS.splice(index, 1);
+      setHeaders([...HEADERS]);
+    }
+  };
+
   return (
     <>
       <h3>HTTP headers</h3>
       <table>
         <tbody>
-          {HEADERS.map((header) => (
+          {headers.map((header) => (
             <tr key={header.id}>
               <td>
                 <input type='checkbox' checked={header.enabled} className={classes.checkbox} />
@@ -42,7 +69,11 @@ export default function RequestHeaders() {
                 <input type='text' value={header.value} />
               </td>
               <td>
-                <button type='button' className={classes.button}>
+                <button
+                  type='button'
+                  className={classes.button}
+                  onClick={() => onRemove(header.id)}
+                >
                   <svg
                     width='20px'
                     height='20px'
@@ -71,7 +102,7 @@ export default function RequestHeaders() {
           ))}
           <tr>
             <td>
-              <button type='button' className={classes.button}>
+              <button type='button' className={classes.button} onClick={onAddClick}>
                 <svg
                   width='20px'
                   height='20px'
