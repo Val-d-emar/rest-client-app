@@ -24,5 +24,33 @@
   },
   "Footer": {
     "developedBy": "Разработано"
+  },
+  "AuthForm": {
+    "email": "Электронная почта",
+    "password": "Пароль",
+    "confirmPassword": "Подтвердите пароль",
+    "signIn": "Войти",
+    "signUp": "Регистрация",
+    "submit": "Отправить",
+    "submitting": "Отправка...",
+    "showPassword": "Показать пароль",
+    "hidePassword": "Скрыть пароль",
+    "showConfirmPassword": "Показать подтверждение пароля",
+    "hideConfirmPassword": "Скрыть подтверждение пароля",
+    "signInTitle": "Войти в аккаунт",
+    "signUpTitle": "Создать аккаунт",
+    "validation": {
+      "emailRequired": "Электронная почта обязательна",
+      "emailIncorrect": "Неверный формат электронной почты",
+      "passwordRequired": "Пароль обязателен",
+      "passwordMinLength": "Минимум 8 символов",
+      "passwordUppercase": "Нужна минимум одна заглавная буква",
+      "passwordLowercase": "Нужна минимум одна строчная буква",
+      "passwordDigit": "Нужна минимум одна цифра",
+      "passwordSpecial": "Нужен специальный символ @#$!^%*?&_-",
+      "passwordUnicode": "Должен быть в валидном Unicode формате",
+      "confirmPasswordRequired": "Подтверждение пароля обязательно",
+      "passwordsMatch": "Пароли не совпадают"
+    }
   }
 }

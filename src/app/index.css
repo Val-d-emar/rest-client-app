@@ -56,7 +56,8 @@ body {
 }
 
 .error {
-  font-weight: 600;
+  font-size: clamp(0.875rem, 0.8333rem + 0.1852vw, 1rem);
+  font-weight: 400;
   color: var(--red-color);
 }
 
