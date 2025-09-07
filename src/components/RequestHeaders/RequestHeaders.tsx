@@ -3,6 +3,7 @@
 import { v4 } from 'uuid';
 import classes from './RequestHeaders.module.css';
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 export type HeaderItem = {
   id: string;
@@ -37,6 +38,7 @@ const createEmptyHeader: () => HeaderItem = () => {
 };
 
 export default function RequestHeaders() {
+  const t = useTranslations('ClientPage.requestHeaders');
   const [headers, setHeaders] = useState([...HEADERS]);
 
   const onAddClick = () => {
@@ -90,6 +92,7 @@ export default function RequestHeaders() {
                   type='text'
                   value={header.key}
                   onChange={(e) => onHeaderInputChange(header.id, e.target.value, 'key')}
+                  placeholder={t('headerKeyPlaceholder')}
                 />
               </td>
               <td>
@@ -97,6 +100,7 @@ export default function RequestHeaders() {
                   type='text'
                   value={header.value}
                   onChange={(e) => onHeaderInputChange(header.id, e.target.value, 'value')}
+                  placeholder={t('headerValuePlaceholder')}
                 />
               </td>
               <td>

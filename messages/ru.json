@@ -17,6 +17,10 @@
     "requestBar": {
       "placeholder": "Введите URL",
       "sendButton": "Отправить"
+    },
+    "requestHeaders": {
+      "headerKeyPlaceholder": "Заголовок",
+      "headerValuePlaceholder": "Значение"
     }
   },
   "NotFoundPage": {

@@ -17,6 +17,10 @@
     "requestBar": {
       "placeholder": "Enter URL",
       "sendButton": "Send"
+    },
+    "requestHeaders": {
+      "headerKeyPlaceholder": "Header",
+      "headerValuePlaceholder": "Value"
     }
   },
   "NotFoundPage": {
