@@ -6,11 +6,6 @@ import { useRouter } from '@/i18n/navigation';
 
 vi.mock('@/context/AuthContext');
 
-vi.mock('@/i18n/navigation', () => ({
-  Link: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => <a {...props} />,
-  useRouter: vi.fn(),
-}));
-
 const dictionary: Record<string, string> = {
   logoAlt: 'REST Client Logo',
   title: 'REST Client App',
