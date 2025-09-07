@@ -52,6 +52,18 @@ export default function RequestHeaders() {
     }
   };
 
+  const onHeaderInputChange = (id: string, value: string, key: 'key' | 'value') => {
+    const index = HEADERS.findIndex((header) => header.id === id);
+    HEADERS[index][key] = value;
+    setHeaders([...HEADERS]);
+  };
+
+  const onHeaderEnable = (id: string) => {
+    const index = HEADERS.findIndex((header) => header.id === id);
+    HEADERS[index].enabled = !HEADERS[index].enabled;
+    setHeaders([...HEADERS]);
+  };
+
   return (
     <>
       <h3>HTTP headers</h3>
@@ -60,13 +72,26 @@ export default function RequestHeaders() {
           {headers.map((header) => (
             <tr key={header.id}>
               <td>
-                <input type='checkbox' checked={header.enabled} className={classes.checkbox} />
+                <input
+                  type='checkbox'
+                  checked={header.enabled}
+                  className={classes.checkbox}
+                  onChange={() => onHeaderEnable(header.id)}
+                />
               </td>
               <td>
-                <input type='text' value={header.key} />
+                <input
+                  type='text'
+                  value={header.key}
+                  onChange={(e) => onHeaderInputChange(header.id, e.target.value, 'key')}
+                />
               </td>
               <td>
-                <input type='text' value={header.value} />
+                <input
+                  type='text'
+                  value={header.value}
+                  onChange={(e) => onHeaderInputChange(header.id, e.target.value, 'value')}
+                />
               </td>
               <td>
                 <button
