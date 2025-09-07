@@ -66,7 +66,15 @@ describe('FormContent Internationalization', () => {
 
     it('renders form labels in English', () => {
       const mockSignUp = vi.fn();
-      render(<FormContent onSignUp={mockSignUp} />);
+      render(
+        <FormContent
+          onSignUp={mockSignUp}
+          error={null}
+          setError={function (error: string | null): void {
+            throw new Error('Function not implemented.');
+          }}
+        />,
+      );
 
       expect(screen.getByText('Email:')).toBeInTheDocument();
       expect(screen.getByText('Password:')).toBeInTheDocument();
@@ -75,7 +83,15 @@ describe('FormContent Internationalization', () => {
 
     it('renders signin form labels without confirmPassword in English', () => {
       const mockSignIn = vi.fn();
-      render(<FormContent onSignIn={mockSignIn} />);
+      render(
+        <FormContent
+          onSignIn={mockSignIn}
+          error={null}
+          setError={function (error: string | null): void {
+            throw new Error('Function not implemented.');
+          }}
+        />,
+      );
 
       expect(screen.getByText('Email:')).toBeInTheDocument();
       expect(screen.getByText('Password:')).toBeInTheDocument();
@@ -83,21 +99,44 @@ describe('FormContent Internationalization', () => {
     });
 
     it('renders submit button in English', () => {
-      render(<FormContent />);
+      render(
+        <FormContent
+          error={null}
+          setError={function (error: string | null): void {
+            throw new Error('Function not implemented.');
+          }}
+        />,
+      );
 
       expect(screen.getByRole('button', { name: /submit/i })).toBeInTheDocument();
     });
 
     it('renders Sign In button when onSignIn prop is provided', () => {
       const mockSignIn = vi.fn();
-      render(<FormContent onSignIn={mockSignIn} />);
+      render(
+        <FormContent
+          onSignIn={mockSignIn}
+          error={null}
+          setError={function (error: string | null): void {
+            throw new Error('Function not implemented.');
+          }}
+        />,
+      );
 
       expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument();
     });
 
     it('renders Sign Up button when onSignUp prop is provided', () => {
       const mockSignUp = vi.fn();
-      render(<FormContent onSignUp={mockSignUp} />);
+      render(
+        <FormContent
+          onSignUp={mockSignUp}
+          error={null}
+          setError={function (error: string | null): void {
+            throw new Error('Function not implemented.');
+          }}
+        />,
+      );
 
       expect(screen.getByRole('button', { name: /sign up/i })).toBeInTheDocument();
     });
@@ -110,7 +149,15 @@ describe('FormContent Internationalization', () => {
 
     it('renders form labels in Russian', () => {
       const mockSignUp = vi.fn();
-      render(<FormContent onSignUp={mockSignUp} />);
+      render(
+        <FormContent
+          onSignUp={mockSignUp}
+          error={null}
+          setError={function (error: string | null): void {
+            throw new Error('Function not implemented.');
+          }}
+        />,
+      );
 
       expect(screen.getByText('Электронная почта:')).toBeInTheDocument();
       expect(screen.getByText('Пароль:')).toBeInTheDocument();
@@ -119,7 +166,15 @@ describe('FormContent Internationalization', () => {
 
     it('renders signin form labels without confirmPassword in Russian', () => {
       const mockSignIn = vi.fn();
-      render(<FormContent onSignIn={mockSignIn} />);
+      render(
+        <FormContent
+          onSignIn={mockSignIn}
+          error={null}
+          setError={function (error: string | null): void {
+            throw new Error('Function not implemented.');
+          }}
+        />,
+      );
 
       expect(screen.getByText('Электронная почта:')).toBeInTheDocument();
       expect(screen.getByText('Пароль:')).toBeInTheDocument();
@@ -127,21 +182,44 @@ describe('FormContent Internationalization', () => {
     });
 
     it('renders submit button in Russian', () => {
-      render(<FormContent />);
+      render(
+        <FormContent
+          error={null}
+          setError={function (error: string | null): void {
+            throw new Error('Function not implemented.');
+          }}
+        />,
+      );
 
       expect(screen.getByRole('button', { name: /отправить/i })).toBeInTheDocument();
     });
 
     it('renders Sign In button in Russian when onSignIn prop is provided', () => {
       const mockSignIn = vi.fn();
-      render(<FormContent onSignIn={mockSignIn} />);
+      render(
+        <FormContent
+          onSignIn={mockSignIn}
+          error={null}
+          setError={function (error: string | null): void {
+            throw new Error('Function not implemented.');
+          }}
+        />,
+      );
 
       expect(screen.getByRole('button', { name: /войти/i })).toBeInTheDocument();
     });
 
     it('renders Sign Up button in Russian when onSignUp prop is provided', () => {
       const mockSignUp = vi.fn();
-      render(<FormContent onSignUp={mockSignUp} />);
+      render(
+        <FormContent
+          onSignUp={mockSignUp}
+          error={null}
+          setError={function (error: string | null): void {
+            throw new Error('Function not implemented.');
+          }}
+        />,
+      );
 
       expect(screen.getByRole('button', { name: /регистрация/i })).toBeInTheDocument();
     });
@@ -150,7 +228,14 @@ describe('FormContent Internationalization', () => {
   describe('Accessibility with translations', () => {
     it('has proper aria-labels in English', () => {
       currentLocale = 'en';
-      render(<FormContent />);
+      render(
+        <FormContent
+          error={null}
+          setError={function (error: string | null): void {
+            throw new Error('Function not implemented.');
+          }}
+        />,
+      );
 
       const passwordToggle = screen
         .getAllByRole('button')
@@ -160,7 +245,14 @@ describe('FormContent Internationalization', () => {
 
     it('has proper aria-labels in Russian', () => {
       currentLocale = 'ru';
-      render(<FormContent />);
+      render(
+        <FormContent
+          error={null}
+          setError={function (error: string | null): void {
+            throw new Error('Function not implemented.');
+          }}
+        />,
+      );
 
       const passwordToggle = screen
         .getAllByRole('button')
