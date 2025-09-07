@@ -5,18 +5,24 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, SubmitHandler, Resolver } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
+import { err, log } from '@/log';
 
 type FormDataInput = {
   email: string;
   password: string;
   confirmPassword?: string;
 };
+
 type SubmitValues = Omit<FormDataInput, 'confirmPassword'>;
+
 type PropsSign = {
   onSignIn?: (userData: SubmitValues) => Promise<void> | void;
   onSignUp?: (userData: SubmitValues) => Promise<void> | void;
+  error: string | null;
+  setError: (error: string | null) => void;
 };
-const FormContent: React.FC<PropsSign> = ({ onSignIn, onSignUp }) => {
+
+const FormContent: React.FC<PropsSign> = ({ onSignIn, onSignUp, error, setError }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const t = useTranslations('AuthForm');
@@ -78,6 +84,7 @@ const FormContent: React.FC<PropsSign> = ({ onSignIn, onSignUp }) => {
 
   const onSubmit: SubmitHandler<FormDataInput> = async (data) => {
     try {
+      setError(null);
       const { email, password } = data;
       const userData: SubmitValues = {
         email,
@@ -86,17 +93,17 @@ const FormContent: React.FC<PropsSign> = ({ onSignIn, onSignUp }) => {
 
       if (onSignUp) {
         await onSignUp(userData);
-        console.log('User registered:', userData.email);
+        log('User registered:', userData.email);
       } else if (onSignIn) {
         await onSignIn(userData);
-        console.log('User signed in:', userData.email);
+        log('User signed in:', userData.email);
       } else {
-        console.log('No action function provided, userData:', userData);
+        log('No action function provided, userData:', userData);
       }
 
       reset();
-    } catch (err) {
-      console.error('Form submission error:', err);
+    } catch (e) {
+      err('Form submission error:', e);
     }
   };
 
@@ -230,7 +237,11 @@ const FormContent: React.FC<PropsSign> = ({ onSignIn, onSignUp }) => {
           {errors.confirmPassword && <p className='error'>{errors.confirmPassword.message}</p>}
         </div>
       )}
-
+      {error && (
+        <p className='error' style={{ textAlign: 'center', marginBottom: '1rem' }}>
+          {error}
+        </p>
+      )}
       <button
         className={'submit-btn'}
         type='submit'

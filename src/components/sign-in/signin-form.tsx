@@ -1,8 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import './form.css';
 import FormContent from './form-content';
+import { useRouter } from '@/i18n/navigation';
+import { useAuth } from '@/context/AuthContext';
+import { err, log } from '@/log';
 
 type SubmitValues = {
   email: string;
@@ -10,9 +13,14 @@ type SubmitValues = {
 };
 
 const SignInForm: React.FC = () => {
+  const [error, setError] = useState<string | null>(null);
+  const { signIn } = useAuth();
+  const router = useRouter();
+
   const handleSignIn = async (userData: SubmitValues) => {
     try {
-      console.log('Signing in user:', userData);
+      await signIn(userData.email, userData.password);
+      log('Signing in user:', userData);
 
       // удалить Пример API запроса
       // const response = await fetch('/api/auth/signin', {
@@ -32,14 +40,16 @@ const SignInForm: React.FC = () => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       alert(`Welcome back, ${userData.email}!`);
     } catch (error) {
-      console.error('Sign in error:', error);
+      err('Sign in error:', error);
       alert('Sign in failed. Please try again.');
+      // TODO: Преобразовывать коды ошибок Firebase в человеко-понятные сообщения
+      setError((error as Error)?.message || 'Sign in failed. Please try again.');
     }
   };
 
   return (
     <div className={'wrapper'}>
-      <FormContent onSignIn={handleSignIn} />
+      <FormContent onSignIn={handleSignIn} error={error} setError={setError} />
     </div>
   );
 };
