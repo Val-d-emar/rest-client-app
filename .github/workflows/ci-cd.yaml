@@ -121,7 +121,7 @@ jobs:
   deploy-preview:
     runs-on: ubuntu-latest
     needs: build-and-test
-    if: (github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch') && !github.event.repository.private
+    if: (github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch') && github.event.repository.private
 
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
