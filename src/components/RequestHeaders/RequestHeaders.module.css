@@ -29,3 +29,20 @@
   height: 20px;
   margin: auto;
 }
+
+.table {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr auto;
+  gap: 4px;
+  align-items: center;
+}
+
+.row input[type='text'] {
+  width: 100%;
+}
