@@ -1,7 +1,10 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 import Header from './Header';
-import { ImageProps } from 'next/image';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from '@/i18n/navigation';
+
+vi.mock('@/context/AuthContext');
 
 const dictionary: Record<string, string> = {
   logoAlt: 'REST Client Logo',
@@ -16,6 +19,9 @@ vi.mock('next-intl', () => ({
 
 vi.mock('@/i18n/navigation', () => ({
   Link: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => <a {...props} />,
+  useRouter: vi.fn(() => ({
+    push: vi.fn(),
+  })),
 }));
 
 vi.mock('@/components/LocaleSwitcher', () => ({
@@ -23,7 +29,11 @@ vi.mock('@/components/LocaleSwitcher', () => ({
 }));
 
 vi.mock('next/image', () => ({
-  default: ({ alt, ...rest }: React.ImgHTMLAttributes<HTMLImageElement>) => (
+  default: ({
+    alt,
+    priority,
+    ...rest
+  }: React.ImgHTMLAttributes<HTMLImageElement> & { priority?: boolean }) => (
     <img alt={alt} {...rest} />
   ),
 }));
@@ -35,34 +45,78 @@ vi.mock('./Header.module.css', () => ({
 }));
 
 describe('Header', () => {
-  it('renders logo, title, locale switcher and auth links', () => {
-    render(<Header />);
+  describe('when user is not authenticated', () => {
+    beforeEach(() => {
+      (useAuth as Mock).mockReturnValue({
+        user: null,
+        loading: false,
+      });
+    });
+    it('renders logo, title, locale switcher and auth links', () => {
+      render(<Header />);
 
-    const logo = screen.getByRole('img', { name: dictionary.logoAlt });
-    expect(logo).toBeInTheDocument();
-    expect(logo).toHaveAttribute('src', '/logo.png');
+      const logo = screen.getByRole('img', { name: dictionary.logoAlt });
+      expect(logo).toBeInTheDocument();
+      expect(logo).toHaveAttribute('src', '/logo.png');
 
-    expect(screen.getByText(dictionary.title)).toBeInTheDocument();
+      expect(screen.getByText(dictionary.title)).toBeInTheDocument();
 
-    expect(screen.getByTestId('locale-switcher')).toBeInTheDocument();
+      expect(screen.getByTestId('locale-switcher')).toBeInTheDocument();
 
-    const signIn = screen.getByRole('link', { name: dictionary.SignInLabel });
-    expect(signIn).toHaveAttribute('href', '/auth/signin');
+      const signIn = screen.getByRole('link', { name: dictionary.SignInLabel });
+      expect(signIn).toHaveAttribute('href', '/auth/signin');
 
-    const signUp = screen.getByRole('link', { name: dictionary.SignUpLabel });
-    expect(signUp).toHaveAttribute('href', '/auth/signup');
+      const signUp = screen.getByRole('link', { name: dictionary.SignUpLabel });
+      expect(signUp).toHaveAttribute('href', '/auth/signup');
+    });
+
+    it('adds "scrolled" class on window scroll and removes it on scroll to the top', () => {
+      render(<Header />);
+
+      const header = screen.getByRole('banner');
+      expect(header).not.toHaveClass('scrolled');
+
+      fireEvent.scroll(window, { target: { scrollY: 100 } });
+      expect(header).toHaveClass('scrolled');
+
+      fireEvent.scroll(window, { target: { scrollY: 0 } });
+      expect(header).not.toHaveClass('scrolled');
+    });
   });
+  describe('when user is authenticated', () => {
+    const mockSignOut = vi.fn();
+    const mockRouterPush = vi.fn();
 
-  it('adds "scrolled" class on window scroll and removes it on scroll to the top', () => {
-    render(<Header />);
+    beforeEach(() => {
+      (useAuth as Mock).mockReturnValue({
+        user: { email: 'test@example.com' },
+        loading: false,
+        signOut: mockSignOut,
+      });
+      (useRouter as Mock).mockReturnValue({
+        push: mockRouterPush,
+      });
+    });
 
-    const header = screen.getByRole('banner');
-    expect(header).not.toHaveClass('scrolled');
+    afterEach(() => {
+      vi.clearAllMocks();
+    });
 
-    fireEvent.scroll(window, { target: { scrollY: 100 } });
-    expect(header).toHaveClass('scrolled');
+    it('renders Sign Out button', () => {
+      render(<Header />);
+      expect(screen.getByRole('button', { name: dictionary.SignOutLabel })).toBeInTheDocument();
+    });
 
-    fireEvent.scroll(window, { target: { scrollY: 0 } });
-    expect(header).not.toHaveClass('scrolled');
+    it('calls signOut and redirects on button click', async () => {
+      render(<Header />);
+      const signOutButton = screen.getByRole('button', { name: dictionary.SignOutLabel });
+
+      fireEvent.click(signOutButton);
+
+      expect(mockSignOut).toHaveBeenCalledTimes(1);
+      await waitFor(() => {
+        expect(mockRouterPush).toHaveBeenCalledWith('/');
+      });
+    });
   });
 });

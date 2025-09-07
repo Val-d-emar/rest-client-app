@@ -35,5 +35,33 @@
   },
   "Footer": {
     "developedBy": "Developed by"
+  },
+  "AuthForm": {
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "submit": "Submit",
+    "submitting": "Submitting...",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "showConfirmPassword": "Show confirm password",
+    "hideConfirmPassword": "Hide confirm password",
+    "signInTitle": "Sign In to Your Account",
+    "signUpTitle": "Create Your Account",
+    "validation": {
+      "emailRequired": "Email is required",
+      "emailIncorrect": "Incorrect email",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "At least 8 characters",
+      "passwordUppercase": "Need at least one uppercase letter",
+      "passwordLowercase": "Need at least one lowercase letter",
+      "passwordDigit": "Need at least one digit",
+      "passwordSpecial": "Need special character @#$!^%*?&_-",
+      "passwordUnicode": "Must be in valid Unicode format",
+      "confirmPasswordRequired": "Confirm password is required",
+      "passwordsMatch": "Passwords don't match"
+    }
   }
 }
