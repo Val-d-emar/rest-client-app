@@ -116,13 +116,13 @@ export default function RequestHeaders() {
                     fill='none'
                     xmlns='http://www.w3.org/2000/svg'
                   >
-                    <g clip-path='url(#clip0_429_11083)'>
+                    <g clipPath='url(#clip0_429_11083)'>
                       <path
                         d='M7 7.00006L17 17.0001M7 17.0001L17 7.00006'
                         stroke='currentColor'
-                        stroke-width='2.5'
-                        stroke-linecap='round'
-                        stroke-linejoin='round'
+                        strokeWidth='2.5'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
                       />
                     </g>
                     <defs>
@@ -148,9 +148,9 @@ export default function RequestHeaders() {
                   <path
                     d='M6 12H18M12 6V18'
                     stroke='currentColor'
-                    stroke-width='2'
-                    stroke-linecap='round'
-                    stroke-linejoin='round'
+                    strokeWidth='2'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
                   />
                 </svg>
               </button>
