@@ -16,7 +16,7 @@
 }
 
 .button:hover {
-  background: var(--background-color);
+  background: var(--disabled-color);
 }
 
 .button:focus {
