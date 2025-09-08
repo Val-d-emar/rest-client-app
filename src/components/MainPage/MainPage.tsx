@@ -31,7 +31,7 @@ export default function MainPage() {
       )}
       {isLoggedIn && (
         <>
-          <h1>{t('welcomeAuth', { user: user?.displayName ?? t('defaultUser') })}</h1>
+          <h1>{t('welcomeAuth', { user: user?.displayName ?? user.email ?? t('defaultUser') })}</h1>
           <div className={classes.controls}>
             <Link href='/client' className={classes.button}>
               {t('clientLink')}
