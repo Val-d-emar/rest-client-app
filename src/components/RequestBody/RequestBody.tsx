@@ -27,7 +27,20 @@ export default function RequestBody({ readOnly = false }: Props) {
               <option value='json'>JSON</option>
               <option value='text'>Text</option>
             </select>
-            {bodyType === 'json' && <button>Prettify</button>}
+            {bodyType === 'json' && (
+              <button
+                onClick={() => {
+                  try {
+                    const pretty = JSON.stringify(JSON.parse(value), null, 2);
+                    setValue(pretty);
+                  } catch {
+                    // TODO: add error handler
+                  }
+                }}
+              >
+                Prettify
+              </button>
+            )}
           </div>
         )}
 
