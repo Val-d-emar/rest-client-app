@@ -11,6 +11,7 @@ import classes from './Header.module.css';
 
 import { useAuth } from '@/context/AuthContext';
 import { err } from '@/log';
+import toast from 'react-hot-toast';
 
 export default function Header() {
   const t = useTranslations('HomePage');
@@ -27,12 +28,18 @@ export default function Header() {
   }, []);
 
   const handleSignOut = async () => {
+    const toastId = toast.loading('Signing Out...');
     try {
       await signOut();
-
+      toast.success('Goodbye!', { id: toastId });
       router.push('/');
     } catch (error) {
-      err('Failed to sign out:', error);
+      // TODO: Преобразовывать коды ошибок Firebase в человеко-понятные сообщения
+      const errorMessage = (error as Error)?.message || 'Failed to sign out:';
+      err(errorMessage);
+      toast.error(errorMessage, {
+        id: toastId,
+      });
     }
   };
 
@@ -46,19 +53,6 @@ export default function Header() {
 
         <div className={classes.controls}>
           <LocaleSwitcher />
-          {/* TODO: отображать кнопки в зависимости от состояния юзера */}
-          {/* <Link href='/auth/signin' className={classes.button}>
-            {t('SignInLabel')}
-          </Link>
-          <Link href='/auth/signup' className={classes.button}>
-            {t('SignUpLabel')}
-          </Link> */}
-          {/* <Link href='/'>{t('SignOutLabel')}</Link> */}
-          {/* 
-            >>> NEW: Динамическое отображение кнопок <<<
-            Мы используем состояние `user` из контекста.
-            Пока идет `loading`, мы ничего не показываем, чтобы избежать "мигания" кнопок.
-          */}
           {!loading && (
             <>
               {user ? (

@@ -6,6 +6,7 @@ import FormContent from '../sign-in/form-content';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from '@/i18n/navigation';
 import { dbg } from '@/log';
+import toast from 'react-hot-toast';
 
 type SubmitValues = {
   email: string;
@@ -18,39 +19,26 @@ const SignUpForm: React.FC = () => {
   const router = useRouter();
   const handleSignUp = async (userData: SubmitValues) => {
     setError(null);
+    const toastId = toast.loading('Registering...');
     try {
       await signUp(userData.email, userData.password);
-      // Здесь будет логика отправки данных на сервер для регистрации
       dbg('Registering user:', userData);
+      toast.success('Registration successful! Welcome!', {
+        id: toastId,
+      });
       router.push('/');
-      // удалить Пример API запроса (пока что заглушка)
-      // const response = await fetch('/api/auth/signup', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(userData),
-      // });
-      //
-      // if (!response.ok) {
-      //   throw new Error('Registration failed');
-      // }
-      //
-      // const result = await response.json();
-      // console.log('Registration successful:', result);
-
-      // удалить заглушка
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      alert(`Registration successful! Welcome, ${userData.email}!`);
     } catch (error) {
-      // console.error('Registration error:', error);
-      alert('Registration failed. Please try again.');
       // TODO: Преобразовывать коды ошибок Firebase в человеко-понятные сообщения
-      setError((error as Error)?.message || 'Registration failed. Please try again.');
+      const errorMessage = (error as Error)?.message || 'Registration failed. Please try again.';
+      setError(errorMessage);
+      toast.error(errorMessage, {
+        id: toastId,
+      });
     }
   };
 
   return (
     <div className={'wrapper'}>
-      {/* <FormContent onSignUp={handleSignUp} /> */}
       <FormContent onSignUp={handleSignUp} error={error} setError={setError} />
     </div>
   );

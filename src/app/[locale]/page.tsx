@@ -11,5 +11,5 @@ export default function Home({ params }: Props) {
 
   setRequestLocale(locale);
 
-  return <MainPage isLoggedIn={false} />;
+  return <MainPage />;
 }

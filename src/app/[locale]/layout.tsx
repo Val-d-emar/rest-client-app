@@ -7,6 +7,7 @@ import { routing } from '@/i18n/routing';
 import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary';
 import Header from '@/components/Header';
 import { AuthProvider } from '@/context/AuthContext';
+import { ClientProviders } from '@/components/providers/ClientProviders';
 
 type Props = {
   children: React.ReactNode;
@@ -27,11 +28,13 @@ export default async function LocaleLayout({ children, params }: Props) {
     <NextIntlClientProvider locale={locale} messages={messages}>
       <ErrorBoundary>
         <AuthProvider>
-          <Header />
-          <main className='container'>{children}</main>
-          <footer>
-            <Footer />
-          </footer>
+          <ClientProviders>
+            <Header />
+            <main className='container'>{children}</main>
+            <footer>
+              <Footer />
+            </footer>
+          </ClientProviders>
         </AuthProvider>
       </ErrorBoundary>
     </NextIntlClientProvider>
