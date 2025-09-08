@@ -33,23 +33,26 @@ const FormContent: React.FC<PropsSign> = ({ onSignIn, onSignUp, error, setError 
     email: Yup.string()
       .email(t('validation.emailIncorrect'))
       .required(t('validation.emailRequired')),
-    password: Yup.string()
-      .required(t('validation.passwordRequired'))
-      .min(8, t('validation.passwordMinLength'))
-      .matches(/[\p{Lu}]/u, t('validation.passwordUppercase'))
-      .matches(/[\p{Ll}]/u, t('validation.passwordLowercase'))
-      .matches(/\d/, t('validation.passwordDigit'))
-      .matches(/[@#$!^%*?&_-]/, t('validation.passwordSpecial'))
-      .test('unicode-format', t('validation.passwordUnicode'), (value) => {
-        if (!value) return false;
-        try {
-          const encoded = encodeURIComponent(value);
-          const decoded = decodeURIComponent(encoded);
-          return decoded === value && value.length > 0;
-        } catch {
-          return false;
-        }
-      }),
+    password: needsConfirmPassword
+      ? Yup.string()
+          .required(t('validation.passwordRequired'))
+          .min(8, t('validation.passwordMinLength'))
+          .matches(/[\p{Lu}]/u, t('validation.passwordUppercase'))
+          .matches(/[\p{Ll}]/u, t('validation.passwordLowercase'))
+          .matches(/\d/, t('validation.passwordDigit'))
+          .matches(/[@#$!^%*?&_-]/, t('validation.passwordSpecial'))
+          .test('unicode-format', t('validation.passwordUnicode'), (value) => {
+            if (!value) return false;
+            try {
+              const encoded = encodeURIComponent(value);
+              const decoded = decodeURIComponent(encoded);
+              return decoded === value && value.length > 0;
+            } catch {
+              return false;
+            }
+          })
+      : Yup.string().required(t('validation.passwordRequired')),
+
     ...(needsConfirmPassword && {
       confirmPassword: Yup.string()
         .required(t('validation.confirmPasswordRequired'))
@@ -65,7 +68,7 @@ const FormContent: React.FC<PropsSign> = ({ onSignIn, onSignUp, error, setError 
     trigger,
     watch,
   } = useForm<FormDataInput>({
-    mode: 'onTouched',
+    mode: 'onChange',
     resolver: yupResolver(schema) as Resolver<FormDataInput>,
     defaultValues: {
       email: '',
@@ -75,12 +78,25 @@ const FormContent: React.FC<PropsSign> = ({ onSignIn, onSignUp, error, setError 
   });
 
   const passwordValue = watch('password');
+  const confirmPasswordValue = watch('confirmPassword');
 
   useEffect(() => {
     if (needsConfirmPassword && passwordValue) {
-      trigger('confirmPassword');
+      trigger('password');
     }
   }, [passwordValue, needsConfirmPassword, trigger]);
+
+  useEffect(() => {
+    if (needsConfirmPassword && confirmPasswordValue && passwordValue) {
+      trigger('confirmPassword');
+    }
+  }, [passwordValue, needsConfirmPassword, trigger, confirmPasswordValue]);
+
+  useEffect(() => {
+    if (needsConfirmPassword && confirmPasswordValue && confirmPasswordValue.length > 0) {
+      trigger('confirmPassword');
+    }
+  }, [confirmPasswordValue, needsConfirmPassword, trigger]);
 
   const onSubmit: SubmitHandler<FormDataInput> = async (data) => {
     try {
@@ -110,17 +126,27 @@ const FormContent: React.FC<PropsSign> = ({ onSignIn, onSignUp, error, setError 
   return (
     <form id='control' className='form' onSubmit={handleSubmit(onSubmit)} noValidate>
       <div className='input-block'>
-        <label htmlFor='email'>{t('email')}:</label>
+        <label htmlFor='email'>
+          <span style={{ color: 'red' }}>*</span> {t('email')}:
+        </label>
         <input id='email' type='email' {...register('email')} tabIndex={1} />
         {errors.email && <p className='error'>{errors.email.message}</p>}
       </div>
       <div className='input-block'>
-        <label htmlFor='password'>{t('password')}:</label>
+        <label htmlFor='password'>
+          <span style={{ color: 'red' }}>*</span> {t('password')}:
+        </label>
         <div className='password-input-wrapper'>
           <input
             id='password'
             type={showPassword ? 'text' : 'password'}
-            {...register('password')}
+            {...register('password', {
+              ...(needsConfirmPassword && {
+                onBlur: () => {
+                  trigger('password');
+                },
+              }),
+            })}
             tabIndex={2}
           />
           <button
@@ -177,12 +203,20 @@ const FormContent: React.FC<PropsSign> = ({ onSignIn, onSignUp, error, setError 
 
       {needsConfirmPassword && (
         <div className='input-block'>
-          <label htmlFor='confirm-password'>{t('confirmPassword')}:</label>
+          <label htmlFor='confirm-password'>
+            <span style={{ color: 'red' }}>*</span> {t('confirmPassword')}:
+          </label>
           <div className='password-input-wrapper'>
             <input
               id='confirm-password'
               type={showConfirmPassword ? 'text' : 'password'}
-              {...register('confirmPassword')}
+              {...register('confirmPassword', {
+                onBlur: () => {
+                  if (needsConfirmPassword) {
+                    trigger('confirmPassword');
+                  }
+                },
+              })}
               tabIndex={3}
             />
             <button
