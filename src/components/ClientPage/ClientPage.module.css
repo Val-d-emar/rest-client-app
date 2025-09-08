@@ -37,8 +37,13 @@
   }
 
   .divider {
+    flex-shrink: 0;
     align-self: stretch;
     width: 1px;
     height: auto;
+  }
+
+  .panel {
+    min-width: 0;
   }
 }
