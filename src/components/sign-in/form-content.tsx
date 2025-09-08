@@ -31,8 +31,20 @@ const FormContent: React.FC<PropsSign> = ({ onSignIn, onSignUp, error, setError 
 
   const schema = Yup.object().shape({
     email: Yup.string()
+      .required(t('validation.emailRequired'))
       .email(t('validation.emailIncorrect'))
-      .required(t('validation.emailRequired')),
+      .matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, t('validation.emailIncorrect'))
+      .test('email-domain', t('validation.emailIncorrect'), (value) => {
+        if (!value) return false;
+        const parts = value.split('@');
+        if (parts.length !== 2) return false;
+        const [localPart, domain] = parts;
+        if (localPart.length === 0) return false;
+        const domainParts = domain.split('.');
+        if (domainParts.length < 2) return false;
+        const tld = domainParts[domainParts.length - 1];
+        return tld.length >= 2 && /^[a-zA-Z]+$/.test(tld);
+      }),
     password: needsConfirmPassword
       ? Yup.string()
           .required(t('validation.passwordRequired'))
