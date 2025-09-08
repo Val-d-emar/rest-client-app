@@ -1,3 +1,5 @@
-export default function ClientPage() {
-  return <h1>REST Client Page</h1>;
+import ClientPage from '@/components/ClientPage';
+
+export default function Client() {
+  return <ClientPage />;
 }
