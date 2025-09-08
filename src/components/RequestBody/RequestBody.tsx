@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import classes from './RequestBody.module.css';
+import { useTranslations } from 'next-intl';
 
 type BodyType = 'json' | 'text';
 
@@ -10,6 +11,8 @@ type Props = {
 };
 
 export default function RequestBody({ readOnly = false }: Props) {
+  const t = useTranslations('ClientPage.requestBody');
+
   const [value, setValue] = useState('');
   const [bodyType, setBodyType] = useState<BodyType>('json');
   return (
@@ -38,7 +41,7 @@ export default function RequestBody({ readOnly = false }: Props) {
                   }
                 }}
               >
-                Prettify
+                {t('prettifyButton')}
               </button>
             )}
           </div>
@@ -49,7 +52,7 @@ export default function RequestBody({ readOnly = false }: Props) {
         ) : (
           <textarea
             aria-label='Request body editor'
-            placeholder={bodyType === 'json' ? 'JSON' : 'Plain text'}
+            placeholder={bodyType === 'json' ? t('JSONPlaceholder') : t('textPlaceholder')}
             value={value}
             onChange={(e) => {
               setValue(e.target.value);

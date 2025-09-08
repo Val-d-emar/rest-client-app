@@ -22,6 +22,11 @@
     "requestHeaders": {
       "headerKeyPlaceholder": "Header",
       "headerValuePlaceholder": "Value"
+    },
+    "requestBody": {
+      "prettifyButton": "Prettify",
+      "JSONPlaceholder": "Enter JSON",
+      "textPlaceholder": "Enter plain text"
     }
   },
   "NotFoundPage": {
