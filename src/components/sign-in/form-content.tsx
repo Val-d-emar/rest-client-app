@@ -33,23 +33,25 @@ const FormContent: React.FC<PropsSign> = ({ onSignIn, onSignUp, error, setError 
     email: Yup.string()
       .email(t('validation.emailIncorrect'))
       .required(t('validation.emailRequired')),
-    password: Yup.string()
-      .required(t('validation.passwordRequired'))
-      .min(8, t('validation.passwordMinLength'))
-      .matches(/[\p{Lu}]/u, t('validation.passwordUppercase'))
-      .matches(/[\p{Ll}]/u, t('validation.passwordLowercase'))
-      .matches(/\d/, t('validation.passwordDigit'))
-      .matches(/[@#$!^%*?&_-]/, t('validation.passwordSpecial'))
-      .test('unicode-format', t('validation.passwordUnicode'), (value) => {
-        if (!value) return false;
-        try {
-          const encoded = encodeURIComponent(value);
-          const decoded = decodeURIComponent(encoded);
-          return decoded === value && value.length > 0;
-        } catch {
-          return false;
-        }
-      }),
+    ...(needsConfirmPassword && {
+      password: Yup.string()
+        .required(t('validation.passwordRequired'))
+        .min(8, t('validation.passwordMinLength'))
+        .matches(/[\p{Lu}]/u, t('validation.passwordUppercase'))
+        .matches(/[\p{Ll}]/u, t('validation.passwordLowercase'))
+        .matches(/\d/, t('validation.passwordDigit'))
+        .matches(/[@#$!^%*?&_-]/, t('validation.passwordSpecial'))
+        .test('unicode-format', t('validation.passwordUnicode'), (value) => {
+          if (!value) return false;
+          try {
+            const encoded = encodeURIComponent(value);
+            const decoded = decodeURIComponent(encoded);
+            return decoded === value && value.length > 0;
+          } catch {
+            return false;
+          }
+        }),
+    }),
     ...(needsConfirmPassword && {
       confirmPassword: Yup.string()
         .required(t('validation.confirmPasswordRequired'))
