@@ -2,7 +2,7 @@
 
 import { v4 } from 'uuid';
 import classes from './RequestHeaders.module.css';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 export type HeaderItem = {
@@ -10,6 +10,11 @@ export type HeaderItem = {
   enabled: boolean;
   key: string;
   value: string;
+};
+
+type RequestHeadersProps = {
+  headers: HeaderItem[];
+  setHeaders: Dispatch<SetStateAction<HeaderItem[]>>;
 };
 
 // TODO: keep headers in context/Redux state
@@ -31,45 +36,64 @@ const HEADERS: HeaderItem[] = [
 const createEmptyHeader: () => HeaderItem = () => {
   return {
     id: v4(),
-    enabled: false,
+    enabled: true,
     key: '',
     value: '',
   };
 };
 
-export default function RequestHeaders() {
+// export default function RequestHeaders() {
+export default function RequestHeaders({ headers, setHeaders }: RequestHeadersProps) {
   const t = useTranslations('ClientPage.requestHeaders');
-  const [headers, setHeaders] = useState([...HEADERS]);
+  // const [headers, setHeaders] = useState([...HEADERS]);
+
+  // const onAddClick = () => {
+  //   HEADERS.push(createEmptyHeader());
+  //   setHeaders([...HEADERS]);
+  // };
+
+  // const onRemove = (id: string) => {
+  //   const index = HEADERS.findIndex((header) => header.id === id);
+  //   if (index >= 0) {
+  //     HEADERS.splice(index, 1);
+  //     setHeaders([...HEADERS]);
+  //   }
+  // };
+
+  // const onHeaderInputChange = (id: string, value: string, key: 'key' | 'value') => {
+  //   const header = HEADERS.find((header) => header.id === id);
+  //   if (!header) {
+  //     return;
+  //   }
+  //   header[key] = value;
+  //   setHeaders([...HEADERS]);
+  // };
+
+  // const onHeaderEnable = (id: string) => {
+  //   const header = HEADERS.find((header) => header.id === id);
+  //   if (!header || !header.key || !header.value) {
+  //     return;
+  //   }
+  //   header.enabled = !header.enabled;
+  //   setHeaders([...HEADERS]);
+  // };
 
   const onAddClick = () => {
-    HEADERS.push(createEmptyHeader());
-    setHeaders([...HEADERS]);
+    setHeaders((currentHeaders) => [...currentHeaders, createEmptyHeader()]);
   };
 
   const onRemove = (id: string) => {
-    const index = HEADERS.findIndex((header) => header.id === id);
-    if (index >= 0) {
-      HEADERS.splice(index, 1);
-      setHeaders([...HEADERS]);
-    }
+    setHeaders((currentHeaders) => currentHeaders.filter((header) => header.id !== id));
   };
 
-  const onHeaderInputChange = (id: string, value: string, key: 'key' | 'value') => {
-    const header = HEADERS.find((header) => header.id === id);
-    if (!header) {
-      return;
-    }
-    header[key] = value;
-    setHeaders([...HEADERS]);
-  };
-
-  const onHeaderEnable = (id: string) => {
-    const header = HEADERS.find((header) => header.id === id);
-    if (!header || !header.key || !header.value) {
-      return;
-    }
-    header.enabled = !header.enabled;
-    setHeaders([...HEADERS]);
+  const onHeaderInputChange = (
+    id: string,
+    field: 'key' | 'value' | 'enabled',
+    value: string | boolean,
+  ) => {
+    setHeaders((currentHeaders) =>
+      currentHeaders.map((header) => (header.id === id ? { ...header, [field]: value } : header)),
+    );
   };
 
   return (
@@ -83,14 +107,14 @@ export default function RequestHeaders() {
                 type='checkbox'
                 checked={header.enabled}
                 className={classes.checkbox}
-                onChange={() => onHeaderEnable(header.id)}
+                onChange={(e) => onHeaderInputChange(header.id, 'enabled', e.target.checked)}
               />
             </div>
             <div>
               <input
                 type='text'
                 value={header.key}
-                onChange={(e) => onHeaderInputChange(header.id, e.target.value, 'key')}
+                onChange={(e) => onHeaderInputChange(header.id, 'key', e.target.value)}
                 placeholder={t('headerKeyPlaceholder')}
               />
             </div>
@@ -98,7 +122,7 @@ export default function RequestHeaders() {
               <input
                 type='text'
                 value={header.value}
-                onChange={(e) => onHeaderInputChange(header.id, e.target.value, 'value')}
+                onChange={(e) => onHeaderInputChange(header.id, 'value', e.target.value)}
                 placeholder={t('headerValuePlaceholder')}
               />
             </div>
