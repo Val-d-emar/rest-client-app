@@ -16,7 +16,8 @@
     "title": "REST Клиент",
     "requestBar": {
       "placeholder": "Введите URL",
-      "sendButton": "Отправить"
+      "sendButton": "Отправить",
+      "sendingButton": "Отправляется"
     },
     "requestHeaders": {
       "headerKeyPlaceholder": "Заголовок",

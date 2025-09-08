@@ -16,7 +16,8 @@
     "title": "REST Client",
     "requestBar": {
       "placeholder": "Enter URL",
-      "sendButton": "Send"
+      "sendButton": "Send",
+      "sendingButton": "Sending"
     },
     "requestHeaders": {
       "headerKeyPlaceholder": "Header",

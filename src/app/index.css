@@ -275,3 +275,23 @@ footer {
 .error-button:hover {
   background-color: darkred;
 }
+
+.response-viewer {
+  overflow-y: auto;
+
+  padding: 1rem;
+  border-radius: 8px;
+
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+
+  background-color: var(--white-color);
+}
+
+.response-viewer-headers {
+  max-height: 200px;
+}
+
+.response-viewer-body {
+  max-height: 400px;
+}
