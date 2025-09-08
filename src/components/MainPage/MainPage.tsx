@@ -5,11 +5,6 @@ import { useTranslations } from 'next-intl';
 import classes from './MainPage.module.css';
 import { useAuth } from '@/context/AuthContext';
 
-type Props = {
-  // isLoggedIn: boolean;
-  // user?: string;
-};
-
 export default function MainPage() {
   const t = useTranslations('HomePage');
   const { user } = useAuth();
