@@ -42,6 +42,14 @@
   "Footer": {
     "developedBy": "Разработано"
   },
+  "VariablesPage": {
+    "title": "Переменные",
+    "description": "Создавайте и управляйте переменными для ваших запросов.",
+    "addButton": "+",
+    "keyPlaceholder": "Ключ",
+    "valuePlaceholder": "Значение",
+    "deleteButton": "-"
+  },
   "AuthForm": {
     "email": "Электронная почта",
     "password": "Пароль",
