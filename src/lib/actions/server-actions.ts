@@ -3,25 +3,31 @@
 import { collection, addDoc, Timestamp, query, where, getDocs, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase/config';
 import { HttpRequestLog, AddLogResult, GetLogsResult } from '@/type/type';
+import { revalidatePath } from 'next/cache';
+
+type FirestoreHttpRequestLog = Omit<HttpRequestLog, 'timestamp'> & {
+  timestamp: Timestamp;
+};
 
 export async function addHttpRequestLogAction(logData: HttpRequestLog): Promise<AddLogResult> {
   try {
     console.log('Server Action: Add the log on the server');
 
-    const cleanedData: any = {
+    const cleanedData: FirestoreHttpRequestLog = {
       ...logData,
       timestamp: Timestamp.fromDate(logData.timestamp),
     };
 
     Object.keys(cleanedData).forEach((key) => {
-      if (cleanedData[key] === undefined) {
-        delete cleanedData[key];
+      const typedKey = key as keyof FirestoreHttpRequestLog;
+      if (cleanedData[typedKey] === undefined) {
+        delete cleanedData[typedKey];
       }
     });
 
     const docRef = await addDoc(collection(db, 'requestLogs'), cleanedData);
     console.log('Server Action: Document created with ID:', docRef.id);
-
+    revalidatePath('/');
     return {
       success: true,
       id: docRef.id,
@@ -68,7 +74,6 @@ export async function getHttpRequestLogsByUserAction(userId: string): Promise<Ge
     });
 
     console.log(`Server Action: Found ${logs.length} logs for user ${userId}`);
-
     return {
       success: true,
       data: logs,
