@@ -1,16 +1,18 @@
 'use client';
 
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import classes from './RequestBody.module.css';
 import { useTranslations } from 'next-intl';
+import toast from 'react-hot-toast';
 
 type BodyType = 'json' | 'text';
 
 type Props = {
-  readOnly?: boolean;
+  body: string;
+  setBody: Dispatch<SetStateAction<string>>;
 };
 
-export default function RequestBody({ readOnly = false }: Props) {
+export default function RequestBody({ body, setBody }: Props) {
   const t = useTranslations('ClientPage.requestBody');
 
   const [value, setValue] = useState('');
@@ -19,47 +21,41 @@ export default function RequestBody({ readOnly = false }: Props) {
     <>
       <h3>Request body</h3>
       <div className={classes.container}>
-        {!readOnly && (
-          <div className={classes.controls}>
-            <select
-              aria-label='Body mode'
-              value={bodyType}
-              className={classes.select}
-              onChange={(e) => setBodyType(e.target.value as BodyType)}
+        <div className={classes.controls}>
+          <select
+            aria-label='Body mode'
+            value={bodyType}
+            className={classes.select}
+            onChange={(e) => setBodyType(e.target.value as BodyType)}
+          >
+            <option value='json'>JSON</option>
+            <option value='text'>Text</option>
+          </select>
+          {bodyType === 'json' && (
+            <button
+              onClick={() => {
+                try {
+                  const pretty = JSON.stringify(JSON.parse(body), null, 2);
+                  setBody(pretty);
+                } catch {
+                  toast.error('Invalid JSON format');
+                }
+              }}
             >
-              <option value='json'>JSON</option>
-              <option value='text'>Text</option>
-            </select>
-            {bodyType === 'json' && (
-              <button
-                onClick={() => {
-                  try {
-                    const pretty = JSON.stringify(JSON.parse(value), null, 2);
-                    setValue(pretty);
-                  } catch {
-                    // TODO: add error handler
-                  }
-                }}
-              >
-                {t('prettifyButton')}
-              </button>
-            )}
-          </div>
-        )}
+              {t('prettifyButton')}
+            </button>
+          )}
+        </div>
 
-        {readOnly ? (
-          <pre className={classes.mono}>{value}</pre>
-        ) : (
-          <textarea
-            aria-label='Request body editor'
-            placeholder={bodyType === 'json' ? t('JSONPlaceholder') : t('textPlaceholder')}
-            value={value}
-            onChange={(e) => {
-              setValue(e.target.value);
-            }}
-            className={classes.mono}
-          />
-        )}
+        <textarea
+          aria-label='Request body editor'
+          placeholder={bodyType === 'json' ? t('JSONPlaceholder') : t('textPlaceholder')}
+          value={body}
+          onChange={(e) => {
+            setBody(e.target.value);
+          }}
+          className={classes.mono}
+        />
       </div>
     </>
   );
