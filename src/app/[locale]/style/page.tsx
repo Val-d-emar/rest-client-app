@@ -1,6 +1,23 @@
+'use client';
+
 import Image from 'next/image';
+import { useState } from 'react';
+import handleRecordLog from '@/lib/firebase-actions/handle-record-log';
+
+import { logData } from '@/lib/firebase-actions/handle-record-log';
 
 export default function Home() {
+  // пример вызова функции handleRecordLog
+  const [isLoading, setIsLoading] = useState(false);
+  const handleRecordLogWithLoading = async () => {
+    setIsLoading(true);
+    try {
+      await handleRecordLog(logData);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className='container'>
       <header>
@@ -8,6 +25,9 @@ export default function Home() {
         <h1>H1 Клиент App</h1>
       </header>
       <main>
+        <button onClick={handleRecordLogWithLoading} disabled={isLoading}>
+          {isLoading ? 'Записываем...' : 'Record fake log'}
+        </button>
         <br />
         <h2>H2 Client for working with REST API</h2>
         <h2>H2 Клиент для работы с REST API</h2>
@@ -23,7 +43,6 @@ export default function Home() {
           <option>Option 2</option>
         </select>
         <br />
-
         <div className='image-container'>
           <Image
             src='/back-picture.jpg'

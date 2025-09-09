@@ -14,5 +14,9 @@ const firebaseConfig = {
 const app: FirebaseApp = !getApps().length ? initializeApp(firebaseConfig) : getApp(); //singleton
 
 const auth: Auth = getAuth(app);
-export const db = getFirestore(app);
 export { app, auth };
+
+export const db = getFirestore(app);
+export const getCurrentUserId = (): string | null => {
+  return auth.currentUser?.uid || null;
+};
