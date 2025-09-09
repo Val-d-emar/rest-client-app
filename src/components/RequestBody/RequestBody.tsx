@@ -35,7 +35,7 @@ export default function RequestBody({ body, setBody }: Props) {
             <button
               onClick={() => {
                 try {
-                  const pretty = JSON.stringify(JSON.parse(value), null, 2);
+                  const pretty = JSON.stringify(JSON.parse(body), null, 2);
                   setBody(pretty);
                 } catch {
                   toast.error('Invalid JSON format');

@@ -59,18 +59,16 @@ export default function ClientPage() {
     }
     if (restoredHeaders.length > 0) {
       setHeaders(restoredHeaders);
-    } else {
+    } else if (isInitialLoad.current) {
       setHeaders([{ id: uuidv4(), enabled: true, key: 'Content-Type', value: 'application/json' }]);
     }
 
-    if (!urlFromUrl) {
+    if (!urlFromUrl && isInitialLoad.current) {
       //TODO: remove this after testing
       setUrl('https://jsonplaceholder.typicode.com/posts/1');
     }
 
-    setTimeout(() => {
-      isInitialLoad.current = false;
-    }, 100);
+    isInitialLoad.current = false;
   }, []);
 
   useEffect(() => {
@@ -88,7 +86,7 @@ export default function ClientPage() {
       }
     });
 
-    router.push(`${pathname}?${newSearchParams.toString()}`, { scroll: false });
+    router.replace(`${pathname}?${newSearchParams.toString()}`, { scroll: false });
   }, [method, url, body, headers, router, pathname]);
 
   const handleSendRequest = async () => {
