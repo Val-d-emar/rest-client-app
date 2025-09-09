@@ -16,13 +16,38 @@ import { usePathname, useRouter } from '@/i18n/navigation';
 import { useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 
-const safeAtob = (str: string) => {
+const safeAtob = (str: string | null): string => {
+  if (!str) return '';
   try {
     return atob(str);
   } catch (e) {
-    err('Failed to decode base64 string:', e);
+    console.error('Failed to decode base64 string:', e);
     return '';
   }
+};
+
+const getInitialState = (searchParams: URLSearchParams) => {
+  const method = (searchParams.get('method') as HttpMethods) || 'GET';
+  const url = safeAtob(searchParams.get('url'));
+  const body = safeAtob(searchParams.get('body'));
+
+  const headers: HeaderItem[] = [];
+  searchParams.forEach((value, key) => {
+    if (!['method', 'url', 'body'].includes(key)) {
+      headers.push({ id: uuidv4(), enabled: true, key, value });
+    }
+  });
+
+  if (headers.length === 0) {
+    headers.push({ id: uuidv4(), enabled: true, key: 'Content-Type', value: 'application/json' });
+  }
+
+  return {
+    method,
+    url: url || 'https://jsonplaceholder.typicode.com/posts/1',
+    body,
+    headers,
+  };
 };
 
 export default function ClientPage() {
@@ -35,44 +60,20 @@ export default function ClientPage() {
 
   const isInitialLoad = useRef(true);
 
-  const [method, setMethod] = useState<HttpMethods>('GET');
-  const [url, setUrl] = useState('');
-  const [headers, setHeaders] = useState<HeaderItem[]>([]);
+  const [initialState] = useState(() => getInitialState(searchParams));
+  const [method, setMethod] = useState<HttpMethods>(initialState.method);
+  const [url, setUrl] = useState(initialState.url);
+  const [body, setBody] = useState(initialState.body);
+  const [headers, setHeaders] = useState<HeaderItem[]>(initialState.headers);
+
   const [response, setResponse] = useState<ServerResponse | null>(null);
   const [loading, setLoading] = useState(false);
-  const [body, setBody] = useState('');
 
   useEffect(() => {
-    const methodFromUrl = searchParams.get('method');
-    const urlFromUrl = searchParams.get('url');
-    const bodyFromUrl = searchParams.get('body');
-
-    if (methodFromUrl) setMethod(methodFromUrl as HttpMethods);
-    if (urlFromUrl) setUrl(safeAtob(urlFromUrl));
-    if (bodyFromUrl) setBody(safeAtob(bodyFromUrl));
-
-    const restoredHeaders: HeaderItem[] = [];
-    for (const [key, value] of searchParams.entries()) {
-      if (!['method', 'url', 'body'].includes(key)) {
-        restoredHeaders.push({ id: uuidv4(), enabled: true, key, value: value || '' });
-      }
+    if (isInitialLoad.current) {
+      isInitialLoad.current = false;
+      return;
     }
-    if (restoredHeaders.length > 0) {
-      setHeaders(restoredHeaders);
-    } else if (isInitialLoad.current) {
-      setHeaders([{ id: uuidv4(), enabled: true, key: 'Content-Type', value: 'application/json' }]);
-    }
-
-    if (!urlFromUrl && isInitialLoad.current) {
-      //TODO: remove this after testing
-      setUrl('https://jsonplaceholder.typicode.com/posts/1');
-    }
-
-    isInitialLoad.current = false;
-  }, []);
-
-  useEffect(() => {
-    if (isInitialLoad.current) return;
 
     const newSearchParams = new URLSearchParams();
 
