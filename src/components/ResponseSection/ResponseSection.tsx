@@ -1,5 +1,6 @@
 import { ServerResponse } from '@/lib/actions/request';
 import Spinner from '@/components/Spinner/Spinner';
+import BodyPane from '../RequestBody/BodyPane';
 
 type ResponseSectionProps = {
   response: ServerResponse | null;
@@ -33,10 +34,8 @@ export default function ResponseSection({ response, loading }: ResponseSectionPr
       <pre className='response-viewer response-viewer-headers'>
         {JSON.stringify(response.headers, null, 2)}
       </pre>
-      <h4>Body:</h4>
-      <pre className='response-viewer response-viewer-body'>
-        {JSON.stringify(response.body, null, 2)}
-      </pre>
+      <h4>Response body:</h4>
+      <BodyPane body={JSON.stringify(response.body, null, 2)} readonly={true} />
     </div>
   );
 }
