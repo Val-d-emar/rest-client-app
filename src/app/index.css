@@ -24,6 +24,9 @@
   --header-footer-color: rgb(156 200 239);
   --outline-color: #e6dede;
   --dark-gray-color: #666;
+  --status-ok-color: #199a48;
+  --status-neutral-color: #e4c900;
+  --status-error-color: #9a1919;
 
   font-family: Roboto, Inter, Ubuntu, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-weight: 400;

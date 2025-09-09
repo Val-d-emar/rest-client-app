@@ -11,16 +11,33 @@ type Props = {
   body: string;
   setBody?: Dispatch<SetStateAction<string>>;
   readonly: boolean;
+  status?: number;
+  statusText?: string;
 };
 
-export default function BodyPane({ body, setBody, readonly }: Props) {
+export default function BodyPane({ body, setBody, readonly, status, statusText }: Props) {
   const t = useTranslations('ClientPage.requestBody');
 
   const [bodyType, setBodyType] = useState<BodyType>('json');
 
+  const statusClass =
+    status == null
+      ? classes['status-neutral']
+      : status < 200
+        ? classes['status-neutral']
+        : status < 300
+          ? classes['status-ok']
+          : status < 400
+            ? classes['status-neutral']
+            : classes['status-error'];
+
   return (
     <div className={classes.container}>
-      {!readonly && (
+      {readonly ? (
+        <div className={`${statusClass} ${classes.status}`}>
+          {status} {statusText}
+        </div>
+      ) : (
         <div className={classes.controls}>
           <select
             aria-label='Body mode'
@@ -55,7 +72,7 @@ export default function BodyPane({ body, setBody, readonly }: Props) {
         placeholder={bodyType === 'json' ? t('JSONPlaceholder') : t('textPlaceholder')}
         value={body}
         onChange={(e) => {
-          if (setBody) {
+          if (!readonly && setBody) {
             setBody(e.target.value);
           }
         }}

@@ -13,6 +13,7 @@ interface RequestPayload {
 
 export interface ServerResponse {
   status: number | null;
+  statusText: string | null;
   headers: Record<string, string> | null;
   body: unknown | null;
   error: string | null;
@@ -62,6 +63,7 @@ export async function forwardRequest(payload: RequestPayload): Promise<ServerRes
 
     return {
       status: response.status,
+      statusText: response.statusText,
       headers: responseHeaders,
       body: responseBody,
       error: null,
@@ -90,6 +92,7 @@ export async function forwardRequest(payload: RequestPayload): Promise<ServerRes
     err('Server Action fetch error:', error);
     return {
       status: null,
+      statusText: null,
       headers: null,
       body: null,
       error: error.message || 'An unknown network error occurred.',

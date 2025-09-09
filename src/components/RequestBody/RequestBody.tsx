@@ -1,6 +1,6 @@
 'use client';
 
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import BodyPane from './BodyPane';
 
 type Props = {
@@ -9,7 +9,6 @@ type Props = {
 };
 
 export default function RequestBody({ body, setBody }: Props) {
-  const [value, setValue] = useState('');
   return (
     <>
       <h3>Request body</h3>

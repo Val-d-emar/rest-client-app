@@ -35,7 +35,12 @@ export default function ResponseSection({ response, loading }: ResponseSectionPr
         {JSON.stringify(response.headers, null, 2)}
       </pre>
       <h4>Response body:</h4>
-      <BodyPane body={JSON.stringify(response.body, null, 2)} readonly={true} />
+      <BodyPane
+        body={JSON.stringify(response.body, null, 2)}
+        readonly={true}
+        status={response.status || undefined}
+        statusText={response.statusText || undefined}
+      />
     </div>
   );
 }
