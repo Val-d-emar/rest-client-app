@@ -42,6 +42,14 @@
   "Footer": {
     "developedBy": "Developed by"
   },
+  "VariablesPage": {
+    "title": "Variables",
+    "description": "Create and manage variables for your requests.",
+    "addButton": "+",
+    "keyPlaceholder": "Key",
+    "valuePlaceholder": "Value",
+    "deleteButton": "-"
+  },
   "AuthForm": {
     "email": "Email",
     "password": "Password",
