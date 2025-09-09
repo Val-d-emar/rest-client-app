@@ -15,6 +15,7 @@ export default function ClientPage() {
     setResponse(null);
 
     const result = await forwardRequest({
+      userId: '1',
       url,
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
