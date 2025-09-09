@@ -22,6 +22,11 @@
     "requestHeaders": {
       "headerKeyPlaceholder": "Заголовок",
       "headerValuePlaceholder": "Значение"
+    },
+    "requestBody": {
+      "prettifyButton": "Форматировать",
+      "JSONPlaceholder": "Введите JSON",
+      "textPlaceholder": "Введите текст"
     }
   },
   "NotFoundPage": {

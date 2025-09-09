@@ -9,6 +9,7 @@ import { HeaderItem } from '../RequestHeaders/RequestHeaders';
 import { forwardRequest, ServerResponse } from '@/lib/actions/request';
 import { v4 as uuidv4 } from 'uuid';
 import ResponseSection from '../ResponseSection/ResponseSection';
+import RequestBody from '../RequestBody/RequestBody';
 
 const initialHeaders: HeaderItem[] = [
   { id: uuidv4(), enabled: true, key: 'Content-Type', value: 'application/json' },
@@ -60,6 +61,7 @@ export default function ClientPage() {
             loading={loading}
           />
           <RequestHeaders headers={headers} setHeaders={setHeaders} />
+          <RequestBody />
         </section>
         <div className={classes.divider}></div>
         <section className={classes.panel}>
