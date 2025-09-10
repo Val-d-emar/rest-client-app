@@ -12,7 +12,7 @@ export const testLogData: HttpRequestLog = {
   method: 'POST',
   requestSize: 256,
   responseSize: 512,
-  url: '/api/test-endpoint',
+  url: '/api/example-endpoint',
   requestBody: JSON.stringify({ test: 'data' }),
   headers: { 'Content-Type': 'application/json' },
 };
