@@ -32,7 +32,7 @@ export default function VariablesPage() {
   return (
     <div className='container' style={{ maxWidth: '800px' }}>
       <h1>{t('title')}</h1>
-      <p>{t('description')}</p>
+      <p className='centered'>{t('description')}</p>
 
       <div className='card' style={{ marginTop: '2rem' }}>
         {variables.map((variable) => (
