@@ -1,0 +1,29 @@
+.table {
+  padding: 8px;
+  border-radius: 8px;
+  background: var(--white-color);
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+
+  padding: 4px;
+  border-bottom: 1px solid var(--background-color);
+}
+
+.row:last-child {
+  border-bottom: 0;
+}
+
+.key {
+  flex: 0 0 200px;
+  font-weight: 500;
+  color: var(--dark-detail-color);
+}
+
+.value {
+  flex: 1 1 auto;
+  overflow-wrap: anywhere;
+}
