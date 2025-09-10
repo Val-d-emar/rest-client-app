@@ -16,12 +16,26 @@ import { usePathname, useRouter } from '@/i18n/navigation';
 import { useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 
+const ENCODING_TOAST_ID = 'encoding-error-toast';
 const safeAtob = (str: string | null): string => {
   if (!str) return '';
   try {
-    return atob(str);
+    return decodeURIComponent(atob(str));
   } catch (e) {
-    console.error('Failed to decode base64 string:', e);
+    toast.error('Failed to decode base64 string: ' + (e as Error)?.message, {
+      id: ENCODING_TOAST_ID,
+    });
+    return '';
+  }
+};
+
+const safeBtoa = (str: string): string => {
+  try {
+    return btoa(encodeURIComponent(str));
+  } catch (e) {
+    toast.error('Failed to encode to base64: ' + (e as Error)?.message, {
+      id: ENCODING_TOAST_ID,
+    });
     return '';
   }
 };
@@ -78,8 +92,8 @@ export default function ClientPage() {
     const newSearchParams = new URLSearchParams();
 
     newSearchParams.set('method', method);
-    if (url) newSearchParams.set('url', btoa(url));
-    if (body) newSearchParams.set('body', btoa(body));
+    if (url) newSearchParams.set('url', safeBtoa(url));
+    if (body) newSearchParams.set('body', safeBtoa(body));
 
     headers.forEach((h) => {
       if (h.enabled && h.key) {
