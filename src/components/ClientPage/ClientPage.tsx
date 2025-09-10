@@ -138,10 +138,10 @@ export default function ClientPage() {
       const result = await Promise.race([
         forwardRequest({
           userId: user.uid,
-          url,
+          url: processedUrl,
           method,
           headers: requestHeaders,
-          body,
+          body: processedBody,
         }),
         timeoutPromise,
       ]);
