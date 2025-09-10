@@ -1,6 +1,38 @@
+'use client';
+
 import Image from 'next/image';
+import { useState } from 'react';
+import { handleAddLog, testLogData } from '@/lib/client-action';
+import { handleGetLogUser } from '@/lib/client-action/handle-getlog-user';
+import { HttpRequestLog } from '@/type/type';
 
 export default function Home() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [logs, setLogs] = useState<HttpRequestLog[]>([]);
+
+  // Функция для записи лога через модуль handle-add-log
+  const handleRecordLogWithLoading = async () => {
+    setIsLoading(true);
+    try {
+      await handleAddLog(testLogData);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Функция для получения логов через модуль handle-getlog-user
+  const handleGetLogs = async () => {
+    try {
+      const result = await handleGetLogUser();
+
+      if (result.success) {
+        setLogs(result.data);
+      }
+    } catch (error) {
+      console.error('Ошибка в handleGetLogs:', error);
+    }
+  };
+
   return (
     <div className='container'>
       <header>
@@ -8,6 +40,49 @@ export default function Home() {
         <h1>H1 Клиент App</h1>
       </header>
       <main>
+        <div style={{ marginBottom: '20px' }}>
+          <button onClick={handleRecordLogWithLoading} disabled={isLoading}>
+            {isLoading ? 'Recording...' : 'Record Log'}
+          </button>
+          <span style={{ margin: '0 10px' }}></span>
+          <button onClick={handleGetLogs}>Получить логи ({logs.length})</button>
+        </div>
+
+        {logs.length > 0 && (
+          <div
+            style={{
+              marginBottom: '20px',
+              padding: '10px',
+              backgroundColor: '#f8f9fa',
+              borderRadius: '4px',
+              maxHeight: '200px',
+              overflowY: 'auto',
+            }}
+          >
+            <h4>Мои логи ({logs.length}):</h4>
+            {logs.slice(0, 3).map((log, index) => (
+              <div
+                key={index}
+                style={{
+                  marginBottom: '5px',
+                  fontSize: '12px',
+                  padding: '5px',
+                  backgroundColor: 'white',
+                  borderRadius: '2px',
+                }}
+              >
+                <strong>
+                  {log.method} {log.url}
+                </strong>{' '}
+                - Status: {log.statusCode} -{log.latency}ms -{log.timestamp?.toLocaleString()}
+              </div>
+            ))}
+            {logs.length > 3 && (
+              <p style={{ fontSize: '12px', color: '#666' }}>И еще {logs.length - 3} записей...</p>
+            )}
+          </div>
+        )}
+
         <br />
         <h2>H2 Client for working with REST API</h2>
         <h2>H2 Клиент для работы с REST API</h2>
