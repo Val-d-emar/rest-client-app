@@ -62,7 +62,7 @@ export async function getHistoryByUserAction(userId: string): Promise<GetLogsRes
         userId: data.userId,
         latency: data.latency,
         statusCode: data.statusCode,
-        textCode: data.textCode,
+        statusText: data.statusText,
         timestamp: data.timestamp.toDate(),
         method: data.method,
         requestSize: data.requestSize,
