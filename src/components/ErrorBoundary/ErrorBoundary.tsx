@@ -29,7 +29,7 @@ class ErrorBoundary extends Component<Props, State> {
         <div className='centered-container'>
           <h2>Something went wrong!</h2>
           <p>An unexpected error occurred. Please try to reload the page.</p>
-          <button onClick={() => router.reload()} className='error-button'>
+          <button onClick={() => window.location.reload()} className='error-button'>
             Reload the page
           </button>
         </div>
