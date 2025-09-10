@@ -259,7 +259,6 @@ footer {
   white-space: nowrap;
 }
 
-/* Может сделать для global-error inline стили? на случай ошибки загрузки стилей */
 .centered-container {
   display: flex;
   flex-direction: column;
@@ -297,4 +296,8 @@ footer {
 
 .response-viewer-body {
   max-height: 400px;
+}
+
+.centered {
+  text-align: center;
 }

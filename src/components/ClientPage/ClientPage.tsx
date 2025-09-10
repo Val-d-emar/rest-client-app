@@ -15,6 +15,7 @@ import { usePathname, useRouter } from '@/i18n/navigation';
 import { useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { dbg } from '@/log';
+import { getStoredVariables, substituteVariables } from '@/lib/utils/variables';
 
 const ENCODING_TOAST_ID = 'encoding-error-toast';
 
@@ -111,10 +112,15 @@ export default function ClientPage() {
     setResponse(null);
     const TIMEOUT_DURATION = Number(process.env.NEXT_PUBLIC_FETCH_TIMEOUT_DURATION) || 15000;
 
+    const variables = getStoredVariables();
+
+    const processedUrl = substituteVariables(url, variables);
+    const processedBody = substituteVariables(body, variables);
+
     const requestHeaders = headers.reduce(
       (acc, header) => {
         if (header.enabled && header.key) {
-          acc[header.key] = header.value;
+          acc[header.key] = substituteVariables(header.value, variables);
         }
         return acc;
       },
@@ -132,10 +138,10 @@ export default function ClientPage() {
       const result = await Promise.race([
         forwardRequest({
           userId: user.uid,
-          url,
+          url: processedUrl,
           method,
           headers: requestHeaders,
-          body,
+          body: processedBody,
         }),
         timeoutPromise,
       ]);
