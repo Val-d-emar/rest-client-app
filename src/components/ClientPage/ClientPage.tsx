@@ -10,13 +10,14 @@ import { forwardRequest, ServerResponse } from '@/lib/actions/request';
 import { v4 as uuidv4 } from 'uuid';
 import ResponseSection from '../ResponseSection/ResponseSection';
 import RequestBody from '../RequestBody/RequestBody';
-import { err } from '@/log';
 import { useAuth } from '@/context/AuthContext';
 import { usePathname, useRouter } from '@/i18n/navigation';
 import { useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
+import { dbg } from '@/log';
 
 const ENCODING_TOAST_ID = 'encoding-error-toast';
+
 const safeAtob = (str: string | null): string => {
   if (!str) return '';
   try {
@@ -108,6 +109,7 @@ export default function ClientPage() {
     if (!user) return toast.error('You must be logged in.');
     setLoading(true);
     setResponse(null);
+    const TIMEOUT_DURATION = Number(process.env.NEXT_PUBLIC_FETCH_TIMEOUT_DURATION) || 15000;
 
     const requestHeaders = headers.reduce(
       (acc, header) => {
@@ -119,16 +121,41 @@ export default function ClientPage() {
       {} as Record<string, string>,
     );
 
-    const result = await forwardRequest({
-      userId: user.uid,
-      url,
-      method,
-      headers: requestHeaders,
-      body,
-    });
+    try {
+      const timeoutPromise = new Promise<ServerResponse>((_, reject) =>
+        setTimeout(
+          () => reject(new Error(`Request timed out after ${TIMEOUT_DURATION / 1000} seconds`)),
+          TIMEOUT_DURATION,
+        ),
+      );
 
-    setResponse(result);
-    setLoading(false);
+      const result = await Promise.race([
+        forwardRequest({
+          userId: user.uid,
+          url,
+          method,
+          headers: requestHeaders,
+          body,
+        }),
+        timeoutPromise,
+      ]);
+
+      setResponse(result);
+    } catch (error) {
+      dbg('Client-side error calling Server Action:', error);
+
+      const errorResponse: ServerResponse = {
+        status: null,
+        headers: null,
+        body: null,
+        error: (error as Error)?.message || 'An unknown client-side error occurred.',
+        statusText: null,
+      };
+      setResponse(errorResponse);
+      toast.error((error as Error).message);
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <div className={classes.wrapper}>
