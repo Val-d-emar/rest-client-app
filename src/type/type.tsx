@@ -2,6 +2,7 @@ export interface HttpRequestLog {
   userId: string; // ID пользователя
   latency: number; // Длительность запроса в мс
   statusCode: number; // HTTP статус-код ответа
+  textCode?: string; // Текстовый статус-код (опционально)
   timestamp: Date; // Timestamp запроса
   method: string; // HTTP метод (GET, POST и т.д.)
   requestSize: number; // Размер запроса в байтах

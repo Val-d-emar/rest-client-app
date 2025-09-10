@@ -1,4 +1,4 @@
-import { getHttpRequestLogsByUserAction } from '@/lib/actions/server-actions';
+import { getHistoryByUserAction } from '@/lib/actions/server-actions';
 import { getCurrentUserId } from '@/lib/firebase/config';
 import toast from 'react-hot-toast';
 import { GetLogsResult } from '@/type/type';
@@ -11,7 +11,7 @@ export const handleGetLogUser = async (): Promise<GetLogsResult> => {
 
     console.log('Loading logs for user:', currentUserId);
 
-    const result = await getHttpRequestLogsByUserAction(currentUserId);
+    const result = await getHistoryByUserAction(currentUserId);
 
     if (result.success) {
       toast.success(`${result.message}`, {

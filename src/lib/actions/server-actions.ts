@@ -9,7 +9,7 @@ type FirestoreHttpRequestLog = Omit<HttpRequestLog, 'timestamp'> & {
   timestamp: Timestamp;
 };
 
-export async function addHttpRequestLogAction(logData: HttpRequestLog): Promise<AddLogResult> {
+export async function addHistoryLogAction(logData: HttpRequestLog): Promise<AddLogResult> {
   try {
     console.log('Server Action: Add the log on the server');
 
@@ -25,7 +25,7 @@ export async function addHttpRequestLogAction(logData: HttpRequestLog): Promise<
       }
     });
 
-    const docRef = await addDoc(collection(db, 'requestLogs'), cleanedData);
+    const docRef = await addDoc(collection(db, 'history'), cleanedData);
     console.log('Server Action: Document created with ID:', docRef.id);
     revalidatePath('/');
     return {
@@ -43,12 +43,12 @@ export async function addHttpRequestLogAction(logData: HttpRequestLog): Promise<
   }
 }
 
-export async function getHttpRequestLogsByUserAction(userId: string): Promise<GetLogsResult> {
+export async function getHistoryByUserAction(userId: string): Promise<GetLogsResult> {
   try {
     console.log('Server Action: Get logs for user:', userId);
 
     const gettingLogs = query(
-      collection(db, 'requestLogs'),
+      collection(db, 'history'),
       where('userId', '==', userId),
       orderBy('timestamp', 'desc'),
     );
@@ -62,6 +62,7 @@ export async function getHttpRequestLogsByUserAction(userId: string): Promise<Ge
         userId: data.userId,
         latency: data.latency,
         statusCode: data.statusCode,
+        textCode: data.textCode,
         timestamp: data.timestamp.toDate(),
         method: data.method,
         requestSize: data.requestSize,
