@@ -1,12 +1,12 @@
 'use server';
 import { err } from '@/log';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
-import { db } from '../firebase/config';
+import { addHistoryLogAction } from './server-actions';
+import { HttpMethods } from '@/type/type';
 
 interface RequestPayload {
   userId: string;
   url: string;
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS';
+  method: HttpMethods;
   headers: Record<string, string>;
   body?: string;
 }
@@ -38,23 +38,19 @@ export async function forwardRequest(payload: RequestPayload): Promise<ServerRes
       responseBody = responseText;
     }
 
-    try {
-      await addDoc(collection(db, 'history'), {
-        userId: payload.userId,
-        method: payload.method,
-        url: payload.url,
-        statusCode: response.status,
-        latency: latency,
-        requestSize: payload.body ? new Blob([payload.body]).size : 0,
-        responseSize: new Blob([responseText]).size,
-        errorDetails: null,
-        headers: payload.headers,
-        requestBody: payload.body || null,
-        timestamp: serverTimestamp(),
-      });
-    } catch (historyError) {
-      err('Failed to save request to history:', historyError);
-    }
+    await addHistoryLogAction({
+      userId: payload.userId,
+      method: payload.method,
+      url: payload.url,
+      statusCode: response.status,
+      latency: latency,
+      requestSize: payload.body ? new Blob([payload.body]).size : 0,
+      responseSize: new Blob([responseText]).size,
+      errorDetails: undefined,
+      headers: payload.headers,
+      requestBody: payload.body || undefined,
+      timestamp: new Date(),
+    });
 
     const responseHeaders: Record<string, string> = {};
     response.headers.forEach((value, key) => {
@@ -71,23 +67,19 @@ export async function forwardRequest(payload: RequestPayload): Promise<ServerRes
   } catch (error: any) {
     const latency = Math.round(performance.now() - startTime);
 
-    try {
-      await addDoc(collection(db, 'history'), {
-        userId: payload.userId,
-        method: payload.method,
-        url: payload.url,
-        statusCode: null,
-        latency: latency,
-        requestSize: payload.body ? new Blob([payload.body]).size : 0,
-        responseSize: 0,
-        errorDetails: error.message || 'Network Error',
-        headers: payload.headers,
-        requestBody: payload.body || null,
-        timestamp: serverTimestamp(),
-      });
-    } catch (historyError) {
-      err('Failed to save ERROR request to history:', historyError);
-    }
+    await addHistoryLogAction({
+      userId: payload.userId,
+      method: payload.method,
+      url: payload.url,
+      statusCode: 0,
+      latency: latency,
+      requestSize: payload.body ? new Blob([payload.body]).size : 0,
+      responseSize: 0,
+      errorDetails: error.message || 'Network Error',
+      headers: payload.headers,
+      requestBody: payload.body || undefined,
+      timestamp: new Date(),
+    });
 
     err('Server Action fetch error:', error);
     return {
