@@ -4,7 +4,6 @@ import RequestHeaders from '@/components/RequestHeaders';
 import classes from './ClientPage.module.css';
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
-import { HttpMethods } from '../RequestBar/RequestBar';
 import { HeaderItem } from '../RequestHeaders/RequestHeaders';
 import { forwardRequest, ServerResponse } from '@/lib/actions/request';
 import { v4 as uuidv4 } from 'uuid';
@@ -16,6 +15,7 @@ import { useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { dbg } from '@/log';
 import { getStoredVariables, substituteVariables } from '@/lib/utils/variables';
+import { HttpMethods } from '@/type/type';
 
 const ENCODING_TOAST_ID = 'encoding-error-toast';
 
