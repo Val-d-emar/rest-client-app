@@ -4,6 +4,7 @@ import { collection, addDoc, Timestamp, query, where, getDocs, orderBy } from 'f
 import { db } from '@/lib/firebase/config';
 import { HttpRequestLog, AddLogResult, GetLogsResult } from '@/type/type';
 import { revalidatePath } from 'next/cache';
+import { cookies } from 'next/headers';
 
 type FirestoreHttpRequestLog = Omit<HttpRequestLog, 'timestamp'> & {
   timestamp: Timestamp;
@@ -45,8 +46,6 @@ export async function addHistoryLogAction(logData: HttpRequestLog): Promise<AddL
 
 export async function getHistoryByUserAction(userId: string): Promise<GetLogsResult> {
   try {
-    console.log('Server Action: Get logs for user:', userId);
-
     const gettingLogs = query(
       collection(db, 'history'),
       where('userId', '==', userId),
@@ -74,7 +73,6 @@ export async function getHistoryByUserAction(userId: string): Promise<GetLogsRes
       });
     });
 
-    console.log(`Server Action: Found ${logs.length} logs for user ${userId}`);
     return {
       success: true,
       data: logs,
@@ -90,5 +88,20 @@ export async function getHistoryByUserAction(userId: string): Promise<GetLogsRes
       error: error instanceof Error ? error.message : 'Unknown error',
       message: 'Error getting logs',
     };
+  }
+}
+
+export async function getCurrentUserIdAction(): Promise<string | null> {
+  try {
+    const cookieStore = await cookies();
+    const userIdCookie = cookieStore.get('userId');
+
+    if (userIdCookie?.value) {
+      return userIdCookie.value;
+    }
+    return null;
+  } catch (error) {
+    console.error('Server Action Error getting userId:', error);
+    return null;
   }
 }

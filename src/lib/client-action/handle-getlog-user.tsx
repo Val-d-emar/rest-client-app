@@ -1,29 +1,16 @@
 import { getHistoryByUserAction } from '@/lib/actions/server-actions';
 import { getCurrentUserId } from '@/lib/firebase/config';
-import toast from 'react-hot-toast';
 import { GetLogsResult } from '@/type/type';
 
-export const handleGetLogUser = async (): Promise<GetLogsResult> => {
-  const toastId = toast.loading("loading the user's logs...");
-
+// Функция для получения логов конкретного пользователя
+export const handleGetLogUserById = async (userId: string): Promise<GetLogsResult> => {
   try {
-    const currentUserId = getCurrentUserId() || 'anonymous';
+    console.log('Loading logs for user:', userId);
 
-    console.log('Loading logs for user:', currentUserId);
-
-    const result = await getHistoryByUserAction(currentUserId);
+    const result = await getHistoryByUserAction(userId);
 
     if (result.success) {
-      toast.success(`${result.message}`, {
-        id: toastId,
-        duration: 4000,
-        style: {
-          background: '#059669',
-          color: 'white',
-        },
-      });
-      console.log(` Loaded ${result.count} logs for user ${currentUserId}`);
-
+      console.log(`Loaded ${result.count} logs for user ${userId}`);
       return {
         success: true,
         data: result.data,
@@ -31,15 +18,6 @@ export const handleGetLogUser = async (): Promise<GetLogsResult> => {
         message: result.message,
       };
     } else {
-      toast.error(`${result.message}\n Ошибка: ${result.error}`, {
-        id: toastId,
-        duration: 5000,
-        style: {
-          background: '#DC2626',
-          color: 'white',
-        },
-      });
-
       return {
         success: false,
         data: [],
@@ -49,15 +27,44 @@ export const handleGetLogUser = async (): Promise<GetLogsResult> => {
       };
     }
   } catch (error) {
-    toast.error(`💥 Critical error: ${error}`, {
-      id: toastId,
-      duration: 6000,
-      style: {
-        background: '#B91C1C',
-        color: 'white',
-      },
-    });
+    console.error('Critical error in handleGetLogUserById:', error);
+    return {
+      success: false,
+      data: [],
+      count: 0,
+      message: 'Critical error occurred',
+      error: String(error),
+    };
+  }
+};
 
+// Функция для получения логов текущего пользователя (использует getCurrentUserId)
+export const handleGetLogUser = async (): Promise<GetLogsResult> => {
+  try {
+    const currentUserId = getCurrentUserId() || 'anonymous';
+    console.log('Loading logs for user:', currentUserId);
+
+    const result = await getHistoryByUserAction(currentUserId);
+
+    if (result.success) {
+      console.log(` Loaded ${result.count} logs for user ${currentUserId}`);
+      return {
+        success: true,
+        data: result.data,
+        count: result.count,
+        message: result.message,
+      };
+    } else {
+      return {
+        success: false,
+        data: [],
+        count: 0,
+        message: result.message,
+        error: result.error,
+      };
+    }
+  } catch (error) {
+    console.error('Critical error in handleGetLogUser:', error);
     return {
       success: false,
       data: [],
