@@ -1,11 +1,33 @@
 'use client';
 
+import { useAuth } from '@/context/AuthContext';
 import { dbg } from '@/log';
 import { toast } from 'react-hot-toast';
 
 export default function TestPage() {
   const loadDuration = Number(process.env.NEXT_PUBLIC_TOAST_DURATION) || 10000;
   dbg('loadDuration=', loadDuration);
+  const { user, signOut } = useAuth();
+
+  const handleCheckProtectedData = async () => {
+    const toastId = toast.loading('Checking session validity...');
+    if (!user) {
+      toast.error('User is not signed in.', { id: toastId });
+      return;
+    }
+
+    try {
+      await user.getIdToken(true);
+
+      toast.success('Access granted! Your session is valid.', { id: toastId });
+    } catch (error: any) {
+      dbg('Session check failed:', error);
+      toast.error('Access Denied! Your session has expired.', { id: toastId });
+
+      await signOut();
+    }
+  };
+
   const showInlineCustomToast = () => {
     toast.custom(
       (t) => (
@@ -68,6 +90,7 @@ export default function TestPage() {
       <button type='button' onClick={showInlineCustomToast}>
         Show Test 4
       </button>
+      <button onClick={handleCheckProtectedData}>Check Access</button>
     </div>
   );
 }

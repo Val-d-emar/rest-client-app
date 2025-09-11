@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import {
-  onAuthStateChanged,
+  onIdTokenChanged,
   User,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -10,7 +10,7 @@ import {
 } from 'firebase/auth';
 import { auth } from '@/lib/firebase/config';
 import { UserCookieManager } from '@/lib/utils/cookie-manager';
-import { dbg, err, warn } from '@/log';
+import { dbg, err } from '@/log';
 
 interface AuthContextType {
   user: User | null;
@@ -29,9 +29,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isSigningOut, setIsSigningOut] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+    const unsubscribe = onIdTokenChanged(auth, async (firebaseUser) => {
       dbg('Firebase auth state changed:', firebaseUser);
+
       setUser(firebaseUser);
+
       setLoading(false);
 
       if (firebaseUser) {
@@ -48,6 +50,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signUp = async (email: string, password: string) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
       dbg('User signed up successfully:', userCredential.user);
     } catch (error) {
       err('Error signing up:', error);

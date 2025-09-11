@@ -1,72 +1,110 @@
-import { renderHook, act, waitFor } from '@testing-library/react';
+import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { AuthProvider, useAuth } from './AuthContext';
-import { User, onAuthStateChanged } from 'firebase/auth';
+import { User, onIdTokenChanged } from 'firebase/auth';
+import { UserCookieManager } from '@/lib/utils/cookie-manager';
 
 vi.mock('firebase/auth', async (importOriginal) => {
   const actual = await importOriginal<typeof import('firebase/auth')>();
-  return { ...actual, getAuth: vi.fn(), onAuthStateChanged: vi.fn() };
+  return {
+    ...actual,
+    getAuth: vi.fn(),
+    onIdTokenChanged: vi.fn(),
+    createUserWithEmailAndPassword: vi.fn(),
+    signInWithEmailAndPassword: vi.fn(),
+    signOut: vi.fn(),
+  };
 });
 
+vi.mock('@/lib/utils/cookie-manager', () => ({
+  UserCookieManager: {
+    setUserId: vi.fn(),
+    removeUserId: vi.fn(),
+  },
+}));
+
 describe('useAuth hook and AuthProvider', () => {
-  const mockedOnAuthStateChanged = vi.mocked(onAuthStateChanged);
-  let authStateCallback: (user: User | null) => void;
+  const mockedOnIdTokenChanged = vi.mocked(onIdTokenChanged);
+  let idTokenCallback: (user: User | null) => void;
 
   beforeEach(() => {
     vi.clearAllMocks();
-    mockedOnAuthStateChanged.mockImplementation((auth, callback) => {
+    mockedOnIdTokenChanged.mockImplementation((auth, callback) => {
       if (typeof callback === 'function') {
-        authStateCallback = callback;
+        idTokenCallback = callback;
       }
       return vi.fn();
     });
   });
 
-  it('should set loading to false and user to null after initial check', async () => {
-    const { result, rerender } = renderHook(() => useAuth(), {
+  it('should set loading to false and user to null after initial check', () => {
+    const { result } = renderHook(() => useAuth(), {
       wrapper: AuthProvider,
     });
 
     act(() => {
-      authStateCallback(null);
+      idTokenCallback(null);
     });
 
     expect(result.current.loading).toBe(false);
     expect(result.current.user).toBeNull();
   });
 
-  it('should set the user object when auth state changes', async () => {
+  it('should set the user and call UserCookieManager.setUserId on sign in', () => {
     const { result } = renderHook(() => useAuth(), {
       wrapper: AuthProvider,
     });
-
     const mockUser = { uid: '123', email: 'test@example.com' } as User;
 
     act(() => {
-      authStateCallback(mockUser);
+      idTokenCallback(mockUser);
     });
 
-    expect(result.current.loading).toBe(false);
     expect(result.current.user).toEqual(mockUser);
+
+    expect(UserCookieManager.setUserId).toHaveBeenCalledWith('123');
   });
 
-  it('should clear the user object on sign out', async () => {
+  it('should clear the user, but not call removeUserId on simple state change to null', () => {
     const { result } = renderHook(() => useAuth(), {
       wrapper: AuthProvider,
     });
 
     const mockUser = { uid: '123', email: 'test@example.com' } as User;
-
     act(() => {
-      authStateCallback(mockUser);
+      idTokenCallback(mockUser);
     });
-
     expect(result.current.user).not.toBeNull();
 
     act(() => {
-      authStateCallback(null);
+      idTokenCallback(null);
     });
 
     expect(result.current.user).toBeNull();
+
+    expect(UserCookieManager.removeUserId).not.toHaveBeenCalled();
+  });
+
+  it('should call removeUserId when signing out', async () => {
+    const { result } = renderHook(() => useAuth(), {
+      wrapper: AuthProvider,
+    });
+
+    const mockUser = { uid: '123', email: 'test@example.com' } as User;
+    act(() => {
+      idTokenCallback(mockUser);
+    });
+
+    await act(async () => {
+      await result.current.signOut();
+    });
+
+    act(() => {
+      idTokenCallback(null);
+    });
+
+    expect(result.current.user).toBeNull();
+
+    expect(UserCookieManager.removeUserId).toHaveBeenCalledTimes(1);
   });
 });
