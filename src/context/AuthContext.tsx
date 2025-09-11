@@ -10,6 +10,7 @@ import {
 } from 'firebase/auth';
 import { auth } from '@/lib/firebase/config';
 import { dbg, err, warn } from '@/log';
+import toast from 'react-hot-toast';
 
 interface AuthContextType {
   user: User | null;
@@ -26,9 +27,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       dbg('Firebase auth state changed:', firebaseUser);
-      setUser(firebaseUser);
+      if (firebaseUser) {
+        try {
+          await firebaseUser.getIdToken(true);
+          setUser(firebaseUser);
+          dbg('User session is valid.');
+        } catch (error) {
+          dbg('User session invalid, signing out:', error);
+          toast.error('User session invalid, signing out: ' + (error as Error).message);
+          setUser(null);
+          await firebaseSignOut(auth);
+        }
+      } else {
+        setUser(null);
+      }
       setLoading(false);
     });
 
