@@ -83,7 +83,7 @@ describe('Header', () => {
       expect(header).not.toHaveClass('scrolled');
     });
   });
-  describe.skip('when user is authenticated', () => {
+  describe('when user is authenticated', () => {
     const mockSignOut = vi.fn();
     const mockRouterPush = vi.fn();
 
@@ -102,16 +102,14 @@ describe('Header', () => {
       vi.clearAllMocks();
     });
 
-    it('renders Sign Out button', () => {
+    it.skip('renders Sign Out button', () => {
       render(<Header />);
       expect(screen.getByRole('button', { name: dictionary.SignOutLabel })).toBeInTheDocument();
     });
 
-    it('calls signOut and redirects on button click', async () => {
+    it.skip('calls signOut and redirects on button click', async () => {
       render(<Header />);
-      // const signOutButton = screen.getByRole('button', { name: dictionary.SignOutLabel });
-      const signOutButton = screen.findByRole('button', { name: dictionary.SignOutLabel });
-      dictionary.SignOutLabel;
+      const signOutButton = screen.getByRole('button', { name: dictionary.SignOutLabel });
 
       fireEvent.click(signOutButton);
 
