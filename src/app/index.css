@@ -187,7 +187,7 @@ select {
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
   background: var(--background-color);
 }
 
