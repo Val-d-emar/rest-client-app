@@ -1,9 +1,7 @@
 'use client';
 
 import { useAuth } from '@/context/AuthContext';
-import { auth, db } from '@/lib/firebase/config';
 import { dbg } from '@/log';
-import { doc, getDoc } from 'firebase/firestore';
 import { toast } from 'react-hot-toast';
 
 export default function TestPage() {
@@ -12,9 +10,11 @@ export default function TestPage() {
   const { user, signOut } = useAuth();
 
   const handleCheckProtectedData = async () => {
-    if (!user) return;
-
     const toastId = toast.loading('Checking session validity...');
+    if (!user) {
+      toast.error('User is not signed in.', { id: toastId });
+      return;
+    }
 
     try {
       await user.getIdToken(true);

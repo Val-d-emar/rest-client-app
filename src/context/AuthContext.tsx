@@ -11,7 +11,6 @@ import {
 import { auth } from '@/lib/firebase/config';
 import { UserCookieManager } from '@/lib/utils/cookie-manager';
 import { dbg, err } from '@/log';
-import toast from 'react-hot-toast';
 
 interface AuthContextType {
   user: User | null;
@@ -32,20 +31,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const unsubscribe = onIdTokenChanged(auth, async (firebaseUser) => {
       dbg('Firebase auth state changed:', firebaseUser);
-      if (firebaseUser) {
-        try {
-          await firebaseUser.getIdToken(true);
-          setUser(firebaseUser);
-          dbg('User session is valid.');
-        } catch (error) {
-          dbg('User session invalid, signing out:', error);
-          toast.error('Your session has expired. Please sign in again.');
-          await firebaseSignOut(auth);
-          setUser(null);
-        }
-      } else {
-        setUser(null);
-      }
+
+      setUser(firebaseUser);
+
       setLoading(false);
 
       if (firebaseUser) {
@@ -62,17 +50,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signUp = async (email: string, password: string) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-
-      // const newUser = userCredential.user;
-      // if (newUser) {
-      //   const userDocRef = doc(db, 'users', newUser.uid);
-      //   await setDoc(userDocRef, {
-      //     email: newUser.email,
-      //     createdAt: new Date(),
-      //     displayName: email.split('@').at(0) ?? 'Anonymous',
-      //   });
-      //   dbg('User profile created in Firestore for UID:', newUser.uid);
-      // }
 
       dbg('User signed up successfully:', userCredential.user);
     } catch (error) {
