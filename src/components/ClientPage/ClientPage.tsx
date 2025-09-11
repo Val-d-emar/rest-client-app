@@ -98,12 +98,8 @@ export default function ClientPage() {
     result: ServerResponse,
   ) => {
     try {
-      // полный размер запроса
-      const urlSize = new Blob([processedUrl]).size;
-      const methodSize = new Blob([method]).size;
-      const headersSize = new Blob([JSON.stringify(requestHeaders)]).size;
-      const bodySize = processedBody ? new Blob([processedBody]).size : 0;
-      const totalRequestSize = urlSize + methodSize + headersSize + bodySize;
+      const requestPayloadSize = processedBody ? new Blob([processedBody]).size : 0;
+      const responsePayloadSize = result.body ? new Blob([JSON.stringify(result.body)]).size : 0;
 
       const logData: HttpRequestLog = {
         userId: user?.uid || 'anonymous',
@@ -112,8 +108,8 @@ export default function ClientPage() {
         statusText: result.statusText || 'Unknown',
         timestamp: new Date(),
         method: method,
-        requestSize: totalRequestSize,
-        responseSize: result.body ? new Blob([JSON.stringify(result.body)]).size : 0,
+        requestSize: requestPayloadSize,
+        responseSize: responsePayloadSize,
         errorDetails: result.error || undefined,
         url: processedUrl,
         requestBody: processedBody || undefined,
