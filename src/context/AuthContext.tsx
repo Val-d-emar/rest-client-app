@@ -9,6 +9,7 @@ import {
   signOut as firebaseSignOut,
 } from 'firebase/auth';
 import { auth } from '@/lib/firebase/config';
+import { UserCookieManager } from '@/lib/utils/cookie-manager';
 import { dbg, err, warn } from '@/log';
 
 interface AuthContextType {
@@ -25,15 +26,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const [isSigningOut, setIsSigningOut] = useState(false);
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       dbg('Firebase auth state changed:', firebaseUser);
       setUser(firebaseUser);
       setLoading(false);
+
+      if (firebaseUser) {
+        UserCookieManager.setUserId(firebaseUser.uid);
+      } else if (isSigningOut) {
+        UserCookieManager.removeUserId();
+        setIsSigningOut(false);
+      }
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [isSigningOut]);
 
   const signUp = async (email: string, password: string) => {
     try {
@@ -57,10 +67,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signOut = async () => {
     try {
+      setIsSigningOut(true);
       await firebaseSignOut(auth);
       dbg('User signed out successfully');
     } catch (error) {
       err('Error signing out:', error);
+      setIsSigningOut(false);
       throw error;
     }
   };
