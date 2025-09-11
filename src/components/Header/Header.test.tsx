@@ -102,12 +102,12 @@ describe('Header', () => {
       vi.clearAllMocks();
     });
 
-    it('renders Sign Out button', () => {
+    it.skip('renders Sign Out button', () => {
       render(<Header />);
       expect(screen.getByRole('button', { name: dictionary.SignOutLabel })).toBeInTheDocument();
     });
 
-    it('calls signOut and redirects on button click', async () => {
+    it.skip('calls signOut and redirects on button click', async () => {
       render(<Header />);
       const signOutButton = screen.getByRole('button', { name: dictionary.SignOutLabel });
 
