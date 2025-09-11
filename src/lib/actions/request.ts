@@ -1,7 +1,5 @@
 'use server';
 import { err } from '@/log';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
-import { db } from '../firebase/config';
 
 interface RequestPayload {
   userId: string;
@@ -28,7 +26,7 @@ export async function forwardRequest(payload: RequestPayload): Promise<ServerRes
       body: payload.method !== 'GET' ? payload.body : undefined,
     });
 
-    const latency = Math.round(performance.now() - startTime);
+    // const latency = Math.round(performance.now() - startTime);
 
     const responseText = await response.text();
     let responseBody: unknown;
@@ -38,23 +36,7 @@ export async function forwardRequest(payload: RequestPayload): Promise<ServerRes
       responseBody = responseText;
     }
 
-    try {
-      await addDoc(collection(db, 'history'), {
-        userId: payload.userId,
-        method: payload.method,
-        url: payload.url,
-        statusCode: response.status,
-        latency: latency,
-        requestSize: payload.body ? new Blob([payload.body]).size : 0,
-        responseSize: new Blob([responseText]).size,
-        errorDetails: null,
-        headers: payload.headers,
-        requestBody: payload.body || null,
-        timestamp: serverTimestamp(),
-      });
-    } catch (historyError) {
-      err('Failed to save request to history:', historyError);
-    }
+    // Логирование перенесено в ClientPage.tsx через handleAddLog
 
     const responseHeaders: Record<string, string> = {};
     response.headers.forEach((value, key) => {
@@ -68,26 +50,10 @@ export async function forwardRequest(payload: RequestPayload): Promise<ServerRes
       body: responseBody,
       error: null,
     };
-  } catch (error: any) {
-    const latency = Math.round(performance.now() - startTime);
+  } catch (error: unknown) {
+    // const latency = Math.round(performance.now() - startTime);
 
-    try {
-      await addDoc(collection(db, 'history'), {
-        userId: payload.userId,
-        method: payload.method,
-        url: payload.url,
-        statusCode: null,
-        latency: latency,
-        requestSize: payload.body ? new Blob([payload.body]).size : 0,
-        responseSize: 0,
-        errorDetails: error.message || 'Network Error',
-        headers: payload.headers,
-        requestBody: payload.body || null,
-        timestamp: serverTimestamp(),
-      });
-    } catch (historyError) {
-      err('Failed to save ERROR request to history:', historyError);
-    }
+    // Логирование ошибок перенесено в ClientPage.tsx через handleAddLog
 
     err('Server Action fetch error:', error);
     return {
@@ -95,7 +61,7 @@ export async function forwardRequest(payload: RequestPayload): Promise<ServerRes
       statusText: null,
       headers: null,
       body: null,
-      error: error.message || 'An unknown network error occurred.',
+      error: error instanceof Error ? error.message : 'An unknown network error occurred.',
     };
   }
 }

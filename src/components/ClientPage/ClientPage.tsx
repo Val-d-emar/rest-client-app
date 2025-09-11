@@ -16,6 +16,8 @@ import { useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { dbg } from '@/log';
 import { getStoredVariables, substituteVariables } from '@/lib/utils/variables';
+import { handleAddLog } from '@/lib/client-action/handle-add-log';
+import { HttpRequestLog } from '@/type/type';
 
 const ENCODING_TOAST_ID = 'encoding-error-toast';
 
@@ -85,6 +87,46 @@ export default function ClientPage() {
   const [response, setResponse] = useState<ServerResponse | null>(null);
   const [loading, setLoading] = useState(false);
 
+  // Функция для создания log записи в базу данных
+  const createAndSaveLog = async (
+    startTime: number,
+    endTime: number,
+    processedUrl: string,
+    method: HttpMethods,
+    requestHeaders: Record<string, string>,
+    processedBody: string,
+    result: ServerResponse,
+  ) => {
+    try {
+      // полный размер запроса
+      const urlSize = new Blob([processedUrl]).size;
+      const methodSize = new Blob([method]).size;
+      const headersSize = new Blob([JSON.stringify(requestHeaders)]).size;
+      const bodySize = processedBody ? new Blob([processedBody]).size : 0;
+      const totalRequestSize = urlSize + methodSize + headersSize + bodySize;
+
+      const logData: HttpRequestLog = {
+        userId: user?.uid || 'anonymous',
+        latency: Math.round(endTime - startTime),
+        statusCode: result.status || 0,
+        statusText: result.statusText || 'Unknown',
+        timestamp: new Date(),
+        method: method,
+        requestSize: totalRequestSize,
+        responseSize: result.body ? new Blob([JSON.stringify(result.body)]).size : 0,
+        errorDetails: result.error || undefined,
+        url: processedUrl,
+        requestBody: processedBody || undefined,
+        headers: requestHeaders,
+      };
+
+      // клиентская часть , которая вызывает серверную функцию для добавления лога
+      const addLogResult = await handleAddLog(logData);
+      return addLogResult;
+    } catch (error) {
+      return null;
+    }
+  };
   useEffect(() => {
     if (isInitialLoad.current) {
       isInitialLoad.current = false;
@@ -127,6 +169,8 @@ export default function ClientPage() {
       {} as Record<string, string>,
     );
 
+    const requestStartTime = performance.now();
+
     try {
       const timeoutPromise = new Promise<ServerResponse>((_, reject) =>
         setTimeout(
@@ -146,8 +190,21 @@ export default function ClientPage() {
         timeoutPromise,
       ]);
 
+      const requestEndTime = performance.now();
       setResponse(result);
+
+      //  Записываем лог в базу данных
+      await createAndSaveLog(
+        requestStartTime,
+        requestEndTime,
+        processedUrl,
+        method,
+        requestHeaders,
+        processedBody,
+        result,
+      );
     } catch (error) {
+      const requestEndTime = performance.now();
       dbg('Client-side error calling Server Action:', error);
 
       const errorResponse: ServerResponse = {
@@ -157,8 +214,19 @@ export default function ClientPage() {
         error: (error as Error)?.message || 'An unknown client-side error occurred.',
         statusText: null,
       };
+
       setResponse(errorResponse);
-      toast.error((error as Error).message);
+
+      // Записываем лог об ошибке в базу данных
+      await createAndSaveLog(
+        requestStartTime,
+        requestEndTime,
+        processedUrl,
+        method,
+        requestHeaders,
+        processedBody,
+        errorResponse,
+      );
     } finally {
       setLoading(false);
     }
