@@ -2,14 +2,14 @@
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import {
-  onAuthStateChanged,
+  onIdTokenChanged,
   User,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
 } from 'firebase/auth';
 import { auth } from '@/lib/firebase/config';
-import { dbg, err, warn } from '@/log';
+import { dbg, err } from '@/log';
 import toast from 'react-hot-toast';
 
 interface AuthContextType {
@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+    const unsubscribe = onIdTokenChanged(auth, async (firebaseUser) => {
       dbg('Firebase auth state changed:', firebaseUser);
       if (firebaseUser) {
         try {
@@ -36,9 +36,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           dbg('User session is valid.');
         } catch (error) {
           dbg('User session invalid, signing out:', error);
-          toast.error('User session invalid, signing out: ' + (error as Error).message);
-          setUser(null);
+          toast.error('Your session has expired. Please sign in again.');
           await firebaseSignOut(auth);
+          setUser(null);
         }
       } else {
         setUser(null);
@@ -52,6 +52,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signUp = async (email: string, password: string) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
+      // const newUser = userCredential.user;
+      // if (newUser) {
+      //   const userDocRef = doc(db, 'users', newUser.uid);
+      //   await setDoc(userDocRef, {
+      //     email: newUser.email,
+      //     createdAt: new Date(),
+      //     displayName: email.split('@').at(0) ?? 'Anonymous',
+      //   });
+      //   dbg('User profile created in Firestore for UID:', newUser.uid);
+      // }
+
       dbg('User signed up successfully:', userCredential.user);
     } catch (error) {
       err('Error signing up:', error);
