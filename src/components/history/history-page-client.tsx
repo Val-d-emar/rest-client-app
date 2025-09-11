@@ -5,6 +5,8 @@ import { useAuth } from '@/context/AuthContext';
 import { handleGetLogUserById } from '@/lib/client-action/handle-getlog-user';
 import { GetLogsResult } from '@/type/type';
 import HistoryTable from '@/components/history/history-table';
+import { useTranslations } from 'next-intl';
+import toast from 'react-hot-toast';
 
 interface HistoryPageClientProps {
   initialData: GetLogsResult | null;
@@ -12,6 +14,7 @@ interface HistoryPageClientProps {
 
 export default function HistoryPageClient({ initialData }: HistoryPageClientProps) {
   const { user } = useAuth();
+  const t = useTranslations('HistoryPage');
   const [result, setResult] = useState<GetLogsResult | null>(initialData);
   const [loading, setLoading] = useState(false);
 
@@ -21,8 +24,10 @@ export default function HistoryPageClient({ initialData }: HistoryPageClientProp
     try {
       const newResult = await handleGetLogUserById(user.uid);
       setResult(newResult);
-    } catch (error) {
-      console.error('Error refreshing logs:', error);
+    } catch (error: unknown) {
+      toast.error(
+        `Error refreshing logs: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      );
     } finally {
       setLoading(false);
     }
@@ -32,11 +37,9 @@ export default function HistoryPageClient({ initialData }: HistoryPageClientProp
     return (
       <>
         <button onClick={refreshLogs} disabled={loading}>
-          {loading ? 'Updating...' : 'Refresh Logs'}
+          {loading ? t('refreshing') : t('refreshButton')}
         </button>
-        <h3>
-          Logs for user ({user?.email}) - {result.count} entries
-        </h3>
+        <h3>{t('userLogs', { user: user?.email || 'unknown', count: result.count })}</h3>
         <HistoryTable logs={result.data} />
       </>
     );
@@ -46,7 +49,7 @@ export default function HistoryPageClient({ initialData }: HistoryPageClientProp
     <>
       {user && (
         <button onClick={refreshLogs} disabled={loading}>
-          {loading ? 'Loading...' : 'Refresh Logs'}
+          {loading ? t('loading') : t('refreshButton')}
         </button>
       )}
     </>

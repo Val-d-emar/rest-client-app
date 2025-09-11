@@ -78,5 +78,23 @@
       "confirmPasswordRequired": "Подтверждение пароля обязательно",
       "passwordsMatch": "Пароли не совпадают"
     }
+  },
+  "HistoryPage": {
+    "title": "История запросов",
+    "table": {
+      "method": "Метод",
+      "url": "URL",
+      "status": "Статус",
+      "latency": "Время (мс)",
+      "timestamp": "Дата",
+      "requestSize": "Размер запроса (байт)",
+      "responseSize": "Размер ответа (байт)",
+      "error": "Ошибка"
+    },
+    "refreshButton": "Обновить логи",
+    "refreshing": "Обновление...",
+    "loading": "Загрузка...",
+    "noData": "—",
+    "userLogs": "Логи пользователя ({user}) - {count} записей"
   }
 }

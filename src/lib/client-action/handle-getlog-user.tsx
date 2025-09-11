@@ -5,12 +5,9 @@ import { GetLogsResult } from '@/type/type';
 // Функция для получения логов конкретного пользователя
 export const handleGetLogUserById = async (userId: string): Promise<GetLogsResult> => {
   try {
-    console.log('Loading logs for user:', userId);
-
     const result = await getHistoryByUserAction(userId);
 
     if (result.success) {
-      console.log(`Loaded ${result.count} logs for user ${userId}`);
       return {
         success: true,
         data: result.data,
@@ -27,7 +24,6 @@ export const handleGetLogUserById = async (userId: string): Promise<GetLogsResul
       };
     }
   } catch (error) {
-    console.error('Critical error in handleGetLogUserById:', error);
     return {
       success: false,
       data: [],
@@ -42,12 +38,9 @@ export const handleGetLogUserById = async (userId: string): Promise<GetLogsResul
 export const handleGetLogUser = async (): Promise<GetLogsResult> => {
   try {
     const currentUserId = getCurrentUserId() || 'anonymous';
-    console.log('Loading logs for user:', currentUserId);
-
     const result = await getHistoryByUserAction(currentUserId);
 
     if (result.success) {
-      console.log(` Loaded ${result.count} logs for user ${currentUserId}`);
       return {
         success: true,
         data: result.data,
@@ -64,7 +57,6 @@ export const handleGetLogUser = async (): Promise<GetLogsResult> => {
       };
     }
   } catch (error) {
-    console.error('Critical error in handleGetLogUser:', error);
     return {
       success: false,
       data: [],

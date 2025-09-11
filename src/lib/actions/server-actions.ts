@@ -12,8 +12,6 @@ type FirestoreHttpRequestLog = Omit<HttpRequestLog, 'timestamp'> & {
 
 export async function addHistoryLogAction(logData: HttpRequestLog): Promise<AddLogResult> {
   try {
-    console.log('Server Action: Add the log on the server');
-
     const cleanedData: FirestoreHttpRequestLog = {
       ...logData,
       timestamp: Timestamp.fromDate(logData.timestamp),
@@ -27,7 +25,6 @@ export async function addHistoryLogAction(logData: HttpRequestLog): Promise<AddL
     });
 
     const docRef = await addDoc(collection(db, 'history'), cleanedData);
-    console.log('Server Action: Document created with ID:', docRef.id);
     revalidatePath('/');
     return {
       success: true,
@@ -35,7 +32,6 @@ export async function addHistoryLogAction(logData: HttpRequestLog): Promise<AddL
       message: 'Log successfully added',
     };
   } catch (error) {
-    console.error('Server Action Error:', error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
@@ -80,7 +76,6 @@ export async function getHistoryByUserAction(userId: string): Promise<GetLogsRes
       message: `Received ${logs.length} entries`,
     };
   } catch (error) {
-    console.error('Server Action Error:', error);
     return {
       success: false,
       data: [],
@@ -101,7 +96,6 @@ export async function getCurrentUserIdAction(): Promise<string | null> {
     }
     return null;
   } catch (error) {
-    console.error('Server Action Error getting userId:', error);
     return null;
   }
 }

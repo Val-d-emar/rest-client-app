@@ -34,7 +34,6 @@ export const handleAddLog = async (logData: HttpRequestLog): Promise<AddLogResul
           color: 'white',
         },
       });
-      console.error('Server Action is completed with an error:', result);
     }
 
     return result;

@@ -49,7 +49,6 @@ export default async function HistoryPage() {
       </div>
     );
   } catch (error) {
-    console.error('Server Error loading logs:', error);
     return (
       <div className='history-wrapper'>
         <div className='modal'>

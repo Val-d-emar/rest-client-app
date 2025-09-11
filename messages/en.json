@@ -78,5 +78,23 @@
       "confirmPasswordRequired": "Confirm password is required",
       "passwordsMatch": "Passwords don't match"
     }
+  },
+  "HistoryPage": {
+    "title": "Request History",
+    "table": {
+      "method": "Method",
+      "url": "URL",
+      "status": "Status",
+      "latency": "Time (ms)",
+      "timestamp": "Date",
+      "requestSize": "Request Size (bytes)",
+      "responseSize": "Response Size (bytes)",
+      "error": "Error"
+    },
+    "refreshButton": "Refresh Logs",
+    "refreshing": "Updating...",
+    "loading": "Loading...",
+    "noData": "—",
+    "userLogs": "Logs for user ({user}) - {count} entries"
   }
 }

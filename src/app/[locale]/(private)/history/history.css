@@ -35,7 +35,7 @@
 
   min-width: 95%;
   max-width: 100%;
-  max-height: calc(100vh - 150px);
+  max-height: 55vh;
 
   font-size: clamp(0.875rem, 0.6755rem + 0.6383vw, 1.25rem);
 
@@ -50,10 +50,9 @@
 
   width: 100%;
   min-width: 1200px;
-  max-height: calc(100vh - 150px);
   border-radius: 6px;
 
-  background: white;
+  background: #fff;
   box-shadow: 0 1px 4px rgb(0 0 0 / 70%);
 }
 
@@ -75,9 +74,10 @@
   font-size: clamp(0.875rem, 0.8085rem + 0.2128vw, 1rem);
 }
 
-.data-table tr {
+.data-table tr.body-line {
   cursor: pointer;
   display: table-row;
+  height: 30px;
 }
 
 .data-table th {
@@ -99,7 +99,7 @@
 .data-table td {
   display: table-cell;
 
-  padding: 12px 8px;
+  padding: 6px 0;
   border-bottom: 1px solid #e0e0e0;
 
   color: var(--color);
@@ -117,7 +117,7 @@
   border-bottom: none;
 }
 
-@media (width <= 1270px) {
+@media (width <=1270px) {
   ::-webkit-scrollbar {
     width: 2px;
     background: var(--background-color);
