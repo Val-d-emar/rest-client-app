@@ -56,9 +56,14 @@ export default function Header() {
           {!loading && (
             <>
               {user ? (
-                <button onClick={handleSignOut} className={classes.button}>
-                  {t('SignOutLabel')}
-                </button>
+                <>
+                  <button onClick={() => router.replace('/')} className={classes.button}>
+                    {t('MainPage')}
+                  </button>
+                  <button onClick={handleSignOut} className={classes.button}>
+                    {t('SignOutLabel')}
+                  </button>
+                </>
               ) : (
                 <>
                   <Link href='/auth/signin' className={classes.button}>
