@@ -1,10 +1,11 @@
 'use server';
 import { err } from '@/log';
+import { HttpMethods } from '@/type/type';
 
 interface RequestPayload {
   userId: string;
   url: string;
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS';
+  method: HttpMethods;
   headers: Record<string, string>;
   body?: string;
 }

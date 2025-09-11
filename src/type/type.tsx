@@ -1,3 +1,5 @@
+import { METHODS } from '@/constants/constants';
+
 export interface HttpRequestLog {
   userId: string; // ID пользователя
   latency: number; // Длительность запроса в мс
@@ -27,3 +29,5 @@ export interface GetLogsResult {
   error?: string;
   message: string;
 }
+
+export type HttpMethods = (typeof METHODS)[number];

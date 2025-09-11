@@ -2,9 +2,9 @@
 import { useTranslations } from 'next-intl';
 import classes from './RequestBar.module.css';
 import { Dispatch, SetStateAction } from 'react';
+import { METHODS } from '@/constants/constants';
+import { HttpMethods } from '@/type/type';
 
-const METHODS = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'] as const;
-export type HttpMethods = (typeof METHODS)[number];
 type RequestBarProps = {
   method: HttpMethods;
   setMethod: Dispatch<SetStateAction<HttpMethods>>;
