@@ -115,5 +115,10 @@
     "LOG_ADD_ERROR": "Ошибка добавления лога",
     "LOGS_RECEIVED": "Получено {count} записей",
     "LOGS_GET_ERROR": "Ошибка получения логов"
+  },
+  "codeGenerator": {
+    "codeGenerationTitle": "Генерация кода",
+    "codeCopied": "Код скопирован в буфер обмена!",
+    "copyButton": "Копировать"
   }
 }

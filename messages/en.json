@@ -115,5 +115,10 @@
     "LOG_ADD_ERROR": "Error adding log",
     "LOGS_RECEIVED": "Received {count} entries",
     "LOGS_GET_ERROR": "Error getting logs"
+  },
+  "codeGenerator": {
+    "codeGenerationTitle": "Code generation",
+    "codeCopied": "Code copied to clipboard!",
+    "copyButton": "Copy"
   }
 }
