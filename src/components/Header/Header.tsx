@@ -28,14 +28,14 @@ export default function Header() {
   }, []);
 
   const handleSignOut = async () => {
-    const toastId = toast.loading('Signing Out...');
+    const toastId = toast.loading(t('signingOut'));
     try {
       await signOut();
-      toast.success('Goodbye!', { id: toastId });
+      toast.success(t('goodbye'), { id: toastId });
       router.push('/');
     } catch (error) {
       // TODO: Преобразовывать коды ошибок Firebase в человеко-понятные сообщения
-      const errorMessage = (error as Error)?.message || 'Failed to sign out:';
+      const errorMessage = (error as Error)?.message || t('signOutError');
       err(errorMessage);
       toast.error(errorMessage, {
         id: toastId,
