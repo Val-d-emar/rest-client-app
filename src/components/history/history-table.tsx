@@ -1,10 +1,9 @@
 'use client';
 
-import { HttpMethods, HttpRequestLog } from '@/type/type';
+import { HttpMethods, HttpRequestLog, isHttpMethod } from '@/type/type';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { constructClientUrl } from '@/lib/utils/url-constructor';
-import { METHODS } from '@/constants/constants';
 
 interface HistoryTableProps {
   logs: HttpRequestLog[];
@@ -12,9 +11,6 @@ interface HistoryTableProps {
 
 export default function HistoryTable({ logs }: HistoryTableProps) {
   const t = useTranslations('HistoryPage');
-  function isHttpMethod(method: string): method is HttpMethods {
-    return (METHODS as readonly string[]).includes(method.toUpperCase());
-  }
 
   return (
     <div className='data-table-container'>
