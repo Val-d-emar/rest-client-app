@@ -69,6 +69,7 @@ const getInitialState = (searchParams: URLSearchParams) => {
 
 export default function ClientPage() {
   const t = useTranslations('ClientPage');
+  const tGlobal = useTranslations();
 
   const { user } = useAuth();
   const router = useRouter();
@@ -86,7 +87,6 @@ export default function ClientPage() {
   const [response, setResponse] = useState<ServerResponse | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Функция для создания log записи в базу данных
   const createAndSaveLog = async (
     startTime: number,
     endTime: number,
@@ -115,8 +115,7 @@ export default function ClientPage() {
         headers: requestHeaders,
       };
 
-      // клиентская часть , которая вызывает серверную функцию для добавления лога
-      const addLogResult = await handleAddLog(logData);
+      const addLogResult = await handleAddLog(logData, tGlobal);
       return addLogResult;
     } catch (error) {
       return null;
@@ -188,7 +187,6 @@ export default function ClientPage() {
       const requestEndTime = performance.now();
       setResponse(result);
 
-      //  Записываем лог в базу данных
       await createAndSaveLog(
         requestStartTime,
         requestEndTime,
@@ -212,7 +210,6 @@ export default function ClientPage() {
 
       setResponse(errorResponse);
 
-      // Записываем лог об ошибке в базу данных
       await createAndSaveLog(
         requestStartTime,
         requestEndTime,

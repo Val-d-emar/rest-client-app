@@ -283,11 +283,7 @@ const FormContent: React.FC<PropsSign> = ({ onSignIn, onSignUp, error, setError 
           {errors.confirmPassword && <p className='error'>{errors.confirmPassword.message}</p>}
         </div>
       )}
-      {error && (
-        <p className='error' style={{ textAlign: 'center', marginBottom: '1rem' }}>
-          {error}
-        </p>
-      )}
+
       <button
         className={'submit-btn'}
         type='submit'

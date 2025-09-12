@@ -2,15 +2,14 @@ import { getHistoryByUserAction } from '@/lib/actions/server-actions';
 import { getCurrentUserId } from '@/lib/firebase/config';
 import { GetLogsResult } from '@/type/type';
 
-// Функция для получения логов конкретного пользователя
-export const handleGetLogUserById = async (userId: string): Promise<GetLogsResult> => {
+export const handleGetLogUserById = async (
+  userId: string,
+  t?: (key: string) => string,
+): Promise<GetLogsResult> => {
   try {
-    console.log('Loading logs for user:', userId);
-
     const result = await getHistoryByUserAction(userId);
 
     if (result.success) {
-      console.log(`Loaded ${result.count} logs for user ${userId}`);
       return {
         success: true,
         data: result.data,
@@ -27,27 +26,27 @@ export const handleGetLogUserById = async (userId: string): Promise<GetLogsResul
       };
     }
   } catch (error) {
-    console.error('Critical error in handleGetLogUserById:', error);
+    const isNetworkError = error instanceof TypeError && error.message.includes('fetch');
+    const errorMessage =
+      isNetworkError && t ? t('networkError') : t ? t('refreshError') : 'Critical error occurred';
+
     return {
       success: false,
       data: [],
       count: 0,
-      message: 'Critical error occurred',
+      message: errorMessage,
       error: String(error),
     };
   }
 };
 
-// Функция для получения логов текущего пользователя (использует getCurrentUserId)
+// Функция для получения логов текущего пользователя для тестового примера в style
 export const handleGetLogUser = async (): Promise<GetLogsResult> => {
   try {
     const currentUserId = getCurrentUserId() || 'anonymous';
-    console.log('Loading logs for user:', currentUserId);
-
     const result = await getHistoryByUserAction(currentUserId);
 
     if (result.success) {
-      console.log(` Loaded ${result.count} logs for user ${currentUserId}`);
       return {
         success: true,
         data: result.data,
@@ -64,7 +63,6 @@ export const handleGetLogUser = async (): Promise<GetLogsResult> => {
       };
     }
   } catch (error) {
-    console.error('Critical error in handleGetLogUser:', error);
     return {
       success: false,
       data: [],

@@ -78,5 +78,42 @@
       "confirmPasswordRequired": "Confirm password is required",
       "passwordsMatch": "Passwords don't match"
     }
+  },
+  "HistoryPage": {
+    "title": "Request History",
+    "table": {
+      "method": "Method",
+      "url": "URL",
+      "status": "Status",
+      "latency": "Time (ms)",
+      "timestamp": "Date",
+      "requestSize": "Request Size (bytes)",
+      "responseSize": "Response Size (bytes)",
+      "error": "Error"
+    },
+    "refreshButton": "Refresh Logs",
+    "refreshing": "Updating...",
+    "loading": "Loading...",
+    "noData": "N/A",
+    "userLogs": "Logs for user ({user}) - {count} entries",
+    "notAuthorized": "You are not authorized.",
+    "signIn": "Sign In",
+    "authRequired": "Authorization is necessary to view history.",
+    "noRequestsYet": "You have not made any requests yet.",
+    "createNewRequest": "Create a new request",
+    "noLogsAvailable": "No logs available.",
+    "serverError": "No logs available due to a server error.",
+    "refreshError": "Error refreshing logs",
+    "networkError": "Network error. Please check your internet connection."
+  },
+  "client": {
+    "recording": "Recording...",
+    "criticalError": "Critical error"
+  },
+  "serverMessages": {
+    "LOG_ADDED_SUCCESS": "Log successfully added",
+    "LOG_ADD_ERROR": "Error adding log",
+    "LOGS_RECEIVED": "Received {count} entries",
+    "LOGS_GET_ERROR": "Error getting logs"
   }
 }

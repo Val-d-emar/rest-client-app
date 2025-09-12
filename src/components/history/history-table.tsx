@@ -1,25 +1,27 @@
 'use client';
 
 import { HttpRequestLog } from '@/type/type';
+import { useTranslations } from 'next-intl';
 
 interface HistoryTableProps {
   logs: HttpRequestLog[];
 }
 
 export default function HistoryTable({ logs }: HistoryTableProps) {
+  const t = useTranslations('HistoryPage');
   return (
     <div className='data-table-container'>
       <table className='data-table'>
         <thead>
           <tr>
-            <th>Метод</th>
-            <th>URL</th>
-            <th>Статус</th>
-            <th>Время (ms)</th>
-            <th>Дата</th>
-            <th>Размер запроса (b)</th>
-            <th>Размер ответа (b)</th>
-            <th>Ошибка</th>
+            <th>{t('table.method')}</th>
+            <th>{t('table.url')}</th>
+            <th>{t('table.status')}</th>
+            <th>{t('table.latency')}</th>
+            <th>{t('table.timestamp')}</th>
+            <th>{t('table.requestSize')}</th>
+            <th>{t('table.responseSize')}</th>
+            <th>{t('table.error')}</th>
           </tr>
         </thead>
         <tbody>
@@ -29,7 +31,7 @@ export default function HistoryTable({ logs }: HistoryTableProps) {
               <td>{log.url}</td>
               <td>{log.statusCode}</td>
               <td>{log.latency}</td>
-              <td>{log.timestamp ? new Date(log.timestamp).toLocaleString() : '—'}</td>
+              <td>{log.timestamp ? new Date(log.timestamp).toLocaleString() : t('noData')}</td>
               <td>{log.requestSize}</td>
               <td>{log.responseSize}</td>
               <td>{log.errorDetails}</td>

@@ -5,8 +5,10 @@ import { useState } from 'react';
 import { handleAddLog, testLogData } from '@/lib/client-action';
 import { handleGetLogUser } from '@/lib/client-action/handle-getlog-user';
 import { HttpRequestLog } from '@/type/type';
+import { useTranslations } from 'next-intl';
 
 export default function Home() {
+  const t = useTranslations();
   const [isLoading, setIsLoading] = useState(false);
   const [logs, setLogs] = useState<HttpRequestLog[]>([]);
 
@@ -14,7 +16,7 @@ export default function Home() {
   const handleRecordLogWithLoading = async () => {
     setIsLoading(true);
     try {
-      await handleAddLog(testLogData);
+      await handleAddLog(testLogData, t);
     } finally {
       setIsLoading(false);
     }

@@ -78,5 +78,42 @@
       "confirmPasswordRequired": "Подтверждение пароля обязательно",
       "passwordsMatch": "Пароли не совпадают"
     }
+  },
+  "HistoryPage": {
+    "title": "История запросов",
+    "table": {
+      "method": "Метод",
+      "url": "URL",
+      "status": "Статус",
+      "latency": "Время (мс)",
+      "timestamp": "Дата",
+      "requestSize": "Размер запроса (байт)",
+      "responseSize": "Размер ответа (байт)",
+      "error": "Ошибка"
+    },
+    "refreshButton": "Обновить логи",
+    "refreshing": "Обновление...",
+    "loading": "Загрузка...",
+    "noData": "н/д",
+    "userLogs": "Логи пользователя ({user}) - {count} записей",
+    "notAuthorized": "Вы не авторизованы.",
+    "signIn": "Войти",
+    "authRequired": "Авторизация необходима для просмотра истории.",
+    "noRequestsYet": "Вы еще не сделали ни одного запроса.",
+    "createNewRequest": "Создать новый запрос",
+    "noLogsAvailable": "Логи недоступны.",
+    "serverError": "Логи недоступны из-за ошибки сервера.",
+    "refreshError": "Ошибка обновления логов",
+    "networkError": "Ошибка сети. Проверьте подключение к интернету."
+  },
+  "client": {
+    "recording": "Записываем...",
+    "criticalError": "Критическая ошибка"
+  },
+  "serverMessages": {
+    "LOG_ADDED_SUCCESS": "Лог успешно добавлен",
+    "LOG_ADD_ERROR": "Ошибка добавления лога",
+    "LOGS_RECEIVED": "Получено {count} записей",
+    "LOGS_GET_ERROR": "Ошибка получения логов"
   }
 }
