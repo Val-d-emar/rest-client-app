@@ -1,3 +1,4 @@
+declare module 'postman-collection';
 declare module 'postman-code-generators' {
   export interface Variant {
     key: string;
@@ -13,7 +14,7 @@ declare module 'postman-code-generators' {
 
   export interface Options {
     indentCount?: number;
-    indentType?: 'Space' | 'Tab';
+    indentType?: string;
     trimRequestBody?: boolean;
     followRedirect?: boolean;
   }
@@ -28,14 +29,15 @@ declare module 'postman-code-generators' {
     };
   }
 
-  type Callback<T> = (error: Error | null, result: T) => void;
-
   export function getLanguageList(): Language[];
+
+  type Callback = (error: Error | null, snippet: string) => void;
+
   export function convert(
     lang: string,
     variant: string,
     request: PostmanRequest,
     options: Options,
-    callback: Callback<string>,
+    callback: Callback,
   ): void;
 }

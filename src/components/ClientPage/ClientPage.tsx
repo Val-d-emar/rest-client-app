@@ -18,8 +18,10 @@ import { getStoredVariables, substituteVariables } from '@/lib/utils/variables';
 import { handleAddLog } from '@/lib/client-action/handle-add-log';
 import { HttpRequestLog, HttpMethods } from '@/type/type';
 import { getAvailableLanguages, generateCodeSnippet } from '@/lib/actions/codegen';
-import { Language, PostmanRequest } from 'postman-code-generators';
+import { Language, PostmanRequest, Options } from 'postman-code-generators';
 import CodeGenerator from '../CodeGenerator/CodeGenerator';
+import * as codegen from 'postman-code-generators';
+import { Request } from 'postman-collection';
 
 const ENCODING_TOAST_ID = 'encoding-error-toast';
 
@@ -103,6 +105,50 @@ export default function ClientPage() {
         toast.error('Could not load code generators.');
       });
   }, []);
+
+  useEffect(() => {
+    const variables = getStoredVariables();
+    const processedUrl = substituteVariables(url, variables);
+    const processedBody = substituteVariables(body, variables);
+    const processedHeaders = headers.map((h) => ({
+      ...h,
+      value: substituteVariables(h.value, variables),
+    }));
+
+    if (!processedUrl) {
+      setGeneratedCode('Enter a URL to generate code.');
+      return;
+    }
+
+    const request = new Request({
+      method: method,
+      url: processedUrl,
+      header: processedHeaders
+        .filter((h) => h.enabled && h.key)
+        .map((h) => ({ key: h.key, value: h.value })),
+      body: {
+        mode: 'raw',
+        raw: processedBody,
+      },
+    });
+
+    const [langKey, langVariant] = selectedLanguage.split(',');
+    const options = {
+      indentCount: 3,
+      indentType: 'Space',
+      trimRequestBody: true,
+      followRedirect: true,
+    };
+
+    codegen.convert(langKey, langVariant, request, options, (error, snippet) => {
+      if (error) {
+        setGeneratedCode('Error generating code snippet.');
+        err(error);
+      } else {
+        setGeneratedCode(snippet);
+      }
+    });
+  }, [method, url, body, headers, selectedLanguage]);
 
   const createAndSaveLog = async (
     startTime: number,
