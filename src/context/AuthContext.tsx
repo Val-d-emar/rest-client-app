@@ -12,11 +12,15 @@ import { auth } from '@/lib/firebase/config';
 import { UserCookieManager } from '@/lib/utils/cookie-manager';
 import { dbg, err } from '@/log';
 
+interface AuthError extends Error {
+  originalError?: unknown;
+}
+
 interface AuthContextType {
   user: User | null;
   loading: boolean;
   signUp: (email: string, password: string) => Promise<void>;
-  signIn: (email: string, password: string) => Promise<void>;
+  signIn: (email: string, password: string, t?: (key: string) => string) => Promise<void>;
   signOut: () => Promise<void>;
 }
 
@@ -58,13 +62,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (email: string, password: string, t?: (key: string) => string) => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       dbg('User signed in successfully:', userCredential.user);
     } catch (error) {
       err('Error signing in:', error);
-      throw error;
+      const translatedError: AuthError = new Error(
+        t ? t('signInFailed') : 'Sign in failed. Please try again.',
+      );
+      translatedError.originalError = error;
+      throw translatedError;
     }
   };
 

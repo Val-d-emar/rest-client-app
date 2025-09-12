@@ -11,7 +11,10 @@
     "defaultUser": "пользователь",
     "clientLink": "REST клиент",
     "historyLink": "История",
-    "variablesLink": "Переменные"
+    "variablesLink": "Переменные",
+    "signingOut": "Выход из аккаунта...",
+    "goodbye": "До свидания!",
+    "signOutError": "Ошибка выхода из аккаунта"
   },
   "ClientPage": {
     "title": "REST Клиент",
@@ -77,7 +80,10 @@
       "passwordUnicode": "Должен быть в валидном Unicode формате",
       "confirmPasswordRequired": "Подтверждение пароля обязательно",
       "passwordsMatch": "Пароли не совпадают"
-    }
+    },
+    "signingIn": "Вход в аккаунт...",
+    "welcomeBack": "С возвращением!",
+    "signInFailed": "Ошибка входа. Попробуйте еще раз."
   },
   "HistoryPage": {
     "title": "История запросов",
