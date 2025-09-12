@@ -22,12 +22,15 @@ export default function HistoryPageClient({ initialData }: HistoryPageClientProp
     if (!user) return;
     setLoading(true);
     try {
-      const newResult = await handleGetLogUserById(user.uid);
-      setResult(newResult);
+      const newResult = await handleGetLogUserById(user.uid, t);
+      if (newResult.success) {
+        setResult(newResult);
+      } else {
+        toast.error(newResult.message || t('refreshError'));
+      }
     } catch (error: unknown) {
-      toast.error(
-        `Error refreshing logs: ${error instanceof Error ? error.message : 'Unknown error'}`,
-      );
+      const errorMessage = error instanceof Error ? error.message : t('refreshError');
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }

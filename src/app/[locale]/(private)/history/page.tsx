@@ -1,18 +1,20 @@
 import { getHistoryByUserAction, getCurrentUserIdAction } from '@/lib/actions/server-actions';
 import HistoryPageClient from '@/components/history/history-page-client';
 import { Link } from '@/i18n/navigation';
+import { getTranslations } from 'next-intl/server';
 import './history.css';
 
 export default async function HistoryPage() {
+  const t = await getTranslations('HistoryPage');
   const userId = await getCurrentUserIdAction();
 
   if (!userId) {
     return (
       <div className='history-wrapper'>
         <div className='modal'>
-          <h2 className='warn'>You are not authorized.</h2>
-          <Link href='/signin'>Sign In</Link>
-          <p className='error'>Authorization is necessary to view history.</p>
+          <h2 className='warn'>{t('notAuthorized')}</h2>
+          <Link href='/signin'>{t('signIn')}</Link>
+          <p className='error'>{t('authRequired')}</p>
           <HistoryPageClient initialData={null} />
         </div>
       </div>
@@ -22,22 +24,32 @@ export default async function HistoryPage() {
   try {
     const result = await getHistoryByUserAction(userId);
     if (result.count === 0) {
+      const message = result.messageCode
+        ? t(`serverMessages.${result.messageCode}`, { count: result.count })
+        : result.message;
       return (
         <div className='history-wrapper'>
           <div className='modal'>
-            <h2 className='warn'>You have not made any requests yet. {result.message}</h2>
-            <Link href='/client'>Create a new request</Link>
+            <h2 className='warn'>
+              {t('noRequestsYet')} {message}
+            </h2>
+            <Link href='/client'>{t('createNewRequest')}</Link>
             <HistoryPageClient initialData={null} />
           </div>
         </div>
       );
     }
     if (!result.success) {
+      const message = result.messageCode
+        ? t(`serverMessages.${result.messageCode}`)
+        : result.message;
       return (
         <div className='history-wrapper'>
           <div className='modal'>
-            <h2 className='warn'>No logs available. {result.message}</h2>
-            <Link href='/client'>Create a new request</Link>
+            <h2 className='warn'>
+              {t('noLogsAvailable')} {message}
+            </h2>
+            <Link href='/client'>{t('createNewRequest')}</Link>
             <HistoryPageClient initialData={null} />
           </div>
         </div>
@@ -52,8 +64,8 @@ export default async function HistoryPage() {
     return (
       <div className='history-wrapper'>
         <div className='modal'>
-          <h2 className='warn'>No logs available due to a server error.</h2>
-          <Link href='/client'>Create a new request</Link>
+          <h2 className='warn'>{t('serverError')}</h2>
+          <Link href='/client'>{t('createNewRequest')}</Link>
           <HistoryPageClient initialData={null} />
         </div>
       </div>

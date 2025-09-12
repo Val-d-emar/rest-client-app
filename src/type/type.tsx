@@ -20,6 +20,7 @@ export interface AddLogResult {
   id?: string;
   error?: string;
   message: string;
+  messageCode?: string; // Код для перевода сообщения
 }
 
 export interface GetLogsResult {
@@ -28,6 +29,7 @@ export interface GetLogsResult {
   count: number;
   error?: string;
   message: string;
+  messageCode?: string;
 }
 
 export type HttpMethods = (typeof METHODS)[number];

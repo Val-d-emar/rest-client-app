@@ -2,9 +2,13 @@ import { addHistoryLogAction } from '@/lib/actions/server-actions';
 import { getCurrentUserId } from '@/lib/firebase/config';
 import toast from 'react-hot-toast';
 import { HttpRequestLog, AddLogResult } from '@/type/type';
+import { useTranslations } from 'next-intl';
 
-export const handleAddLog = async (logData: HttpRequestLog): Promise<AddLogResult> => {
-  const toastId = toast.loading('recording...');
+export const handleAddLog = async (
+  logData: HttpRequestLog,
+  t: ReturnType<typeof useTranslations>,
+): Promise<AddLogResult> => {
+  const toastId = toast.loading(t('client.recording') || 'recording...');
 
   try {
     const currentUserId = getCurrentUserId() || 'anonymous';
@@ -17,7 +21,11 @@ export const handleAddLog = async (logData: HttpRequestLog): Promise<AddLogResul
     const result = await addHistoryLogAction(finalLogData);
 
     if (result.success) {
-      toast.success(`${result.message}\n ID: ${result.id}`, {
+      const message = result.messageCode
+        ? t(`serverMessages.${result.messageCode}`) || result.message
+        : result.message;
+
+      toast.success(`${message}\n ID: ${result.id}`, {
         id: toastId,
         duration: 4000,
         style: {
@@ -26,7 +34,11 @@ export const handleAddLog = async (logData: HttpRequestLog): Promise<AddLogResul
         },
       });
     } else {
-      toast.error(`${result.message}\n Error: ${result.error}`, {
+      const message = result.messageCode
+        ? t(`serverMessages.${result.messageCode}`) || result.message
+        : result.message;
+
+      toast.error(`${message}\n Error: ${result.error}`, {
         id: toastId,
         duration: 5000,
         style: {
@@ -38,7 +50,7 @@ export const handleAddLog = async (logData: HttpRequestLog): Promise<AddLogResul
 
     return result;
   } catch (error) {
-    toast.error(`💥 Critical error: ${error}`, {
+    toast.error(`💥 ${t('client.criticalError') || 'Critical error'}`, {
       id: toastId,
       duration: 6000,
       style: {

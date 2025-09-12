@@ -30,12 +30,14 @@ export async function addHistoryLogAction(logData: HttpRequestLog): Promise<AddL
       success: true,
       id: docRef.id,
       message: 'Log successfully added',
+      messageCode: 'LOG_ADDED_SUCCESS',
     };
   } catch (error) {
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
       message: 'Error adding log',
+      messageCode: 'LOG_ADD_ERROR',
     };
   }
 }
@@ -74,6 +76,7 @@ export async function getHistoryByUserAction(userId: string): Promise<GetLogsRes
       data: logs,
       count: logs.length,
       message: `Received ${logs.length} entries`,
+      messageCode: 'LOGS_RECEIVED',
     };
   } catch (error) {
     return {
@@ -82,6 +85,7 @@ export async function getHistoryByUserAction(userId: string): Promise<GetLogsRes
       count: 0,
       error: error instanceof Error ? error.message : 'Unknown error',
       message: 'Error getting logs',
+      messageCode: 'LOGS_GET_ERROR',
     };
   }
 }

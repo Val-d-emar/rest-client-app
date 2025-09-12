@@ -2,8 +2,10 @@ import { getHistoryByUserAction } from '@/lib/actions/server-actions';
 import { getCurrentUserId } from '@/lib/firebase/config';
 import { GetLogsResult } from '@/type/type';
 
-// Функция для получения логов конкретного пользователя
-export const handleGetLogUserById = async (userId: string): Promise<GetLogsResult> => {
+export const handleGetLogUserById = async (
+  userId: string,
+  t?: (key: string) => string,
+): Promise<GetLogsResult> => {
   try {
     const result = await getHistoryByUserAction(userId);
 
@@ -24,17 +26,21 @@ export const handleGetLogUserById = async (userId: string): Promise<GetLogsResul
       };
     }
   } catch (error) {
+    const isNetworkError = error instanceof TypeError && error.message.includes('fetch');
+    const errorMessage =
+      isNetworkError && t ? t('networkError') : t ? t('refreshError') : 'Critical error occurred';
+
     return {
       success: false,
       data: [],
       count: 0,
-      message: 'Critical error occurred',
+      message: errorMessage,
       error: String(error),
     };
   }
 };
 
-// Функция для получения логов текущего пользователя (использует getCurrentUserId)
+// Функция для получения логов текущего пользователя для тестового примера в style
 export const handleGetLogUser = async (): Promise<GetLogsResult> => {
   try {
     const currentUserId = getCurrentUserId() || 'anonymous';
