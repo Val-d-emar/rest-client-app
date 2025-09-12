@@ -33,3 +33,7 @@ export interface GetLogsResult {
 }
 
 export type HttpMethods = (typeof METHODS)[number];
+
+export function isHttpMethod(method: string): method is HttpMethods {
+  return (METHODS as readonly string[]).includes(method.toUpperCase());
+}

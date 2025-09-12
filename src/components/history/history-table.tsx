@@ -1,7 +1,9 @@
 'use client';
 
-import { HttpRequestLog } from '@/type/type';
+import { HttpMethods, HttpRequestLog, isHttpMethod } from '@/type/type';
 import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
+import { constructClientUrl } from '@/lib/utils/url-constructor';
 
 interface HistoryTableProps {
   logs: HttpRequestLog[];
@@ -9,6 +11,7 @@ interface HistoryTableProps {
 
 export default function HistoryTable({ logs }: HistoryTableProps) {
   const t = useTranslations('HistoryPage');
+
   return (
     <div className='data-table-container'>
       <table className='data-table'>
@@ -25,18 +28,45 @@ export default function HistoryTable({ logs }: HistoryTableProps) {
           </tr>
         </thead>
         <tbody>
-          {logs.map((log, index) => (
-            <tr key={index} className='body-line'>
-              <td>{log.method}</td>
-              <td>{log.url}</td>
-              <td>{log.statusCode}</td>
-              <td>{log.latency}</td>
-              <td>{log.timestamp ? new Date(log.timestamp).toLocaleString() : t('noData')}</td>
-              <td>{log.requestSize}</td>
-              <td>{log.responseSize}</td>
-              <td>{log.errorDetails}</td>
-            </tr>
-          ))}
+          {logs.map((log, index) => {
+            const clientUrl = constructClientUrl({
+              method: (isHttpMethod(log.method) ? log.method.toUpperCase() : 'GET') as HttpMethods,
+              url: log.url,
+              body: log.requestBody,
+              headers: log.headers,
+            });
+
+            return (
+              <tr key={index} className='body-line history-row'>
+                <td>
+                  <Link href={clientUrl}>{log.method}</Link>
+                </td>
+                <td>
+                  <Link href={clientUrl}>{log.url}</Link>
+                </td>
+                <td>
+                  <Link href={clientUrl}>{log.statusCode}</Link>
+                </td>
+                <td>
+                  <Link href={clientUrl}>{log.latency}</Link>
+                </td>
+                <td>
+                  <Link href={clientUrl}>
+                    {log.timestamp ? new Date(log.timestamp).toLocaleString() : t('noData')}
+                  </Link>
+                </td>
+                <td>
+                  <Link href={clientUrl}>{log.requestSize}</Link>
+                </td>
+                <td>
+                  <Link href={clientUrl}>{log.responseSize}</Link>
+                </td>
+                <td>
+                  <Link href={clientUrl}>{log.errorDetails}</Link>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>
