@@ -3,8 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { Dispatch, SetStateAction } from 'react';
 import toast from 'react-hot-toast';
-
-type Language = { key: string; label: string; variant: string };
+import type { Language } from 'postman-code-generators';
 
 type Props = {
   languages: Language[];
@@ -22,28 +21,39 @@ export default function CodeGenerationSection({
   const t = useTranslations('codeGenerator');
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(generatedCode);
-    toast.success(t('codeCopied'));
+    if (generatedCode) {
+      navigator.clipboard.writeText(generatedCode);
+      toast.success(t('codeCopied'));
+    }
   };
 
   return (
-    <div>
+    <div style={{ marginTop: '1rem' }}>
       <h3>{t('codeGenerationTitle')}</h3>
       <div className='card'>
-        <div>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '1rem',
+          }}
+        >
           <select value={selectedLanguage} onChange={(e) => setSelectedLanguage(e.target.value)}>
-            {languages.map((lang) => (
-              <option key={`${lang.key}-${lang.variant}`} value={`${lang.key},${lang.variant}`}>
-                {lang.label} - {lang.variant}
-              </option>
-            ))}
+            {languages.map((lang) =>
+              lang.variants.map((variant) => (
+                <option key={`${lang.key}-${variant.key}`} value={`${lang.key},${variant.key}`}>
+                  {`${lang.label}${lang.key !== variant.key ? ` - ${variant.key}` : ''}`}
+                </option>
+              )),
+            )}
           </select>
           <button onClick={handleCopy} disabled={!generatedCode}>
             {t('copyButton')}
           </button>
         </div>
         <pre className='response-viewer response-viewer-body'>
-          <code>{generatedCode}</code>
+          <code>{generatedCode || 'Select language to see generated code...'}</code>
         </pre>
       </div>
     </div>

@@ -13,10 +13,13 @@ import { useAuth } from '@/context/AuthContext';
 import { usePathname, useRouter } from '@/i18n/navigation';
 import { useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
-import { dbg } from '@/log';
+import { dbg, err } from '@/log';
 import { getStoredVariables, substituteVariables } from '@/lib/utils/variables';
 import { handleAddLog } from '@/lib/client-action/handle-add-log';
 import { HttpRequestLog, HttpMethods } from '@/type/type';
+import { getAvailableLanguages, generateCodeSnippet } from '@/lib/actions/codegen';
+import { Language, PostmanRequest } from 'postman-code-generators';
+import CodeGenerator from '../CodeGenerator/CodeGenerator';
 
 const ENCODING_TOAST_ID = 'encoding-error-toast';
 
@@ -49,6 +52,7 @@ const getInitialState = (searchParams: URLSearchParams) => {
   const body = safeAtob(searchParams.get('body'));
 
   const headers: HeaderItem[] = [];
+
   searchParams.forEach((value, key) => {
     if (!['method', 'url', 'body'].includes(key)) {
       headers.push({ id: uuidv4(), enabled: true, key, value });
@@ -86,6 +90,19 @@ export default function ClientPage() {
 
   const [response, setResponse] = useState<ServerResponse | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const [languages, setLanguages] = useState<Language[]>([]);
+  const [selectedLanguage, setSelectedLanguage] = useState('curl,curl');
+  const [generatedCode, setGeneratedCode] = useState('');
+
+  useEffect(() => {
+    getAvailableLanguages()
+      .then(setLanguages)
+      .catch((error) => {
+        err('Failed to load code generators:', error);
+        toast.error('Could not load code generators.');
+      });
+  }, []);
 
   const createAndSaveLog = async (
     startTime: number,
@@ -238,6 +255,12 @@ export default function ClientPage() {
           />
           <RequestHeaders headers={headers} setHeaders={setHeaders} />
           <RequestBody body={body} setBody={setBody} />
+          <CodeGenerator
+            languages={languages}
+            selectedLanguage={selectedLanguage}
+            setSelectedLanguage={setSelectedLanguage}
+            generatedCode={generatedCode}
+          />
         </section>
         <div className={classes.divider}></div>
         <section className={classes.panel}>
