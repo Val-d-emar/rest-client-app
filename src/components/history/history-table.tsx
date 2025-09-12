@@ -34,9 +34,7 @@ export default function HistoryTable({ logs }: HistoryTableProps) {
         <tbody>
           {logs.map((log, index) => {
             const clientUrl = constructClientUrl({
-              method: (isHttpMethod(log.method.toUpperCase())
-                ? log.method.toUpperCase()
-                : 'GET') as HttpMethods,
+              method: (isHttpMethod(log.method) ? log.method.toUpperCase() : 'GET') as HttpMethods,
               url: log.url,
               body: log.requestBody,
               headers: log.headers,
