@@ -39,36 +39,3 @@ export const handleGetLogUserById = async (
     };
   }
 };
-
-// Функция для получения логов текущего пользователя для тестового примера в style
-export const handleGetLogUser = async (): Promise<GetLogsResult> => {
-  try {
-    const currentUserId = getCurrentUserId() || 'anonymous';
-    const result = await getHistoryByUserAction(currentUserId);
-
-    if (result.success) {
-      return {
-        success: true,
-        data: result.data,
-        count: result.count,
-        message: result.message,
-      };
-    } else {
-      return {
-        success: false,
-        data: [],
-        count: 0,
-        message: result.message,
-        error: result.error,
-      };
-    }
-  } catch (error) {
-    return {
-      success: false,
-      data: [],
-      count: 0,
-      message: 'Critical error occurred',
-      error: String(error),
-    };
-  }
-};

@@ -1,40 +1,38 @@
 import { getHistoryByUserAction, getCurrentUserIdAction } from '@/lib/actions/server-actions';
-import HistoryPageClient from '@/components/history/history-page-client';
 import { Link } from '@/i18n/navigation';
 import { getTranslations } from 'next-intl/server';
+import { Suspense, lazy } from 'react';
+import { redirect } from 'next/navigation';
 import './history.css';
+import Spinner from '@/components/Spinner/Spinner';
 
-export default async function HistoryPage() {
+const HistoryPageClient = lazy(() => import('@/components/history/history-page-client'));
+interface Props {
+  params: Promise<{
+    locale: string;
+  }>;
+}
+
+export default async function HistoryPage({ params }: Props) {
+  const { locale } = await params;
   const t = await getTranslations('HistoryPage');
   const userId = await getCurrentUserIdAction();
 
   if (!userId) {
-    return (
-      <div className='history-wrapper'>
-        <div className='modal'>
-          <h2 className='warn'>{t('notAuthorized')}</h2>
-          <Link href='/signin'>{t('signIn')}</Link>
-          <p className='error'>{t('authRequired')}</p>
-          <HistoryPageClient initialData={null} />
-        </div>
-      </div>
-    );
+    redirect(`/${locale}/auth/signin`);
   }
 
   try {
     const result = await getHistoryByUserAction(userId);
     if (result.count === 0) {
-      const message = result.messageCode
-        ? t(`serverMessages.${result.messageCode}`, { count: result.count })
-        : result.message;
       return (
         <div className='history-wrapper'>
           <div className='modal'>
-            <h2 className='warn'>
-              {t('noRequestsYet')} {message}
-            </h2>
+            <h2 className='warn'>{t('noRequestsYet')}</h2>
             <Link href='/client'>{t('createNewRequest')}</Link>
-            <HistoryPageClient initialData={null} />
+            <Suspense fallback={<Spinner />}>
+              <HistoryPageClient initialData={null} />
+            </Suspense>
           </div>
         </div>
       );
@@ -50,14 +48,18 @@ export default async function HistoryPage() {
               {t('noLogsAvailable')} {message}
             </h2>
             <Link href='/client'>{t('createNewRequest')}</Link>
-            <HistoryPageClient initialData={null} />
+            <Suspense fallback={<Spinner />}>
+              <HistoryPageClient initialData={null} />
+            </Suspense>
           </div>
         </div>
       );
     }
     return (
       <div className='history-wrapper'>
-        <HistoryPageClient initialData={result} />
+        <Suspense fallback={<Spinner />}>
+          <HistoryPageClient initialData={result} />
+        </Suspense>
       </div>
     );
   } catch (error) {
@@ -66,7 +68,9 @@ export default async function HistoryPage() {
         <div className='modal'>
           <h2 className='warn'>{t('serverError')}</h2>
           <Link href='/client'>{t('createNewRequest')}</Link>
-          <HistoryPageClient initialData={null} />
+          <Suspense fallback={<Spinner />}>
+            <HistoryPageClient initialData={null} />
+          </Suspense>
         </div>
       </div>
     );
