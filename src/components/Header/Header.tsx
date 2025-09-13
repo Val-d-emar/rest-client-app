@@ -34,7 +34,6 @@ export default function Header() {
       toast.success(t('goodbye'), { id: toastId });
       router.push('/');
     } catch (error) {
-      // TODO: Преобразовывать коды ошибок Firebase в человеко-понятные сообщения
       const errorMessage = (error as Error)?.message || t('signOutError');
       err(errorMessage);
       toast.error(errorMessage, {
