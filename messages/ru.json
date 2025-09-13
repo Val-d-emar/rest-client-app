@@ -18,7 +18,10 @@
     "requestBar": {
       "placeholder": "Введите URL",
       "sendButton": "Отправить",
-      "sendingButton": "Отправляется"
+      "sendingButton": "Отправляется",
+      "FailedToLoad": "Не удалось загрузить генераторы кода.",
+      "EnterURL": "Введите URL-адрес для генерации кода.",
+      "ErrorGenerating": "Ошибка при генерации фрагмента кода."
     },
     "requestHeaders": {
       "headerKeyPlaceholder": "Заголовок",

@@ -4,11 +4,11 @@ import RequestHeaders from '@/components/RequestHeaders';
 import classes from './ClientPage.module.css';
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
-import { HeaderItem } from '../RequestHeaders/RequestHeaders';
+import { HeaderItem } from '@/components/RequestHeaders/RequestHeaders';
 import { forwardRequest, ServerResponse } from '@/lib/actions/request';
 import { v4 as uuidv4 } from 'uuid';
-import ResponseSection from '../ResponseSection/ResponseSection';
-import RequestBody from '../RequestBody/RequestBody';
+import ResponseSection from '@/components/ResponseSection/ResponseSection';
+import RequestBody from '@/components/RequestBody/RequestBody';
 import { useAuth } from '@/context/AuthContext';
 import { usePathname, useRouter } from '@/i18n/navigation';
 import { useSearchParams } from 'next/navigation';
@@ -17,12 +17,12 @@ import { dbg, err } from '@/log';
 import { getStoredVariables, substituteVariables } from '@/lib/utils/variables';
 import { handleAddLog } from '@/lib/client-action/handle-add-log';
 import { HttpRequestLog, HttpMethods } from '@/type/type';
-import { getAvailableLanguages, generateCodeSnippet } from '@/lib/actions/codegen';
-import { Language, PostmanRequest, Options } from 'postman-code-generators';
-import CodeGenerator from '../CodeGenerator/CodeGenerator';
-import * as codegen from 'postman-code-generators';
+import { getAvailableLanguages } from '@/lib/actions/codegen';
+import { Language } from 'postman-code-generators';
+import * as codeGenerator from 'postman-code-generators';
 import { Request } from 'postman-collection';
-import Spinner from '../Spinner/Spinner';
+import Spinner from '@/components/Spinner/Spinner';
+import CodeGenerationSection from '@/components/CodeGenerationSection/CodeGenerationSection';
 
 const ENCODING_TOAST_ID = 'encoding-error-toast';
 
@@ -112,7 +112,7 @@ export default function ClientPage() {
       })
       .catch((error) => {
         err('Failed to load code generators:', error);
-        toast.error('Could not load code generators.');
+        toast.error(t('FailedToLoad'));
       });
   }, []);
 
@@ -126,7 +126,7 @@ export default function ClientPage() {
     }));
 
     if (!processedUrl) {
-      setGeneratedCode('Enter a URL to generate code.');
+      setGeneratedCode(t('EnterURL'));
       return;
     }
 
@@ -150,15 +150,15 @@ export default function ClientPage() {
       followRedirect: true,
     };
 
-    codegen.convert(langKey, langVariant, request, options, (error, snippet) => {
+    codeGenerator.convert(langKey, langVariant, request, options, (error, snippet) => {
       if (error) {
-        setGeneratedCode('Error generating code snippet.');
+        setGeneratedCode(t('ErrorGenerating'));
         err(error);
       } else {
         setGeneratedCode(snippet);
       }
     });
-  }, [method, url, body, headers, selectedLanguage]);
+  }, [method, url, body, headers, selectedLanguage, t]);
 
   const createAndSaveLog = async (
     startTime: number,
@@ -313,7 +313,7 @@ export default function ClientPage() {
           <RequestHeaders headers={headers} setHeaders={setHeaders} />
           <RequestBody body={body} setBody={setBody} />
           {languages.length > 0 ? (
-            <CodeGenerator
+            <CodeGenerationSection
               languages={languages}
               selectedLanguage={selectedLanguage}
               setSelectedLanguage={setSelectedLanguage}

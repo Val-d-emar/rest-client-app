@@ -18,7 +18,10 @@
     "requestBar": {
       "placeholder": "Enter URL",
       "sendButton": "Send",
-      "sendingButton": "Sending"
+      "sendingButton": "Sending",
+      "FailedToLoad": "Could not load code generators.",
+      "EnterURL": "Enter a URL to generate code.",
+      "ErrorGenerating": "Error generating code snippet."
     },
     "requestHeaders": {
       "headerKeyPlaceholder": "Header",
