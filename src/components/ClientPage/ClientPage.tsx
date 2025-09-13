@@ -4,19 +4,24 @@ import RequestHeaders from '@/components/RequestHeaders';
 import classes from './ClientPage.module.css';
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
-import { HeaderItem } from '../RequestHeaders/RequestHeaders';
+import { HeaderItem } from '@/components/RequestHeaders/RequestHeaders';
 import { forwardRequest, ServerResponse } from '@/lib/actions/request';
 import { v4 as uuidv4 } from 'uuid';
-import ResponseSection from '../ResponseSection/ResponseSection';
-import RequestBody from '../RequestBody/RequestBody';
+import ResponseSection from '@/components/ResponseSection/ResponseSection';
+import RequestBody from '@/components/RequestBody/RequestBody';
 import { useAuth } from '@/context/AuthContext';
 import { usePathname, useRouter } from '@/i18n/navigation';
 import { useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
-import { dbg } from '@/log';
+import { dbg, err } from '@/log';
 import { getStoredVariables, substituteVariables } from '@/lib/utils/variables';
 import { handleAddLog } from '@/lib/client-action/handle-add-log';
 import { HttpRequestLog, HttpMethods } from '@/type/type';
+import { generateCodeSnippet, getAvailableLanguages } from '@/lib/actions/codegen';
+import { Language } from 'postman-code-generators';
+import type { PostmanRequest } from 'postman-code-generators';
+import Spinner from '@/components/Spinner/Spinner';
+import CodeGenerationSection from '@/components/CodeGenerationSection/CodeGenerationSection';
 
 const ENCODING_TOAST_ID = 'encoding-error-toast';
 
@@ -49,6 +54,7 @@ const getInitialState = (searchParams: URLSearchParams) => {
   const body = safeAtob(searchParams.get('body'));
 
   const headers: HeaderItem[] = [];
+
   searchParams.forEach((value, key) => {
     if (!['method', 'url', 'body'].includes(key)) {
       headers.push({ id: uuidv4(), enabled: true, key, value });
@@ -86,6 +92,64 @@ export default function ClientPage() {
 
   const [response, setResponse] = useState<ServerResponse | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const [languages, setLanguages] = useState<Language[]>([]);
+  const [selectedLanguage, setSelectedLanguage] = useState('curl,curl');
+  const [generatedCode, setGeneratedCode] = useState('');
+
+  useEffect(() => {
+    getAvailableLanguages()
+      .then((langs) => {
+        if (langs && langs.length > 0) {
+          setLanguages(langs);
+          const defaultLang = langs[0];
+          const defaultVariant = defaultLang.variants[0];
+          setSelectedLanguage(`${defaultLang.key},${defaultVariant.key}`);
+        } else {
+          err('Language list is empty.');
+        }
+      })
+      .catch((error) => {
+        err('Failed to load code generators:', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    const variables = getStoredVariables();
+    const processedUrl = substituteVariables(url, variables);
+    const processedBody = substituteVariables(body, variables);
+    const processedHeaders = headers.map((h) => ({
+      ...h,
+      value: substituteVariables(h.value, variables),
+    }));
+
+    if (!processedUrl) {
+      setGeneratedCode(t('EnterURL'));
+      return;
+    }
+
+    const request: PostmanRequest = {
+      method: method,
+      url: processedUrl,
+      header: processedHeaders
+        .filter((h) => h.enabled && h.key)
+        .map((h) => ({ key: h.key, value: h.value })),
+      body: processedBody ? { mode: 'raw', raw: processedBody } : undefined,
+    };
+
+    const [langKey, langVariant] = selectedLanguage.split(',');
+
+    if (!langKey || !langVariant) return;
+
+    generateCodeSnippet(request, langKey, langVariant)
+      .then((snippet) => {
+        setGeneratedCode(snippet);
+      })
+      .catch((error) => {
+        setGeneratedCode(t('ErrorGenerating'));
+        err(error);
+      });
+  }, [method, url, body, headers, selectedLanguage, t]);
 
   const createAndSaveLog = async (
     startTime: number,
@@ -223,6 +287,7 @@ export default function ClientPage() {
       setLoading(false);
     }
   };
+
   return (
     <div className={classes.wrapper}>
       <h1>{t('title')}</h1>
@@ -238,6 +303,18 @@ export default function ClientPage() {
           />
           <RequestHeaders headers={headers} setHeaders={setHeaders} />
           <RequestBody body={body} setBody={setBody} />
+          {languages.length > 0 ? (
+            <CodeGenerationSection
+              languages={languages}
+              selectedLanguage={selectedLanguage}
+              setSelectedLanguage={setSelectedLanguage}
+              generatedCode={generatedCode}
+            />
+          ) : (
+            <div>
+              <Spinner />
+            </div>
+          )}
         </section>
         <div className={classes.divider}></div>
         <section className={classes.panel}>
