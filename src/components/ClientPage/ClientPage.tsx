@@ -25,18 +25,6 @@ import CodeGenerationSection from '@/components/CodeGenerationSection/CodeGenera
 
 const ENCODING_TOAST_ID = 'encoding-error-toast';
 
-const safeAtob = (str: string | null): string => {
-  if (!str) return '';
-  try {
-    return decodeURIComponent(atob(str));
-  } catch (e) {
-    toast.error('Failed to decode base64 string: ' + (e as Error)?.message, {
-      id: ENCODING_TOAST_ID,
-    });
-    return '';
-  }
-};
-
 const safeBtoa = (str: string): string => {
   try {
     return btoa(encodeURIComponent(str));
@@ -46,31 +34,6 @@ const safeBtoa = (str: string): string => {
     });
     return '';
   }
-};
-
-const getInitialState = (searchParams: URLSearchParams) => {
-  const method = (searchParams.get('method') as HttpMethods) || 'GET';
-  const url = safeAtob(searchParams.get('url'));
-  const body = safeAtob(searchParams.get('body'));
-
-  const headers: HeaderItem[] = [];
-
-  searchParams.forEach((value, key) => {
-    if (!['method', 'url', 'body'].includes(key)) {
-      headers.push({ id: uuidv4(), enabled: true, key, value });
-    }
-  });
-
-  if (headers.length === 0) {
-    headers.push({ id: uuidv4(), enabled: true, key: 'Content-Type', value: 'application/json' });
-  }
-
-  return {
-    method,
-    url: url || 'https://jsonplaceholder.typicode.com/posts/1',
-    body,
-    headers,
-  };
 };
 
 export default function ClientPage() {
@@ -84,6 +47,43 @@ export default function ClientPage() {
 
   const isInitialLoad = useRef(true);
 
+  const safeAtob = (str: string | null): string => {
+    if (!str) return '';
+    try {
+      return decodeURIComponent(atob(str));
+    } catch (e) {
+      toast.error(t('FailedToDecode') + (e as Error)?.message, {
+        id: ENCODING_TOAST_ID,
+      });
+      return '';
+    }
+  };
+
+  const getInitialState = (searchParams: URLSearchParams) => {
+    const method = (searchParams.get('method') as HttpMethods) || 'GET';
+    const url = safeAtob(searchParams.get('url'));
+    const body = safeAtob(searchParams.get('body'));
+
+    const headers: HeaderItem[] = [];
+
+    searchParams.forEach((value, key) => {
+      if (!['method', 'url', 'body'].includes(key)) {
+        headers.push({ id: uuidv4(), enabled: true, key, value });
+      }
+    });
+
+    if (headers.length === 0) {
+      headers.push({ id: uuidv4(), enabled: true, key: 'Content-Type', value: 'application/json' });
+    }
+
+    return {
+      method,
+      url: url,
+      body,
+      headers,
+    };
+  };
+
   const [initialState] = useState(() => getInitialState(searchParams));
   const [method, setMethod] = useState<HttpMethods>(initialState.method);
   const [url, setUrl] = useState(initialState.url);
@@ -94,7 +94,7 @@ export default function ClientPage() {
   const [loading, setLoading] = useState(false);
 
   const [languages, setLanguages] = useState<Language[]>([]);
-  const [selectedLanguage, setSelectedLanguage] = useState('curl,curl');
+  const [selectedLanguage, setSelectedLanguage] = useState('cURL,cURL');
   const [generatedCode, setGeneratedCode] = useState('');
 
   useEffect(() => {
@@ -102,7 +102,7 @@ export default function ClientPage() {
       .then((langs) => {
         if (langs && langs.length > 0) {
           setLanguages(langs);
-          const defaultLang = langs[0];
+          const defaultLang = langs[1] ?? langs[0];
           const defaultVariant = defaultLang.variants[0];
           setSelectedLanguage(`${defaultLang.key},${defaultVariant.key}`);
         } else {

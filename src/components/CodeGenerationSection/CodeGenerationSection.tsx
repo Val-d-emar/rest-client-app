@@ -4,7 +4,6 @@ import { useTranslations } from 'next-intl';
 import { Dispatch, SetStateAction } from 'react';
 import toast from 'react-hot-toast';
 import type { Language } from 'postman-code-generators';
-import { dbg } from '@/log';
 import classes from './CodeGenerationSection.module.css';
 
 type Props = {
@@ -39,9 +38,6 @@ export default function CodeGenerationSection({
             id='language'
             value={selectedLanguage}
             onChange={(e) => setSelectedLanguage(e.target.value)}
-            onClick={() => {
-              dbg('selectedLanguage=', selectedLanguage);
-            }}
           >
             {languages.map((lang) =>
               lang.variants.map((variant) => (
@@ -56,7 +52,7 @@ export default function CodeGenerationSection({
           </button>
         </div>
         <pre className='response-viewer response-viewer-body'>
-          <code>{generatedCode || 'Select language to see generated code...'}</code>
+          <code>{generatedCode || t('SelectLanguage')}</code>
         </pre>
       </div>
     </div>

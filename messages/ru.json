@@ -21,10 +21,7 @@
     "requestBar": {
       "placeholder": "Введите URL",
       "sendButton": "Отправить",
-      "sendingButton": "Отправляется",
-      "FailedToLoad": "Не удалось загрузить генераторы кода.",
-      "EnterURL": "Введите URL-адрес для генерации кода.",
-      "ErrorGenerating": "Ошибка при генерации фрагмента кода."
+      "sendingButton": "Отправляется"
     },
     "requestHeaders": {
       "headerKeyPlaceholder": "Заголовок",
@@ -34,7 +31,12 @@
       "prettifyButton": "Форматировать",
       "JSONPlaceholder": "Введите JSON",
       "textPlaceholder": "Введите текст"
-    }
+    },
+    "FailedToLoad": "Не удалось загрузить генераторы кода.",
+    "EnterURL": "Введите URL-адрес для генерации кода.",
+    "ErrorGenerating": "Ошибка при генерации фрагмента кода.",
+    "FailedToEncode": "Не удалось закодировать в base64: ",
+    "FailedToDecode": "Не удалось декодировать из base64: "
   },
   "NotFoundPage": {
     "title": "Страница не найдена",
@@ -128,6 +130,7 @@
   "codeGenerator": {
     "codeGenerationTitle": "Генерация кода",
     "codeCopied": "Код скопирован в буфер обмена!",
-    "copyButton": "Копировать"
+    "copyButton": "Копировать",
+    "SelectLanguage": "Выберите язык для генерации кода..."
   }
 }

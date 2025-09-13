@@ -21,10 +21,7 @@
     "requestBar": {
       "placeholder": "Enter URL",
       "sendButton": "Send",
-      "sendingButton": "Sending",
-      "FailedToLoad": "Could not load code generators.",
-      "EnterURL": "Enter a URL to generate code.",
-      "ErrorGenerating": "Error generating code snippet."
+      "sendingButton": "Sending"
     },
     "requestHeaders": {
       "headerKeyPlaceholder": "Header",
@@ -34,7 +31,12 @@
       "prettifyButton": "Prettify",
       "JSONPlaceholder": "Enter JSON",
       "textPlaceholder": "Enter plain text"
-    }
+    },
+    "FailedToLoad": "Could not load code generators.",
+    "EnterURL": "Enter a URL to generate code.",
+    "ErrorGenerating": "Error generating code snippet.",
+    "FailedToEncode": "Failed to encode to base64: ",
+    "FailedToDecode": "Failed to decode from base64: "
   },
   "NotFoundPage": {
     "title": "Page not found",
@@ -128,6 +130,7 @@
   "codeGenerator": {
     "codeGenerationTitle": "Code generation",
     "codeCopied": "Code copied to clipboard!",
-    "copyButton": "Copy"
+    "copyButton": "Copy",
+    "SelectLanguage": "Select language to see generated code..."
   }
 }
