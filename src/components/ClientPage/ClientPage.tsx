@@ -17,10 +17,9 @@ import { dbg, err } from '@/log';
 import { getStoredVariables, substituteVariables } from '@/lib/utils/variables';
 import { handleAddLog } from '@/lib/client-action/handle-add-log';
 import { HttpRequestLog, HttpMethods } from '@/type/type';
-import { getAvailableLanguages } from '@/lib/actions/codegen';
+import { generateCodeSnippet, getAvailableLanguages } from '@/lib/actions/codegen';
 import { Language } from 'postman-code-generators';
-import * as codeGenerator from 'postman-code-generators';
-import { Request } from 'postman-collection';
+import type { PostmanRequest } from 'postman-code-generators';
 import Spinner from '@/components/Spinner/Spinner';
 import CodeGenerationSection from '@/components/CodeGenerationSection/CodeGenerationSection';
 
@@ -107,12 +106,11 @@ export default function ClientPage() {
           const defaultVariant = defaultLang.variants[0];
           setSelectedLanguage(`${defaultLang.key},${defaultVariant.key}`);
         } else {
-          toast.error('Language list is empty.');
+          err('Language list is empty.');
         }
       })
       .catch((error) => {
         err('Failed to load code generators:', error);
-        toast.error(t('FailedToLoad'));
       });
   }, []);
 
@@ -130,7 +128,7 @@ export default function ClientPage() {
       return;
     }
 
-    const request = new Request({
+    const request: PostmanRequest = {
       method: method,
       url: processedUrl,
       header: processedHeaders
@@ -140,24 +138,20 @@ export default function ClientPage() {
         mode: 'raw',
         raw: processedBody,
       },
-    });
-
-    const [langKey, langVariant] = selectedLanguage.split(',');
-    const options = {
-      indentCount: 3,
-      indentType: 'Space',
-      trimRequestBody: true,
-      followRedirect: true,
     };
 
-    codeGenerator.convert(langKey, langVariant, request, options, (error, snippet) => {
-      if (error) {
+    const [langKey, langVariant] = selectedLanguage.split(',');
+
+    if (!langKey || !langVariant) return;
+
+    generateCodeSnippet(request, langKey, langVariant)
+      .then((snippet) => {
+        setGeneratedCode(snippet);
+      })
+      .catch((error) => {
         setGeneratedCode(t('ErrorGenerating'));
         err(error);
-      } else {
-        setGeneratedCode(snippet);
-      }
-    });
+      });
   }, [method, url, body, headers, selectedLanguage, t]);
 
   const createAndSaveLog = async (

@@ -17,6 +17,8 @@ declare module 'postman-code-generators' {
     indentType?: string;
     trimRequestBody?: boolean;
     followRedirect?: boolean;
+    requestTimeout?: number;
+    ES6_enabled?: boolean;
   }
 
   export interface PostmanRequest {
