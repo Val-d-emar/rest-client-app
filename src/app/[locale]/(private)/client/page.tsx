@@ -1,10 +1,3 @@
-// import ClientPage from '@/components/ClientPage';
-
-// export default function Client() {
-//   return <ClientPage />;
-// }
-
-// src/app/[locale]/(private)/client/page.tsx
 'use client';
 
 import { Suspense, lazy } from 'react';
