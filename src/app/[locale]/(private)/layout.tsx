@@ -27,7 +27,6 @@ export default function PrivateLayout({ children }: { children: React.ReactNode 
         await user?.getIdToken(true);
         setIsVerifying(false);
       } catch (error) {
-        err('Session verification failed in PrivateLayout, signing out:', error);
         toast.error('Your session has expired. Please sign in again.', {
           id: ENCODING_TOAST_ID,
         });
