@@ -7,13 +7,19 @@ import './history.css';
 import Spinner from '@/components/Spinner/Spinner';
 
 const HistoryPageClient = lazy(() => import('@/components/history/history-page-client'));
+interface Props {
+  params: Promise<{
+    locale: string;
+  }>;
+}
 
-export default async function HistoryPage({ params }: { params: { locale: string } }) {
+export default async function HistoryPage({ params }: Props) {
+  const { locale } = await params;
   const t = await getTranslations('HistoryPage');
   const userId = await getCurrentUserIdAction();
 
   if (!userId) {
-    redirect(`/${params.locale}/auth/signin`);
+    redirect(`/${locale}/auth/signin`);
   }
 
   try {

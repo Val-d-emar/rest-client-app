@@ -13,7 +13,7 @@
     "stylelint": "stylelint \"**/*.css\"",
     "stylelint:fix": "stylelint \"**/*.css\" --fix",
     "type:check": "tsc --noEmit -p tsconfig.test.json",
-    "fix": "npm-run-all --parallel --continue-on-error format:fix lint:fix stylelint:fix",
+    "fix": "npm-run-all --parallel --continue-on-error format:fix lint:fix stylelint:fix type:check",
     "prepare": "husky",
     "docs": "npx tsx scripts/doc-source.ts",
     "strip-comments": "npx tsx scripts/strip-comments.ts `git ls-files`",
