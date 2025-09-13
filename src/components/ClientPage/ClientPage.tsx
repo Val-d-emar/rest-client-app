@@ -134,10 +134,7 @@ export default function ClientPage() {
       header: processedHeaders
         .filter((h) => h.enabled && h.key)
         .map((h) => ({ key: h.key, value: h.value })),
-      body: {
-        mode: 'raw',
-        raw: processedBody,
-      },
+      body: processedBody ? { mode: 'raw', raw: processedBody } : undefined,
     };
 
     const [langKey, langVariant] = selectedLanguage.split(',');

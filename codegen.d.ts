@@ -25,10 +25,12 @@ declare module 'postman-code-generators' {
     method: string;
     url: string;
     header: { key: string; value: string }[];
-    body: {
-      mode: 'raw';
-      raw: string;
-    };
+    body:
+      | {
+          mode: 'raw';
+          raw: string;
+        }
+      | undefined;
   }
 
   export function getLanguageList(): Language[];
