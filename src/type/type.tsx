@@ -1,18 +1,18 @@
 import { METHODS } from '@/constants/constants';
 
 export interface HttpRequestLog {
-  userId: string; // ID пользователя
-  latency: number; // Длительность запроса в мс
-  statusCode: number; // HTTP статус-код ответа
-  statusText?: string; // Текстовый статус-код (опционально)
-  timestamp: Date; // Timestamp запроса
-  method: string; // HTTP метод (GET, POST и т.д.)
-  requestSize: number; // Размер запроса в байтах
-  responseSize: number; // Размер ответа в байтах
-  errorDetails?: string; // Детали ошибки (опционально)
-  url: string; // Endpoint/URL запроса
-  requestBody?: string; // Тело запроса (опционально)
-  headers?: Record<string, string>; // Заголовки (опционально)
+  userId: string;
+  latency: number;
+  statusCode: number;
+  statusText?: string;
+  timestamp: Date;
+  method: string;
+  requestSize: number;
+  responseSize: number;
+  errorDetails?: string;
+  url: string;
+  requestBody?: string;
+  headers?: Record<string, string>;
 }
 
 export interface AddLogResult {
@@ -20,7 +20,7 @@ export interface AddLogResult {
   id?: string;
   error?: string;
   message: string;
-  messageCode?: string; // Код для перевода сообщения
+  messageCode?: string;
 }
 
 export interface GetLogsResult {
