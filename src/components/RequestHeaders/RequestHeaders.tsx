@@ -17,7 +17,6 @@ type RequestHeadersProps = {
   setHeaders: Dispatch<SetStateAction<HeaderItem[]>>;
 };
 
-// TODO: keep headers in context/Redux state
 const HEADERS: HeaderItem[] = [
   {
     id: v4(),
@@ -42,41 +41,8 @@ const createEmptyHeader: () => HeaderItem = () => {
   };
 };
 
-// export default function RequestHeaders() {
 export default function RequestHeaders({ headers, setHeaders }: RequestHeadersProps) {
   const t = useTranslations('ClientPage.requestHeaders');
-  // const [headers, setHeaders] = useState([...HEADERS]);
-
-  // const onAddClick = () => {
-  //   HEADERS.push(createEmptyHeader());
-  //   setHeaders([...HEADERS]);
-  // };
-
-  // const onRemove = (id: string) => {
-  //   const index = HEADERS.findIndex((header) => header.id === id);
-  //   if (index >= 0) {
-  //     HEADERS.splice(index, 1);
-  //     setHeaders([...HEADERS]);
-  //   }
-  // };
-
-  // const onHeaderInputChange = (id: string, value: string, key: 'key' | 'value') => {
-  //   const header = HEADERS.find((header) => header.id === id);
-  //   if (!header) {
-  //     return;
-  //   }
-  //   header[key] = value;
-  //   setHeaders([...HEADERS]);
-  // };
-
-  // const onHeaderEnable = (id: string) => {
-  //   const header = HEADERS.find((header) => header.id === id);
-  //   if (!header || !header.key || !header.value) {
-  //     return;
-  //   }
-  //   header.enabled = !header.enabled;
-  //   setHeaders([...HEADERS]);
-  // };
 
   const onAddClick = () => {
     setHeaders((currentHeaders) => [...currentHeaders, createEmptyHeader()]);

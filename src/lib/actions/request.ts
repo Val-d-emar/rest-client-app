@@ -27,8 +27,6 @@ export async function forwardRequest(payload: RequestPayload): Promise<ServerRes
       body: payload.method !== 'GET' ? payload.body : undefined,
     });
 
-    // const latency = Math.round(performance.now() - startTime);
-
     const responseText = await response.text();
     let responseBody: unknown;
     try {
@@ -36,8 +34,6 @@ export async function forwardRequest(payload: RequestPayload): Promise<ServerRes
     } catch {
       responseBody = responseText;
     }
-
-    // Логирование перенесено в ClientPage.tsx через handleAddLog
 
     const responseHeaders: Record<string, string> = {};
     response.headers.forEach((value, key) => {
@@ -52,10 +48,6 @@ export async function forwardRequest(payload: RequestPayload): Promise<ServerRes
       error: null,
     };
   } catch (error: unknown) {
-    // const latency = Math.round(performance.now() - startTime);
-
-    // Логирование ошибок перенесено в ClientPage.tsx через handleAddLog
-
     err('Server Action fetch error:', error);
     return {
       status: null,

@@ -28,7 +28,6 @@ const SignUpForm: React.FC = () => {
       });
       router.push('/');
     } catch (error) {
-      // TODO: Преобразовывать коды ошибок Firebase в человеко-понятные сообщения
       const errorMessage = (error as Error)?.message || 'Registration failed. Please try again.';
       setError(errorMessage);
       toast.error(errorMessage, {
