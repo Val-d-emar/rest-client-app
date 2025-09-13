@@ -63,8 +63,8 @@
     "email": "Email",
     "password": "Password",
     "confirmPassword": "Confirm Password",
-    "signIn": "Sign In",
-    "signUp": "Sign Up",
+    "signIn": "Continue",
+    "signUp": "Continue",
     "submit": "Submit",
     "submitting": "Submitting...",
     "showPassword": "Show password",
@@ -88,7 +88,10 @@
     },
     "signingIn": "Signing In...",
     "welcomeBack": "Welcome back!",
-    "signInFailed": "Sign in failed. Please try again."
+    "signInFailed": "Sign in failed. Please try again.",
+    "registering": "Registering...",
+    "registrationSuccess": "Registration successful! Welcome!",
+    "registrationFailed": "Registration failed. Please try again."
   },
   "HistoryPage": {
     "title": "Request History",

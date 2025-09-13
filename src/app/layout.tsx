@@ -30,11 +30,6 @@ export const metadata: Metadata = {
   other: {
     language: 'en,ru',
   },
-  icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon.ico',
-    apple: '/favicon.ico',
-  },
 };
 
 export const viewport: Viewport = {
@@ -49,9 +44,6 @@ type Props = {
 export default function RootLayout({ children }: Props) {
   return (
     <html>
-      <head>
-        <link rel='icon' href='/favicon.ico' sizes='any' />
-      </head>
       <body className={`${roboto.variable} ${inter.variable} ${ubuntu.variable}`}>{children}</body>
     </html>
   );

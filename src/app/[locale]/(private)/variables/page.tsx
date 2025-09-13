@@ -19,7 +19,13 @@ export default function VariablesRoute() {
   }
 
   return (
-    <Suspense fallback={<Spinner />}>
+    <Suspense
+      fallback={
+        <div style={{ padding: '20px', textAlign: 'center' }}>
+          <Spinner />
+        </div>
+      }
+    >
       <VariablesPage />
     </Suspense>
   );

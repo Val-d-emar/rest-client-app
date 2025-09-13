@@ -7,6 +7,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useRouter } from '@/i18n/navigation';
 import { dbg } from '@/log';
 import toast from 'react-hot-toast';
+import { useTranslations } from 'next-intl';
 
 type SubmitValues = {
   email: string;
@@ -17,19 +18,19 @@ const SignUpForm: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const { signUp } = useAuth();
   const router = useRouter();
+  const t = useTranslations('AuthForm');
   const handleSignUp = async (userData: SubmitValues) => {
     setError(null);
-    const toastId = toast.loading('Registering...');
+    const toastId = toast.loading(t('registering'));
     try {
       await signUp(userData.email, userData.password);
       dbg('Registering user:', userData);
-      toast.success('Registration successful! Welcome!', {
+      toast.success(t('registrationSuccess'), {
         id: toastId,
       });
       router.push('/');
     } catch (error) {
-      // TODO: Преобразовывать коды ошибок Firebase в человеко-понятные сообщения
-      const errorMessage = (error as Error)?.message || 'Registration failed. Please try again.';
+      const errorMessage = (error as Error)?.message || t('registrationFailed');
       setError(errorMessage);
       toast.error(errorMessage, {
         id: toastId,
