@@ -11,7 +11,10 @@
     "defaultUser": "user",
     "clientLink": "REST Client",
     "historyLink": "History",
-    "variablesLink": "Variables"
+    "variablesLink": "Variables",
+    "signingOut": "Signing Out...",
+    "goodbye": "Goodbye!",
+    "signOutError": "Failed to sign out"
   },
   "ClientPage": {
     "title": "REST Client",
@@ -80,7 +83,10 @@
       "passwordUnicode": "Must be in valid Unicode format",
       "confirmPasswordRequired": "Confirm password is required",
       "passwordsMatch": "Passwords don't match"
-    }
+    },
+    "signingIn": "Signing In...",
+    "welcomeBack": "Welcome back!",
+    "signInFailed": "Sign in failed. Please try again."
   },
   "HistoryPage": {
     "title": "Request History",
