@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import { Dispatch, SetStateAction } from 'react';
 import toast from 'react-hot-toast';
 import type { Language } from 'postman-code-generators';
+import { dbg } from '@/log';
 
 type Props = {
   languages: Language[];
@@ -39,7 +40,15 @@ export default function CodeGenerationSection({
             marginBottom: '1rem',
           }}
         >
-          <select value={selectedLanguage} onChange={(e) => setSelectedLanguage(e.target.value)}>
+          <select
+            name='language'
+            id='language'
+            value={selectedLanguage}
+            onChange={(e) => setSelectedLanguage(e.target.value)}
+            onClick={() => {
+              dbg('selectedLanguage=', selectedLanguage);
+            }}
+          >
             {languages.map((lang) =>
               lang.variants.map((variant) => (
                 <option key={`${lang.key}-${variant.key}`} value={`${lang.key},${variant.key}`}>

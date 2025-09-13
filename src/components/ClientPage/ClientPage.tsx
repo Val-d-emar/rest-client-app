@@ -22,6 +22,7 @@ import { Language, PostmanRequest, Options } from 'postman-code-generators';
 import CodeGenerator from '../CodeGenerator/CodeGenerator';
 import * as codegen from 'postman-code-generators';
 import { Request } from 'postman-collection';
+import Spinner from '../Spinner/Spinner';
 
 const ENCODING_TOAST_ID = 'encoding-error-toast';
 
@@ -99,7 +100,16 @@ export default function ClientPage() {
 
   useEffect(() => {
     getAvailableLanguages()
-      .then(setLanguages)
+      .then((langs) => {
+        if (langs && langs.length > 0) {
+          setLanguages(langs);
+          const defaultLang = langs[0];
+          const defaultVariant = defaultLang.variants[0];
+          setSelectedLanguage(`${defaultLang.key},${defaultVariant.key}`);
+        } else {
+          toast.error('Language list is empty.');
+        }
+      })
       .catch((error) => {
         err('Failed to load code generators:', error);
         toast.error('Could not load code generators.');
@@ -286,6 +296,7 @@ export default function ClientPage() {
       setLoading(false);
     }
   };
+
   return (
     <div className={classes.wrapper}>
       <h1>{t('title')}</h1>
@@ -301,12 +312,18 @@ export default function ClientPage() {
           />
           <RequestHeaders headers={headers} setHeaders={setHeaders} />
           <RequestBody body={body} setBody={setBody} />
-          <CodeGenerator
-            languages={languages}
-            selectedLanguage={selectedLanguage}
-            setSelectedLanguage={setSelectedLanguage}
-            generatedCode={generatedCode}
-          />
+          {languages.length > 0 ? (
+            <CodeGenerator
+              languages={languages}
+              selectedLanguage={selectedLanguage}
+              setSelectedLanguage={setSelectedLanguage}
+              generatedCode={generatedCode}
+            />
+          ) : (
+            <div>
+              <Spinner />
+            </div>
+          )}
         </section>
         <div className={classes.divider}></div>
         <section className={classes.panel}>
