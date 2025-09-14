@@ -5,11 +5,13 @@ type VariableItem = {
   value: string;
 };
 
-export const getStoredVariables = (): Record<string, string> => {
-  if (typeof window === 'undefined') return {};
+export const getStoredVariables = (userId: string | null): Record<string, string> => {
+  if (typeof window === 'undefined' || !userId) return {};
+
+  const storageKey = `app-variables-${userId}`;
 
   try {
-    const item = window.localStorage.getItem('app-variables');
+    const item = window.localStorage.getItem(storageKey);
     if (!item) return {};
 
     const variablesArray: VariableItem[] = JSON.parse(item);
