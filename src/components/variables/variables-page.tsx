@@ -1,5 +1,6 @@
 'use client';
 
+import { useAuth } from '@/context/AuthContext';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { useTranslations } from 'next-intl';
 import { v4 as uuidv4 } from 'uuid';
@@ -12,8 +13,10 @@ type VariableItem = {
 
 export default function VariablesPage() {
   const t = useTranslations('VariablesPage');
+  const { user } = useAuth();
 
-  const [variables, setVariables] = useLocalStorage<VariableItem[]>('app-variables', []);
+  const storageKey = user ? `app-variables-${user.uid}` : 'app-variables-unauthorized-access';
+  const [variables, setVariables] = useLocalStorage<VariableItem[]>(storageKey, []);
 
   const handleAddVariable = () => {
     setVariables([...variables, { id: uuidv4(), key: '', value: '' }]);

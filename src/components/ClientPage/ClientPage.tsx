@@ -115,7 +115,7 @@ export default function ClientPage() {
   }, []);
 
   useEffect(() => {
-    const variables = getStoredVariables();
+    const variables = getStoredVariables(user?.uid || null);
     const processedUrl = substituteVariables(url, variables);
     const processedBody = substituteVariables(body, variables);
     const processedHeaders = headers.map((h) => ({
@@ -149,7 +149,7 @@ export default function ClientPage() {
         setGeneratedCode(t('ErrorGenerating'));
         err(error);
       });
-  }, [method, url, body, headers, selectedLanguage, t]);
+  }, [method, url, body, headers, selectedLanguage, t, user]);
 
   const createAndSaveLog = async (
     startTime: number,
@@ -212,7 +212,7 @@ export default function ClientPage() {
     setResponse(null);
     const TIMEOUT_DURATION = Number(process.env.NEXT_PUBLIC_FETCH_TIMEOUT_DURATION) || 15000;
 
-    const variables = getStoredVariables();
+    const variables = getStoredVariables(user.uid);
 
     const processedUrl = substituteVariables(url, variables);
     const processedBody = substituteVariables(body, variables);
