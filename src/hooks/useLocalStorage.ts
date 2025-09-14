@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import { dbg, warn } from '@/log';
+import { useState, useCallback, Dispatch, SetStateAction } from 'react';
+import { dbg } from '@/log';
 
-export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T) => void] {
+export function useLocalStorage<T>(key: string, initialValue: T): [T, Dispatch<SetStateAction<T>>] {
   const [storedValue, setStoredValue] = useState<T>(() => {
     if (typeof window === 'undefined') {
       return initialValue;
@@ -17,19 +17,26 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T)
     }
   });
 
-  const setValue = useCallback(
-    (value: T | ((val: T) => T)) => {
+  const setValue: Dispatch<SetStateAction<T>> = useCallback(
+    (value) => {
       try {
-        const valueToStore = value instanceof Function ? value(storedValue) : value;
-        setStoredValue(valueToStore);
+        setStoredValue(value);
         if (typeof window !== 'undefined') {
-          window.localStorage.setItem(key, JSON.stringify(valueToStore));
+          if (value instanceof Function) {
+            setStoredValue((prev) => {
+              const newValue = value(prev);
+              window.localStorage.setItem(key, JSON.stringify(newValue));
+              return newValue;
+            });
+          } else {
+            window.localStorage.setItem(key, JSON.stringify(value));
+          }
         }
       } catch (error) {
         dbg(`Error setting localStorage key “${key}”:`, error);
       }
     },
-    [key, storedValue],
+    [key],
   );
 
   return [storedValue, setValue];
