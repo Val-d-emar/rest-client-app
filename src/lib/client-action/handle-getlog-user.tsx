@@ -1,5 +1,4 @@
 import { getHistoryByUserAction } from '@/lib/actions/server-actions';
-import { getCurrentUserId } from '@/lib/firebase/config';
 import { GetLogsResult } from '@/type/type';
 
 export const handleGetLogUserById = async (

@@ -42,7 +42,9 @@ export default function HistoryPageClient({ initialData }: HistoryPageClientProp
         <button onClick={refreshLogs} disabled={loading}>
           {loading ? t('refreshing') : t('refreshButton')}
         </button>
-        <h3>{t('userLogs', { user: user?.email || 'unknown', count: result.count })}</h3>
+        <h1 className='user-logs'>
+          {t('userLogs', { user: user?.email || 'unknown', count: result.count })}
+        </h1>
         <HistoryTable logs={result.data} />
       </>
     );
