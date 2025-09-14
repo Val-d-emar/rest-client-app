@@ -33,7 +33,7 @@ export default function VariablesPage() {
   };
 
   return (
-    <div className='container' style={{ maxWidth: '800px' }}>
+    <section className='container' style={{ maxWidth: '800px' }}>
       <h1>{t('title')}</h1>
       <p className='centered'>{t('description')}</p>
 
@@ -67,6 +67,6 @@ export default function VariablesPage() {
           {t('addButton')}
         </button>
       </div>
-    </div>
+    </section>
   );
 }

@@ -26,15 +26,21 @@ export default async function HistoryPage({ params }: Props) {
     const result = await getHistoryByUserAction(userId);
     if (result.count === 0) {
       return (
-        <div className='history-wrapper'>
+        <section className='history-wrapper'>
           <div className='modal'>
             <h2 className='warn'>{t('noRequestsYet')}</h2>
             <Link href='/client'>{t('createNewRequest')}</Link>
-            <Suspense fallback={<Spinner />}>
+            <Suspense
+              fallback={
+                <div style={{ padding: '20px', textAlign: 'center' }}>
+                  <Spinner />
+                </div>
+              }
+            >
               <HistoryPageClient initialData={null} />
             </Suspense>
           </div>
-        </div>
+        </section>
       );
     }
     if (!result.success) {
@@ -42,37 +48,55 @@ export default async function HistoryPage({ params }: Props) {
         ? t(`serverMessages.${result.messageCode}`)
         : result.message;
       return (
-        <div className='history-wrapper'>
+        <section className='history-wrapper'>
           <div className='modal'>
             <h2 className='warn'>
               {t('noLogsAvailable')} {message}
             </h2>
             <Link href='/client'>{t('createNewRequest')}</Link>
-            <Suspense fallback={<Spinner />}>
+            <Suspense
+              fallback={
+                <div style={{ padding: '20px', textAlign: 'center' }}>
+                  <Spinner />
+                </div>
+              }
+            >
               <HistoryPageClient initialData={null} />
             </Suspense>
           </div>
-        </div>
+        </section>
       );
     }
     return (
-      <div className='history-wrapper'>
-        <Suspense fallback={<Spinner />}>
+      <section className='history-wrapper'>
+        <Suspense
+          fallback={
+            <div style={{ padding: '20px', textAlign: 'center' }}>
+              <Spinner />
+            </div>
+          }
+        >
           <HistoryPageClient initialData={result} />
         </Suspense>
-      </div>
+      </section>
     );
   } catch (error) {
     return (
-      <div className='history-wrapper'>
+      <section className='history-wrapper'>
         <div className='modal'>
           <h2 className='warn'>{t('serverError')}</h2>
           <Link href='/client'>{t('createNewRequest')}</Link>
-          <Suspense fallback={<Spinner />}>
+          <Suspense
+            fallback={
+              <div style={{ padding: '20px', textAlign: 'center' }}>
+                <Spinner />
+              </div>
+            }
+          >
             <HistoryPageClient initialData={null} />
           </Suspense>
         </div>
-      </div>
+      </section>
     );
   }
 }

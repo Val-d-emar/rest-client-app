@@ -3,6 +3,7 @@
   z-index: 1000;
   top: 0;
 
+  width: 100%;
   padding: 1rem;
 
   background-color: var(--header-footer-color);
@@ -18,8 +19,10 @@
 
 .flex-wrapper {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
+
   margin: 1rem auto;
 }
 

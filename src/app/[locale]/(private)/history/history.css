@@ -24,9 +24,14 @@
   min-width: 340px;
 }
 
-.warn {
+h2.warn {
   margin-bottom: 10px;
-  font-size: 1.2rem;
+  font-size: clamp(1.125rem, 0.8846rem + 0.9615vw, 1.75rem);
+  text-align: center;
+}
+
+h1.user-logs {
+  font-size: clamp(1.125rem, 0.8846rem + 0.9615vw, 1.75rem);
   text-align: center;
 }
 
