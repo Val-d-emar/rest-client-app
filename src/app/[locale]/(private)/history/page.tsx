@@ -5,6 +5,7 @@ import { Suspense, lazy } from 'react';
 import { redirect } from 'next/navigation';
 import './history.css';
 import Spinner from '@/components/Spinner/Spinner';
+import { dbg } from '@/log';
 
 const HistoryPageClient = lazy(() => import('@/components/history/history-page-client'));
 interface Props {
@@ -81,6 +82,7 @@ export default async function HistoryPage({ params }: Props) {
       </section>
     );
   } catch (error) {
+    dbg(error);
     return (
       <section className='history-wrapper'>
         <div className='modal'>

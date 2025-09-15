@@ -22,7 +22,7 @@ export function warn(...args: unknown[]) {
   }
 }
 
-export function dbg(...args: any[]) {
+export function dbg(...args: unknown[]) {
   if (DEBUG_LOGGING_ENABLED) {
     console.debug('[DBG]', ...args);
   }

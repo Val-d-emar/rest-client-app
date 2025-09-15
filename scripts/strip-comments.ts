@@ -51,7 +51,7 @@ files.forEach((file: string) => {
       preserveNewlines: true,
       block: false,
     });
-    if (content.length != strippedContent.length) {
+    if (content.length !== strippedContent.length) {
       console.log('strip-comment fixed:', file);
       fs.writeFileSync(file, strippedContent, 'utf8');
     } else {

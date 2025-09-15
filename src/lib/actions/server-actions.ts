@@ -5,6 +5,7 @@ import { db } from '@/lib/firebase/config';
 import { HttpRequestLog, AddLogResult, GetLogsResult } from '@/type/type';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
+import { dbg } from '@/log';
 
 type FirestoreHttpRequestLog = Omit<HttpRequestLog, 'timestamp'> & {
   timestamp: Timestamp;
@@ -100,6 +101,7 @@ export async function getCurrentUserIdAction(): Promise<string | null> {
     }
     return null;
   } catch (error) {
+    dbg(error);
     return null;
   }
 }

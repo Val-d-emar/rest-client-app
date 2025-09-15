@@ -13,6 +13,7 @@ export default function GlobalError({
         <div className='centered-container'>
           <h2>Something went wrong!</h2>
           <p>An unexpected error occurred. Please try to reload the page.</p>
+          <p>{error.message}</p>
           <button onClick={() => reset()} className='error-button'>
             Reload the page
           </button>

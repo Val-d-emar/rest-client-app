@@ -182,6 +182,7 @@ export default function ClientPage() {
       const addLogResult = await handleAddLog(logData, tGlobal);
       return addLogResult;
     } catch (error) {
+      dbg(error);
       return null;
     }
   };

@@ -2,7 +2,7 @@
 
 import { v4 } from 'uuid';
 import classes from './RequestHeaders.module.css';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { useTranslations } from 'next-intl';
 
 export type HeaderItem = {
@@ -16,21 +16,6 @@ type RequestHeadersProps = {
   headers: HeaderItem[];
   setHeaders: Dispatch<SetStateAction<HeaderItem[]>>;
 };
-
-const HEADERS: HeaderItem[] = [
-  {
-    id: v4(),
-    enabled: true,
-    key: 'Accept',
-    value: '*/*',
-  },
-  {
-    id: v4(),
-    enabled: false,
-    key: 'Connection',
-    value: 'keep-alive',
-  },
-];
 
 const createEmptyHeader: () => HeaderItem = () => {
   return {

@@ -1,5 +1,5 @@
 'use client';
-import router from 'next/router';
+
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 
 interface Props {
