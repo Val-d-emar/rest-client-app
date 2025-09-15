@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import '../sign-in/form.css';
 import FormContent from '../sign-in/form-content';
 import { useAuth } from '@/context/AuthContext';
@@ -15,12 +15,12 @@ type SubmitValues = {
 };
 
 const SignUpForm: React.FC = () => {
-  const [error, setError] = useState<string | null>(null);
+  // const [error, setError] = useState<string | null>(null);
   const { signUp } = useAuth();
   const router = useRouter();
   const t = useTranslations('AuthForm');
   const handleSignUp = async (userData: SubmitValues) => {
-    setError(null);
+    // setError(null);
     const toastId = toast.loading(t('registering'));
     try {
       await signUp(userData.email, userData.password);
@@ -31,7 +31,7 @@ const SignUpForm: React.FC = () => {
       router.push('/');
     } catch (error) {
       const errorMessage = (error as Error)?.message || t('registrationFailed');
-      setError(errorMessage);
+      // setError(errorMessage);
       toast.error(errorMessage, {
         id: toastId,
       });
@@ -40,7 +40,8 @@ const SignUpForm: React.FC = () => {
 
   return (
     <div className={'wrapper'}>
-      <FormContent onSignUp={handleSignUp} error={error} setError={setError} />
+      {/* <FormContent onSignUp={handleSignUp} error={error} setError={setError} /> */}
+      <FormContent onSignUp={handleSignUp} />
     </div>
   );
 };
