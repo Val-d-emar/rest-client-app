@@ -18,13 +18,6 @@ export async function addHistoryLogAction(logData: HttpRequestLog): Promise<AddL
       timestamp: Timestamp.fromDate(logData.timestamp),
     };
 
-    Object.keys(cleanedData).forEach((key) => {
-      const typedKey = key as keyof FirestoreHttpRequestLog;
-      if (cleanedData[typedKey] === undefined) {
-        delete cleanedData[typedKey];
-      }
-    });
-
     const docRef = await addDoc(collection(db, 'history'), cleanedData);
     revalidatePath('/');
     return {
