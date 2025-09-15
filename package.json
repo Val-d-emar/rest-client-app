@@ -8,11 +8,13 @@
     "start": "next start",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
+    "lint:strict": "ESLINT_STRICT_MODE=true eslint .",
     "format:fix": "prettier --write .",
     "format:check": "prettier --check .",
     "stylelint": "stylelint \"**/*.css\"",
     "stylelint:fix": "stylelint \"**/*.css\" --fix",
     "type:check": "tsc --noEmit -p tsconfig.test.json",
+    "type:strict": "tsc --noEmit -p tsconfig.strict.json",
     "fix": "npm-run-all --parallel --continue-on-error format:fix lint:fix stylelint:fix type:check",
     "prepare": "husky",
     "docs": "npx tsx scripts/doc-source.ts",
@@ -62,6 +64,7 @@
     "stylelint-config-clean-order": "^7.0.0",
     "stylelint-config-standard": "^39.0.0",
     "typescript": "^5",
+    "typescript-eslint": "^8.43.0",
     "vitest": "^3.2.4"
   }
 }
