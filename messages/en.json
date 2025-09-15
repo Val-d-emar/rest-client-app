@@ -33,7 +33,8 @@
       "title": "Request body",
       "prettifyButton": "Prettify",
       "JSONPlaceholder": "Enter JSON",
-      "textPlaceholder": "Enter plain text"
+      "textPlaceholder": "Enter plain text",
+      "prettifyError": "Invalid JSON format"
     },
     "response": {
       "title": "Response",

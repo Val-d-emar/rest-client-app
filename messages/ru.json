@@ -33,7 +33,8 @@
       "title": "Тело запроса",
       "prettifyButton": "Форматировать",
       "JSONPlaceholder": "Введите JSON",
-      "textPlaceholder": "Введите текст"
+      "textPlaceholder": "Введите текст",
+      "prettifyError": "Неверный формат JSON"
     },
     "response": {
       "title": "Ответ",
