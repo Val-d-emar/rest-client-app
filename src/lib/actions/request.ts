@@ -19,7 +19,6 @@ export interface ServerResponse {
 }
 
 export async function forwardRequest(payload: RequestPayload): Promise<ServerResponse> {
-  const startTime = performance.now();
   try {
     const response = await fetch(payload.url, {
       method: payload.method,

@@ -2,7 +2,7 @@
 
 import { v4 } from 'uuid';
 import classes from './RequestHeaders.module.css';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { useTranslations } from 'next-intl';
 
 export type HeaderItem = {

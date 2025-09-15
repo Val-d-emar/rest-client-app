@@ -1,7 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import SignUpForm from './signup-form';
-import { useAuth } from '@/context/AuthContext';
 
 vi.mock('@/context/AuthContext');
 vi.mock('../sign-in/form-content', () => ({
