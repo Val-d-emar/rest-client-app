@@ -12,6 +12,7 @@ import classes from './Header.module.css';
 import { useAuth } from '@/context/AuthContext';
 import { err } from '@/log';
 import toast from 'react-hot-toast';
+import NavLinks from '../NavLinks/NavLinks';
 
 export default function Header() {
   const t = useTranslations('HomePage');
@@ -45,10 +46,11 @@ export default function Header() {
   return (
     <header className={`${classes.header} ${scrolled ? classes.scrolled : ''}`}>
       <nav className={`container ${classes['flex-wrapper']}`}>
-        <Link href='/' className={classes['logo-wrapper']}>
+        <Link href='/' className={classes['logo-wrapper'] + ' active-link'}>
           <Image src='/logo.png' alt={t('logoAlt')} width={60} height={60} priority={true} />
-          <span className={classes.brandText}>{t('title')}</span>
         </Link>
+
+        {user && <NavLinks />}
 
         <div className={classes.controls}>
           <LocaleSwitcher />
@@ -56,9 +58,6 @@ export default function Header() {
             <>
               {user ? (
                 <>
-                  <button onClick={() => router.replace('/')} className={classes.button}>
-                    {t('MainPage')}
-                  </button>
                   <button onClick={handleSignOut} className={classes.button}>
                     {t('SignOutLabel')}
                   </button>

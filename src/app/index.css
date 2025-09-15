@@ -334,3 +334,8 @@ footer {
 
   outline: none;
 }
+
+.active-link {
+  font-weight: 700;
+  color: var(--detail-color);
+}
