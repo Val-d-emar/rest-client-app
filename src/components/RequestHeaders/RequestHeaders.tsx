@@ -17,21 +17,6 @@ type RequestHeadersProps = {
   setHeaders: Dispatch<SetStateAction<HeaderItem[]>>;
 };
 
-const HEADERS: HeaderItem[] = [
-  {
-    id: v4(),
-    enabled: true,
-    key: 'Accept',
-    value: '*/*',
-  },
-  {
-    id: v4(),
-    enabled: false,
-    key: 'Connection',
-    value: 'keep-alive',
-  },
-];
-
 const createEmptyHeader: () => HeaderItem = () => {
   return {
     id: v4(),
