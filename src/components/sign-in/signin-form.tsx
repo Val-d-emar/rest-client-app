@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import './form.css';
 import FormContent from './form-content';
 import { useAuth } from '@/context/AuthContext';

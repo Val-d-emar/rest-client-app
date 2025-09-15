@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import '../sign-in/form.css';
 import FormContent from '../sign-in/form-content';
 import { useAuth } from '@/context/AuthContext';
@@ -15,7 +15,7 @@ type SubmitValues = {
 };
 
 const SignUpForm: React.FC = () => {
-  const [error, setError] = useState<string | null>(null);
+  // const [error, setError] = useState<string | null>(null);
   const { signUp } = useAuth();
   const router = useRouter();
   const t = useTranslations('AuthForm');
