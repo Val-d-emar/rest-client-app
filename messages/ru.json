@@ -36,7 +36,8 @@
     "EnterURL": "Введите URL-адрес для генерации кода.",
     "ErrorGenerating": "Ошибка при генерации фрагмента кода.",
     "FailedToEncode": "Не удалось закодировать в base64: ",
-    "FailedToDecode": "Не удалось декодировать из base64: "
+    "FailedToDecode": "Не удалось декодировать из base64: ",
+    "errorSessionExpired": "Ваша сессия истекла. Пожалуйста, войдите снова."
   },
   "NotFoundPage": {
     "title": "Страница не найдена",

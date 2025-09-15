@@ -69,10 +69,10 @@ describe('FormContent Internationalization', () => {
       render(
         <FormContent
           onSignUp={mockSignUp}
-          error={null}
-          setError={function (error: string | null): void {
-            throw new Error('Function not implemented.');
-          }}
+          // error={null}
+          // setError={function (error: string | null): void {
+          //   throw new Error('Function not implemented.');
+          // }}
         />,
       );
 
@@ -86,10 +86,10 @@ describe('FormContent Internationalization', () => {
       render(
         <FormContent
           onSignIn={mockSignIn}
-          error={null}
-          setError={function (error: string | null): void {
-            throw new Error('Function not implemented.');
-          }}
+          // error={null}
+          // setError={function (error: string | null): void {
+          //   throw new Error('Function not implemented.');
+          // }}
         />,
       );
 
@@ -101,10 +101,10 @@ describe('FormContent Internationalization', () => {
     it('renders submit button in English', () => {
       render(
         <FormContent
-          error={null}
-          setError={function (error: string | null): void {
-            throw new Error('Function not implemented.');
-          }}
+        // error={null}
+        // setError={function (error: string | null): void {
+        //   throw new Error('Function not implemented.');
+        // }}
         />,
       );
 
@@ -116,10 +116,10 @@ describe('FormContent Internationalization', () => {
       render(
         <FormContent
           onSignIn={mockSignIn}
-          error={null}
-          setError={function (error: string | null): void {
-            throw new Error('Function not implemented.');
-          }}
+          // error={null}
+          // setError={function (error: string | null): void {
+          //   throw new Error('Function not implemented.');
+          // }}
         />,
       );
 
@@ -131,10 +131,10 @@ describe('FormContent Internationalization', () => {
       render(
         <FormContent
           onSignUp={mockSignUp}
-          error={null}
-          setError={function (error: string | null): void {
-            throw new Error('Function not implemented.');
-          }}
+          // error={null}
+          // setError={function (error: string | null): void {
+          //   throw new Error('Function not implemented.');
+          // }}
         />,
       );
 
@@ -152,10 +152,10 @@ describe('FormContent Internationalization', () => {
       render(
         <FormContent
           onSignUp={mockSignUp}
-          error={null}
-          setError={function (error: string | null): void {
-            throw new Error('Function not implemented.');
-          }}
+          // error={null}
+          // setError={function (error: string | null): void {
+          //   throw new Error('Function not implemented.');
+          // }}
         />,
       );
 
@@ -169,10 +169,10 @@ describe('FormContent Internationalization', () => {
       render(
         <FormContent
           onSignIn={mockSignIn}
-          error={null}
-          setError={function (error: string | null): void {
-            throw new Error('Function not implemented.');
-          }}
+          // error={null}
+          // setError={function (error: string | null): void {
+          //   throw new Error('Function not implemented.');
+          // }}
         />,
       );
 
@@ -184,10 +184,10 @@ describe('FormContent Internationalization', () => {
     it('renders submit button in Russian', () => {
       render(
         <FormContent
-          error={null}
-          setError={function (error: string | null): void {
-            throw new Error('Function not implemented.');
-          }}
+        // error={null}
+        // setError={function (error: string | null): void {
+        //   throw new Error('Function not implemented.');
+        // }}
         />,
       );
 
@@ -199,10 +199,10 @@ describe('FormContent Internationalization', () => {
       render(
         <FormContent
           onSignIn={mockSignIn}
-          error={null}
-          setError={function (error: string | null): void {
-            throw new Error('Function not implemented.');
-          }}
+          // error={null}
+          // setError={function (error: string | null): void {
+          //   throw new Error('Function not implemented.');
+          // }}
         />,
       );
 
@@ -214,10 +214,10 @@ describe('FormContent Internationalization', () => {
       render(
         <FormContent
           onSignUp={mockSignUp}
-          error={null}
-          setError={function (error: string | null): void {
-            throw new Error('Function not implemented.');
-          }}
+          // error={null}
+          // setError={function (error: string | null): void {
+          //   throw new Error('Function not implemented.');
+          // }}
         />,
       );
 
@@ -230,10 +230,10 @@ describe('FormContent Internationalization', () => {
       currentLocale = 'en';
       render(
         <FormContent
-          error={null}
-          setError={function (error: string | null): void {
-            throw new Error('Function not implemented.');
-          }}
+        // error={null}
+        // setError={function (error: string | null): void {
+        //   throw new Error('Function not implemented.');
+        // }}
         />,
       );
 
@@ -247,10 +247,10 @@ describe('FormContent Internationalization', () => {
       currentLocale = 'ru';
       render(
         <FormContent
-          error={null}
-          setError={function (error: string | null): void {
-            throw new Error('Function not implemented.');
-          }}
+        // error={null}
+        // setError={function (error: string | null): void {
+        //   throw new Error('Function not implemented.');
+        // }}
         />,
       );
 

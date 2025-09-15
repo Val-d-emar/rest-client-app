@@ -29,7 +29,7 @@ describe('useAuth hook and AuthProvider', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    mockedOnIdTokenChanged.mockImplementation((auth, callback) => {
+    mockedOnIdTokenChanged.mockImplementation((_auth, callback) => {
       if (typeof callback === 'function') {
         idTokenCallback = callback;
       }

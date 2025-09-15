@@ -36,7 +36,8 @@
     "EnterURL": "Enter a URL to generate code.",
     "ErrorGenerating": "Error generating code snippet.",
     "FailedToEncode": "Failed to encode to base64: ",
-    "FailedToDecode": "Failed to decode from base64: "
+    "FailedToDecode": "Failed to decode from base64: ",
+    "errorSessionExpired": "Your session has expired. Please sign in again."
   },
   "NotFoundPage": {
     "title": "Page not found",
