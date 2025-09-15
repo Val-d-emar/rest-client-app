@@ -76,7 +76,7 @@ export default function BodyPane({ body, setBody, readonly, status, statusText }
             setBody(e.target.value);
           }
         }}
-        className={classes.mono}
+        className='mono'
       />
     </div>
   );
