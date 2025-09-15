@@ -24,13 +24,22 @@
       "sendingButton": "Отправляется"
     },
     "requestHeaders": {
+      "title": "HTTP заголовки",
       "headerKeyPlaceholder": "Заголовок",
       "headerValuePlaceholder": "Значение"
     },
     "requestBody": {
+      "title": "Тело запроса",
       "prettifyButton": "Форматировать",
       "JSONPlaceholder": "Введите JSON",
       "textPlaceholder": "Введите текст"
+    },
+    "response": {
+      "title": "Ответ",
+      "responseBody": "Тело ответа",
+      "responseHeaders": "Заголовки",
+      "responsePlaceholder": "Отправьте запрос, чтобы увидеть ответ здесь.",
+      "error": "Ошибка"
     },
     "FailedToLoad": "Не удалось загрузить генераторы кода.",
     "EnterURL": "Введите URL-адрес для генерации кода.",
