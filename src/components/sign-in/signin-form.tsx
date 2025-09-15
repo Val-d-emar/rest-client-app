@@ -14,7 +14,7 @@ type SubmitValues = {
 };
 
 const SignInForm: React.FC = () => {
-  const [error, setError] = useState<string | null>(null);
+  // const [error, setError] = useState<string | null>(null);
   const { signIn } = useAuth();
   const t = useTranslations('AuthForm');
 
@@ -27,7 +27,7 @@ const SignInForm: React.FC = () => {
     } catch (error) {
       err('Sign in error:', error);
       const errorMessage = (error as Error)?.message;
-      setError(errorMessage);
+      // setError(errorMessage);
       toast.error(errorMessage, {
         id: toastId,
       });
@@ -36,7 +36,8 @@ const SignInForm: React.FC = () => {
 
   return (
     <div className={'wrapper'}>
-      <FormContent onSignIn={handleSignIn} error={error} setError={setError} />
+      {/* <FormContent onSignIn={handleSignIn} error={error} setError={setError} /> */}
+      <FormContent onSignIn={handleSignIn} />
     </div>
   );
 };
