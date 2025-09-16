@@ -1,72 +1,82 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
 import SignUpForm from './signup-form';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from '@/i18n/navigation';
+import { toast } from 'react-hot-toast';
 
 vi.mock('@/context/AuthContext');
-vi.mock('../sign-in/form-content', () => ({
-  default: ({ onSignUp }: { onSignUp?: (userData: any) => void }) => (
-    <div data-testid='form-content'>
-      Mocked FormContent
-      {onSignUp && <span data-testid='signup-prop'>onSignUp prop received</span>}
-    </div>
-  ),
+vi.mock('@/i18n/navigation', () => ({ useRouter: vi.fn() }));
+vi.mock('react-hot-toast');
+vi.mock('next-intl', () => ({
+  useTranslations: () => (key: string) => key.split('.').pop() || key,
 }));
 
-describe.skip('SignUpForm Component', () => {
-  it('renders without crashing', () => {
-    render(<SignUpForm />);
+describe('SignUpForm', () => {
+  describe('Integration Tests', () => {
+    const mockSignUp = vi.fn();
+    const mockRouterPush = vi.fn();
 
-    expect(screen.getByTestId('form-content')).toBeInTheDocument();
+    beforeEach(() => {
+      (useAuth as Mock).mockReturnValue({ signUp: mockSignUp });
+      (useRouter as Mock).mockReturnValue({ push: mockRouterPush });
+      vi.clearAllMocks();
+    });
+
+    it('should successfully sign up a user and redirect', async () => {
+      mockSignUp.mockResolvedValue(undefined);
+      const user = userEvent.setup();
+
+      render(<SignUpForm />);
+
+      await user.type(screen.getByLabelText(/email/i), 'newuser@example.com');
+      await user.type(screen.getByLabelText(/^\* password:/i), 'ValidPass123!');
+
+      await user.type(screen.getByLabelText(/^\* confirmPassword:/i), 'ValidPass123!');
+
+      await user.click(screen.getByRole('button', { name: /signUp/i }));
+
+      await waitFor(() => {
+        expect(mockSignUp).toHaveBeenCalledWith('newuser@example.com', 'ValidPass123!');
+        expect(toast.success).toHaveBeenCalledWith('registrationSuccess', expect.any(Object));
+        expect(mockRouterPush).toHaveBeenCalledWith('/');
+      });
+    });
+
+    it('should show an error toast if sign up fails', async () => {
+      const errorMessage = 'Firebase: This email is already in use.';
+      mockSignUp.mockRejectedValue(new Error(errorMessage));
+      const user = userEvent.setup();
+
+      render(<SignUpForm />);
+
+      await user.type(screen.getByLabelText(/email/i), 'newuser@example.com');
+      await user.type(screen.getByLabelText(/^\* password:/i), 'ValidPass123!');
+      await user.type(screen.getByLabelText(/^\* confirmPassword:/i), 'ValidPass123!');
+
+      await user.click(screen.getByRole('button', { name: /signUp/i }));
+
+      await waitFor(() => {
+        expect(toast.error).toHaveBeenCalledWith(errorMessage, expect.any(Object));
+        expect(mockRouterPush).not.toHaveBeenCalled();
+      });
+    });
   });
 
-  it('renders wrapper div with correct className', () => {
-    const { container } = render(<SignUpForm />);
+  describe('Structural Tests', () => {
+    it('renders the form wrapper and its content', () => {
+      const { container } = render(<SignUpForm />);
 
-    const wrapperDiv = container.querySelector('.wrapper');
-    expect(wrapperDiv).toBeInTheDocument();
-    expect(wrapperDiv).toHaveClass('wrapper');
-  });
+      const wrapperDiv = container.querySelector('.wrapper');
+      expect(wrapperDiv).toBeInTheDocument();
 
-  it('contains FormContent component', () => {
-    render(<SignUpForm />);
+      const form = container.querySelector('form');
+      expect(form).toBeInTheDocument();
 
-    const formContent = screen.getByTestId('form-content');
-    expect(formContent).toBeInTheDocument();
-    expect(formContent).toHaveTextContent('Mocked FormContent');
-  });
-
-  it('passes onSignUp prop to FormContent', () => {
-    render(<SignUpForm />);
-
-    expect(screen.getByTestId('signup-prop')).toBeInTheDocument();
-    expect(screen.getByText('onSignUp prop received')).toBeInTheDocument();
-  });
-
-  it('has correct structure', () => {
-    const { container } = render(<SignUpForm />);
-
-    const wrapperDiv = container.querySelector('.wrapper');
-    const formContent = screen.getByTestId('form-content');
-
-    expect(wrapperDiv).toContainElement(formContent);
-  });
-
-  it('applies CSS classes correctly', () => {
-    const { container } = render(<SignUpForm />);
-
-    const wrapperDiv = container.querySelector('.wrapper');
-    expect(wrapperDiv).toBeInTheDocument();
-    expect(wrapperDiv?.children).toHaveLength(1);
-  });
-
-  it('is a functional component', () => {
-    expect(typeof SignUpForm).toBe('function');
-    expect(SignUpForm.name).toBe('SignUpForm');
-  });
-
-  it('renders as React.FC type', () => {
-    const component = render(<SignUpForm />);
-    expect(component).toBeDefined();
-    expect(component.container).toBeInTheDocument();
+      expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/^\* password:/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/^\* confirmPassword:/i)).toBeInTheDocument();
+    });
   });
 });
