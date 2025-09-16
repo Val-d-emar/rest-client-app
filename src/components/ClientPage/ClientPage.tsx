@@ -78,7 +78,10 @@ export default function ClientPage() {
 
     return {
       method,
-      url: url,
+      url:
+        url || process.env.NEXT_PUBLIC_FETCH_DEBUG_URL
+          ? 'https://jsonplaceholder.typicode.com/posts/1'
+          : '',
       body,
       headers,
     };
