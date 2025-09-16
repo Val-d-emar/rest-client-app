@@ -57,7 +57,7 @@ export default function BodyPane({ body, setBody, readonly, status, statusText }
                     setBody(pretty);
                   }
                 } catch {
-                  toast.error('Invalid JSON format');
+                  toast.error(t('prettifyError'));
                 }
               }}
             >
@@ -76,7 +76,7 @@ export default function BodyPane({ body, setBody, readonly, status, statusText }
             setBody(e.target.value);
           }
         }}
-        className={classes.mono}
+        className='mono'
       />
     </div>
   );

@@ -51,7 +51,7 @@ export default function CodeGenerationSection({
             {t('copyButton')}
           </button>
         </div>
-        <pre className='response-viewer response-viewer-body'>
+        <pre className='response-viewer response-viewer-body mono'>
           <code>{generatedCode || t('SelectLanguage')}</code>
         </pre>
       </div>

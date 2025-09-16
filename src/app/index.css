@@ -313,3 +313,29 @@ footer {
   cursor: pointer;
   background-color: var(--background-color);
 }
+
+.mono {
+  resize: none;
+
+  overflow-y: auto;
+
+  width: 100%;
+  min-height: 191px;
+  max-height: 400px;
+  padding: 8px;
+  border: 1px solid var(--light-disabled-color);
+  border-radius: 4px;
+
+  font-family: var(--font-mono), monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+
+  outline: none;
+}
+
+.active-link {
+  font-weight: 700;
+  color: var(--detail-color);
+}

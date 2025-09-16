@@ -49,7 +49,7 @@ export default function RequestHeaders({ headers, setHeaders }: RequestHeadersPr
 
   return (
     <>
-      <h3>HTTP headers</h3>
+      <h3>{t('title')}</h3>
       <div className={classes.table}>
         {headers.map((header) => (
           <div key={header.id} className={classes.row}>

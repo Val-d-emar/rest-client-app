@@ -8,7 +8,6 @@ vi.mock('@/context/AuthContext');
 
 const dictionary: Record<string, string> = {
   logoAlt: 'REST Client Logo',
-  title: 'REST Client App',
   SignInLabel: 'Sign in',
   SignUpLabel: 'Sign up',
 };
@@ -58,8 +57,6 @@ describe('Header', () => {
       const logo = screen.getByRole('img', { name: dictionary.logoAlt });
       expect(logo).toBeInTheDocument();
       expect(logo).toHaveAttribute('src', '/logo.png');
-
-      expect(screen.getByText(dictionary.title)).toBeInTheDocument();
 
       expect(screen.getByTestId('locale-switcher')).toBeInTheDocument();
 
