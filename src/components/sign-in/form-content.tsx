@@ -18,11 +18,8 @@ type SubmitValues = Omit<FormDataInput, 'confirmPassword'>;
 type PropsSign = {
   onSignIn?: (userData: SubmitValues) => Promise<void> | void;
   onSignUp?: (userData: SubmitValues) => Promise<void> | void;
-  // error: string | null;
-  // setError: (error: string | null) => void;
 };
 
-// const FormContent: React.FC<PropsSign> = ({ onSignIn, onSignUp, error, setError }) => {
 const FormContent: React.FC<PropsSign> = ({ onSignIn, onSignUp }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -110,7 +107,6 @@ const FormContent: React.FC<PropsSign> = ({ onSignIn, onSignUp }) => {
 
   const onSubmit: SubmitHandler<FormDataInput> = async (data) => {
     try {
-      // setError(null);
       const { email, password } = data;
       const userData: SubmitValues = {
         email,
