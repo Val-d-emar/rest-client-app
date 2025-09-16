@@ -22,6 +22,7 @@ import { Language } from 'postman-code-generators';
 import type { PostmanRequest } from 'postman-code-generators';
 import Spinner from '@/components/Spinner/Spinner';
 import CodeGenerationSection from '@/components/CodeGenerationSection/CodeGenerationSection';
+import { withTimeout } from '@/lib/utils/timeout';
 
 const ENCODING_TOAST_ID = 'encoding-error-toast';
 
@@ -162,6 +163,7 @@ export default function ClientPage() {
     requestHeaders: Record<string, string>,
     processedBody: string,
     result: ServerResponse,
+    timeout: number,
   ) => {
     try {
       const requestPayloadSize = processedBody ? new Blob([processedBody]).size : 0;
@@ -182,7 +184,7 @@ export default function ClientPage() {
         headers: requestHeaders,
       };
 
-      const addLogResult = await handleAddLog(logData, tGlobal);
+      const addLogResult = await withTimeout(handleAddLog(logData, tGlobal), timeout);
       return addLogResult;
     } catch (error) {
       dbg(error);
@@ -234,14 +236,7 @@ export default function ClientPage() {
     const requestStartTime = performance.now();
 
     try {
-      const timeoutPromise = new Promise<ServerResponse>((_, reject) =>
-        setTimeout(
-          () => reject(new Error(`Request timed out after ${TIMEOUT_DURATION / 1000} seconds`)),
-          TIMEOUT_DURATION,
-        ),
-      );
-
-      const result = await Promise.race([
+      const result = await withTimeout(
         forwardRequest({
           userId: user.uid,
           url: processedUrl,
@@ -249,8 +244,8 @@ export default function ClientPage() {
           headers: requestHeaders,
           body: processedBody,
         }),
-        timeoutPromise,
-      ]);
+        TIMEOUT_DURATION,
+      );
 
       const requestEndTime = performance.now();
       setResponse(result);
@@ -263,6 +258,7 @@ export default function ClientPage() {
         requestHeaders,
         processedBody,
         result,
+        TIMEOUT_DURATION,
       );
     } catch (error) {
       const requestEndTime = performance.now();
@@ -286,7 +282,8 @@ export default function ClientPage() {
         requestHeaders,
         processedBody,
         errorResponse,
-      );
+        TIMEOUT_DURATION,
+      ).catch((error) => dbg('Client-side error calling Server Action:', error));
     } finally {
       setLoading(false);
     }
