@@ -67,3 +67,41 @@
   gap: 0.5rem;
   align-items: center;
 }
+
+@media (width <= 700px) {
+  .header {
+    padding: 4px;
+  }
+
+  .scrolled {
+    padding: 0;
+  }
+
+  .logo-wrapper {
+    order: 1;
+  }
+
+  .links {
+    display: flex;
+    justify-content: center;
+    order: 3;
+    min-width: 100%;
+  }
+
+  .controls {
+    gap: 4px;
+    justify-content: center;
+    order: 2;
+  }
+}
+
+@media (width <= 368px) {
+  .logo-wrapper img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .button {
+    padding: 4px 10px;
+  }
+}

@@ -1,0 +1,54 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 1rem;
+  align-items: center;
+
+  width: 100%;
+  margin: 1rem;
+}
+
+.variables-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 0.5rem;
+
+  width: 100%;
+  max-width: 800px;
+}
+
+.row {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.inputs-wrapper {
+  display: flex;
+  flex-grow: 1;
+  gap: 1rem;
+}
+
+@media (width <= 600px) {
+  .wrapper {
+    gap: 0.4rem;
+  }
+
+  .row {
+    gap: 0.5rem;
+  }
+
+  .inputs-wrapper {
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .button {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+  }
+}
