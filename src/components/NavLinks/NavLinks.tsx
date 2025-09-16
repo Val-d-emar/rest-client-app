@@ -8,7 +8,6 @@ export default function NavLinks() {
   const t = useTranslations('HomePage');
 
   const links = [
-    { href: '/', label: t('MainPage') },
     { href: '/client', label: t('clientNavLink') },
     { href: '/history', label: t('historyLink') },
     { href: '/variables', label: t('variablesLink') },

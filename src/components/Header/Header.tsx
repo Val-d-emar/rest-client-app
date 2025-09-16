@@ -50,7 +50,11 @@ export default function Header() {
           <Image src='/logo.png' alt={t('logoAlt')} width={60} height={60} priority={true} />
         </Link>
 
-        {user && <NavLinks />}
+        {user && (
+          <div className={classes.links}>
+            <NavLinks />
+          </div>
+        )}
 
         <div className={classes.controls}>
           <LocaleSwitcher />
@@ -58,6 +62,9 @@ export default function Header() {
             <>
               {user ? (
                 <>
+                  <button onClick={() => router.replace('/')} className={classes.button}>
+                    {t('MainPage')}
+                  </button>
                   <button onClick={handleSignOut} className={classes.button}>
                     {t('SignOutLabel')}
                   </button>
