@@ -3,7 +3,6 @@ import { render, screen, waitFor } from '@testing-library/react';
 import SignInForm from './signin-form';
 import { useAuth } from '@/context/__mocks__/AuthContext';
 import { useRouter } from '@/i18n/navigation';
-import SignUpForm from '../sign-up/signup-form';
 import toast from 'react-hot-toast';
 import userEvent from '@testing-library/user-event';
 
