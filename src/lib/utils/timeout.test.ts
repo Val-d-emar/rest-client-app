@@ -1,13 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { withTimeout } from './timeout';
 
-class TimeoutError extends Error {
-  constructor(duration: number) {
-    super(`Operation timed out after ${duration / 1000} seconds`);
-    this.name = 'TimeoutError';
-  }
-}
-
 describe('withTimeout utility', () => {
   beforeEach(() => {
     vi.useFakeTimers();
