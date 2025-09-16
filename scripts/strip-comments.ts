@@ -15,28 +15,20 @@ if (!stripEnabled || files.length === 0) {
 }
 
 const jsxExtensions = ['.tsx', '.jsx'];
-const exclude = [
-  '.gitignore',
-  '.gitattributes',
-  '.yaml',
-  '.yml',
-  'config.',
-  'env.d',
-  '.md',
-  '.ico',
-  '.svg',
-];
+const include = [...jsxExtensions, '.css', '.ts', '.js', '.cjs', '.mjs', '.json'];
+const exclude = ['config.', 'env.d'];
 
 files.forEach((file: string) => {
   try {
-    const skip = exclude.some((fragment) => file.includes(fragment));
+    const extension = path.extname(file);
+    const skip =
+      !include.includes(extension) || exclude.some((fragment) => file.includes(fragment));
     if (skip) {
       console.log('strip-comment skip:', file);
       return;
     }
     const content: string = fs.readFileSync(file, 'utf8');
     let withoutJsxComments = content;
-    const extension = path.extname(file);
     if (jsxExtensions.includes(extension) && /\brender\b|\breturn\b/.test(content)) {
       withoutJsxComments = content.replace(
         />([^<]*?){\/\*([\s\S]*?)\*\/}/g,
