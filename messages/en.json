@@ -145,7 +145,6 @@
   "codeGenerator": {
     "codeGenerationTitle": "Code generation",
     "codeCopied": "Code copied to clipboard!",
-    "copyButton": "Copy",
     "SelectLanguage": "Select language to see generated code..."
   }
 }
