@@ -15,13 +15,11 @@ export default function NavLinks() {
   ];
 
   const pathname = usePathname();
-  console.log(pathname);
 
   return (
     <div className={classes.links}>
       {links.map((link, index) => {
         const isActive = pathname === link.href;
-        console.log(link, isActive, pathname);
         return (
           <Link key={index} href={link.href} className={isActive ? 'active-link' : ''}>
             {link.label}
