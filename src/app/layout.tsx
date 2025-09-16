@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { ReactNode } from 'react';
-import { Roboto, Inter, Ubuntu } from 'next/font/google';
+import { Roboto, Inter, Ubuntu, Fira_Mono } from 'next/font/google';
 import './index.css';
 
 const roboto = Roboto({
@@ -24,6 +24,13 @@ const ubuntu = Ubuntu({
   style: ['normal', 'italic'],
 });
 
+const mono = Fira_Mono({
+  variable: '--font-mono',
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+  style: ['normal'],
+});
+
 export const metadata: Metadata = {
   title: 'REST Client App',
   description: 'Client for working with REST API',
@@ -44,7 +51,9 @@ type Props = {
 export default function RootLayout({ children }: Props) {
   return (
     <html>
-      <body className={`${roboto.variable} ${inter.variable} ${ubuntu.variable}`}>{children}</body>
+      <body className={`${roboto.variable} ${inter.variable} ${ubuntu.variable} ${mono.variable}`}>
+        {children}
+      </body>
     </html>
   );
 }
