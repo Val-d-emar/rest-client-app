@@ -4,12 +4,13 @@
     "SignInLabel": "Sign In",
     "SignUpLabel": "Sign Up",
     "SignOutLabel": "Sign Out",
-    "MainPage": "Main Page",
+    "MainPage": "Main",
     "logoAlt": "logo",
     "welcomeUnauth": "Welcome!",
     "welcomeAuth": "Welcome back, {user}!",
     "defaultUser": "user",
     "clientLink": "REST Client",
+    "clientNavLink": "Client",
     "historyLink": "History",
     "variablesLink": "Variables",
     "signingOut": "Signing Out...",
@@ -24,13 +25,23 @@
       "sendingButton": "Sending"
     },
     "requestHeaders": {
+      "title": "HTTP headers",
       "headerKeyPlaceholder": "Header",
       "headerValuePlaceholder": "Value"
     },
     "requestBody": {
+      "title": "Request body",
       "prettifyButton": "Prettify",
       "JSONPlaceholder": "Enter JSON",
-      "textPlaceholder": "Enter plain text"
+      "textPlaceholder": "Enter plain text",
+      "prettifyError": "Invalid JSON format"
+    },
+    "response": {
+      "title": "Response",
+      "responseBody": "Response body",
+      "responseHeaders": "Headers",
+      "responsePlaceholder": "Send a request to see the response here.",
+      "error": "Error"
     },
     "FailedToLoad": "Could not load code generators.",
     "EnterURL": "Enter a URL to generate code.",

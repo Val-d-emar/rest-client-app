@@ -293,34 +293,36 @@ export default function ClientPage() {
     <div className={classes.wrapper}>
       <h1>{t('title')}</h1>
       <div className={classes['request-wrapper']}>
-        <section className={classes.panel}>
-          <RequestBar
-            method={method}
-            setMethod={setMethod}
-            url={url}
-            setUrl={setUrl}
-            onSend={handleSendRequest}
-            loading={loading}
-          />
-          <RequestHeaders headers={headers} setHeaders={setHeaders} />
-          <RequestBody body={body} setBody={setBody} />
-          {languages.length > 0 ? (
-            <CodeGenerationSection
-              languages={languages}
-              selectedLanguage={selectedLanguage}
-              setSelectedLanguage={setSelectedLanguage}
-              generatedCode={generatedCode}
-            />
-          ) : (
-            <div>
-              <Spinner />
-            </div>
-          )}
-        </section>
-        <div className={classes.divider}></div>
-        <section className={classes.panel}>
-          <ResponseSection response={response} loading={loading} />
-        </section>
+        <RequestBar
+          method={method}
+          setMethod={setMethod}
+          url={url}
+          setUrl={setUrl}
+          onSend={handleSendRequest}
+          loading={loading}
+        />
+        <div className={classes['panels-wrapper']}>
+          <section className={classes.panel}>
+            <RequestHeaders headers={headers} setHeaders={setHeaders} />
+            <RequestBody body={body} setBody={setBody} />
+            {languages.length > 0 ? (
+              <CodeGenerationSection
+                languages={languages}
+                selectedLanguage={selectedLanguage}
+                setSelectedLanguage={setSelectedLanguage}
+                generatedCode={generatedCode}
+              />
+            ) : (
+              <div>
+                <Spinner />
+              </div>
+            )}
+          </section>
+          <div className={classes.divider}></div>
+          <section className={classes.panel}>
+            <ResponseSection response={response} loading={loading} />
+          </section>
+        </div>
       </div>
     </div>
   );

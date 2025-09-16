@@ -14,11 +14,16 @@
   flex-grow: 1;
   gap: 0.5rem;
 
-  min-width: 340px;
   padding: 16px;
   border-radius: 10px;
 
   box-shadow: 2px 2px 8px 2px #c3c3c3;
+}
+
+.panels-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .divider {
@@ -32,7 +37,7 @@
 }
 
 @media (width >= 1200px) {
-  .request-wrapper {
+  .panels-wrapper {
     flex-direction: row;
   }
 
@@ -45,5 +50,11 @@
 
   .panel {
     min-width: 0;
+  }
+}
+
+@media (width <= 600px) {
+  .request-wrapper {
+    padding: 8px;
   }
 }
