@@ -21,7 +21,7 @@ export default function BodyPane({ body, setBody, readonly, status, statusText }
   const [bodyType, setBodyType] = useState<BodyType>('json');
 
   const statusClass =
-    status == null
+    status === undefined
       ? classes['status-neutral']
       : status < 200
         ? classes['status-neutral']

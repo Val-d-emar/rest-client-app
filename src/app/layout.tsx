@@ -36,6 +36,8 @@ export const metadata: Metadata = {
   description: 'Client for working with REST API',
   other: {
     language: 'en,ru',
+    'app:commit': process.env.NEXT_PUBLIC_GIT_COMMIT_SHA ?? 'unknown',
+    'app:build-time': process.env.NEXT_PUBLIC_BUILD_TIMESTAMP ?? 'unknown',
   },
 };
 
