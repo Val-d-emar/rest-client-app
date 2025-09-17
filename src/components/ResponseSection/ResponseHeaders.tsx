@@ -7,7 +7,7 @@ type Props = {
 };
 
 export default function ResponseHeaders({ headers }: Props) {
-  const t = useTranslations('ClientPage.responseEmptyHeaders');
+  const t = useTranslations('ClientPage.response');
   const rows: [string, string][] = headers === null ? [] : Object.entries(headers);
   if (!rows.length) return <div>{t('responseEmptyHeaders')}</div>;
 
