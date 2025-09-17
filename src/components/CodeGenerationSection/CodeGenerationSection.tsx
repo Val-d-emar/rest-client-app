@@ -55,6 +55,7 @@ export default function CodeGenerationSection({
               className={classes.button}
               onClick={handleCopy}
               disabled={!generatedCode}
+              aria-label={'copyButton'}
             >
               <svg
                 fill='currentColor'

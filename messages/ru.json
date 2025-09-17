@@ -4,7 +4,7 @@
     "SignInLabel": "Войти",
     "SignUpLabel": "Регистрация",
     "SignOutLabel": "Выйти",
-    "MainPage": "Главная",
+    "MainPage": "Главная страница",
     "logoAlt": "Логотип",
     "welcomeUnauth": "Добро пожаловать!",
     "welcomeAuth": "С возвращением, {user}!",
