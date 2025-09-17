@@ -15,7 +15,7 @@ vi.mock('next-intl', async (importOriginal) => {
 });
 
 describe('SignUpPage', () => {
-  it('should render the title and the SignInForm component', () => {
+  it('should render the title and the SignUpForm component', () => {
     render(<SignUpPage />);
 
     expect(screen.getByRole('heading', { name: /Translated: signUpTitle/i })).toBeInTheDocument();
