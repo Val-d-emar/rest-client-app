@@ -7,7 +7,7 @@ describe('log utility function', () => {
 
   beforeEach(() => {
     vi.resetModules();
-    consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    consoleLogSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
     consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
     consoleErrSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
   });
@@ -17,7 +17,7 @@ describe('log utility function', () => {
     vi.unstubAllEnvs();
   });
 
-  it('should NOT call console.log because the "logging" constant is false', async () => {
+  it('should NOT call console.info because the "logging" constant is false', async () => {
     vi.stubEnv('NEXT_PUBLIC_LOGGING_ENABLED', 'false');
     vi.stubEnv('NODE_ENV', 'development');
 
@@ -32,7 +32,7 @@ describe('log utility function', () => {
     expect(consoleWarnSpy).not.toHaveBeenCalled();
   });
 
-  it('should NOT call console.log when MODE is not "development"', async () => {
+  it('should NOT call console.info when MODE is not "development"', async () => {
     vi.stubEnv('NEXT_PUBLIC_LOGGING_ENABLED', 'true');
     vi.stubEnv('NODE_ENV', 'production');
 
@@ -47,7 +47,7 @@ describe('log utility function', () => {
     expect(consoleWarnSpy).not.toHaveBeenCalled();
   });
 
-  it('should call console.log when logging is enabled AND mode is development', async () => {
+  it('should call console.info when logging is enabled AND mode is development', async () => {
     vi.stubEnv('NEXT_PUBLIC_LOGGING_ENABLED', 'true');
     vi.stubEnv('NODE_ENV', 'development');
     const message = 'This should be logged';
