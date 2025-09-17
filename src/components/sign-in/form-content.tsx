@@ -135,7 +135,7 @@ const FormContent: React.FC<PropsSign> = ({ onSignIn, onSignUp }) => {
         <label htmlFor='email'>
           <span style={{ color: 'red' }}>*</span> {t('email')}:
         </label>
-        <input id='email' type='email' {...register('email')} tabIndex={1} />
+        <input id='email' type='email' data-testid='email' {...register('email')} tabIndex={1} />
         {errors.email && <p className='error'>{errors.email.message}</p>}
       </div>
       <div className='input-block'>
@@ -146,6 +146,7 @@ const FormContent: React.FC<PropsSign> = ({ onSignIn, onSignUp }) => {
           <input
             id='password'
             type={showPassword ? 'text' : 'password'}
+            data-testid='password'
             {...register('password', {
               ...(needsConfirmPassword && {
                 onBlur: () => {
@@ -216,6 +217,7 @@ const FormContent: React.FC<PropsSign> = ({ onSignIn, onSignUp }) => {
             <input
               id='confirm-password'
               type={showConfirmPassword ? 'text' : 'password'}
+              data-testid='confirm-password'
               {...register('confirmPassword', {
                 onBlur: () => {
                   if (needsConfirmPassword) {
