@@ -82,7 +82,7 @@ describe('CodeGenerationSection Component', () => {
   });
 
   it('should display the generated code and enable the copy button', () => {
-    const code = "console.log('hello world');";
+    const code = "writeln('hello world');";
     render(
       <CodeGenerationSection
         languages={mockLanguages}
@@ -113,7 +113,7 @@ describe('CodeGenerationSection Component', () => {
 
     clipboardSpy.mockReturnValue(mockClipboard as unknown as Clipboard);
 
-    const code = "console.log('hello');";
+    const code = "writeln('hello');";
     render(
       <CodeGenerationSection
         languages={mockLanguages}
