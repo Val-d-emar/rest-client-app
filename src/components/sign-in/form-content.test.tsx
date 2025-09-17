@@ -2,7 +2,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import FormContent from './form-content';
 
-// Создаем мок для переводов, который возвращает реальные строки
 const mockTranslations: Record<string, string | Record<string, string>> = {
   email: 'Email',
   password: 'Password',
@@ -32,7 +31,6 @@ const mockTranslations: Record<string, string | Record<string, string>> = {
 
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => {
-    // Обрабатываем вложенные ключи типа 'validation.passwordRequired'
     const keys = key.split('.');
     let result: unknown = mockTranslations;
 
@@ -40,7 +38,7 @@ vi.mock('next-intl', () => ({
       if (result && typeof result === 'object' && k in (result as Record<string, unknown>)) {
         result = (result as Record<string, unknown>)[k];
       } else {
-        return key; // Возвращаем ключ, если перевод не найден
+        return key;
       }
     }
 
@@ -56,7 +54,6 @@ describe('FormContent Password Visibility', () => {
   it('renders password fields with hidden text by default', () => {
     render(<FormContent onSignUp={vi.fn()} />);
 
-    // Ищем по id вместо лейблов
     const passwordInput = screen.getByTestId('password');
     const confirmPasswordInput = screen.getByTestId('confirm-password');
 
@@ -67,7 +64,6 @@ describe('FormContent Password Visibility', () => {
   it('shows password toggle buttons', () => {
     render(<FormContent onSignUp={vi.fn()} />);
 
-    // Ищем кнопки по aria-label
     const passwordToggleButton = screen
       .getAllByRole('button')
       .find((button) => button.getAttribute('aria-label') === 'Show password');
@@ -160,7 +156,6 @@ describe('FormContent Password Visibility', () => {
   it('renders form with all required fields', () => {
     render(<FormContent onSignUp={vi.fn()} />);
 
-    // Ищем поля ввода по их id
     expect(screen.getByTestId('password')).toBeInTheDocument();
     expect(screen.getByTestId('confirm-password')).toBeInTheDocument();
     expect(screen.getByTestId('email')).toBeInTheDocument();
