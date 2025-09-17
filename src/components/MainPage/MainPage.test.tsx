@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import MainPage from './MainPage';
+import type { User } from 'firebase/auth';
 
 vi.mock('@/context/AuthContext');
 
@@ -29,8 +30,15 @@ vi.mock('@/i18n/navigation', () => ({
   Link: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => <a {...props} />,
 }));
 
+const mockUseAuth = vi.hoisted(() => ({ user: null as User | null }));
+
+vi.mock('@/context/AuthContext', () => ({
+  useAuth: () => mockUseAuth,
+}));
+
 describe('MainPage', () => {
   it('renders guest view if user is not logged in', () => {
+    mockUseAuth.user = null;
     render(<MainPage />);
 
     expect(screen.getByRole('heading', { level: 1, name: /welcome!/i })).toBeInTheDocument();
@@ -43,7 +51,8 @@ describe('MainPage', () => {
     expect(screen.queryByRole('link', { name: /variables/i })).not.toBeInTheDocument();
   });
 
-  it.skip('renders user view if user is logged in', () => {
+  it('renders user view if user is logged in', () => {
+    mockUseAuth.user = { email: 'student@example.com' } as User;
     render(<MainPage />);
 
     expect(
@@ -58,7 +67,8 @@ describe('MainPage', () => {
     expect(screen.queryByRole('link', { name: /sign up/i })).not.toBeInTheDocument();
   });
 
-  it.skip('uses defaultUser when user is not specified', () => {
+  it('uses defaultUser when user is not specified', () => {
+    mockUseAuth.user = {} as User;
     render(<MainPage />);
 
     expect(
