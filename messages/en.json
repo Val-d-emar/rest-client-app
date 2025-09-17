@@ -131,7 +131,8 @@
     "noLogsAvailable": "No logs available.",
     "serverError": "No logs available due to a server error.",
     "refreshError": "Error refreshing logs",
-    "networkError": "Network error. Please check your internet connection."
+    "networkError": "Network error. Please check your internet connection.",
+    "timeoutError": "Network timeout error."
   },
   "client": {
     "recording": "Recording...",

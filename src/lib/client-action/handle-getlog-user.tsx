@@ -1,12 +1,14 @@
+import { TIMEOUT_DURATION } from '@/constants/constants';
 import { getHistoryByUserAction } from '@/lib/actions/server-actions';
 import { GetLogsResult } from '@/type/type';
+import { TimeoutError, withTimeout } from '../utils/timeout';
 
 export const handleGetLogUserById = async (
   userId: string,
   t?: (key: string) => string,
 ): Promise<GetLogsResult> => {
   try {
-    const result = await getHistoryByUserAction(userId);
+    const result = await withTimeout(getHistoryByUserAction(userId), TIMEOUT_DURATION);
 
     if (result.success) {
       return {
@@ -26,8 +28,15 @@ export const handleGetLogUserById = async (
     }
   } catch (error) {
     const isNetworkError = error instanceof TypeError && error.message.includes('fetch');
+    const isTimeoutError = error instanceof TimeoutError;
     const errorMessage =
-      isNetworkError && t ? t('networkError') : t ? t('refreshError') : 'Critical error occurred';
+      isNetworkError && t
+        ? t('networkError')
+        : isTimeoutError && t
+          ? t('timeoutError')
+          : t
+            ? t('refreshError')
+            : 'Critical error occurred';
 
     return {
       success: false,

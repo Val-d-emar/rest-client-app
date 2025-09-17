@@ -23,8 +23,7 @@ import type { PostmanRequest } from 'postman-code-generators';
 import Spinner from '@/components/Spinner/Spinner';
 import CodeGenerationSection from '@/components/CodeGenerationSection/CodeGenerationSection';
 import { withTimeout } from '@/lib/utils/timeout';
-
-const ENCODING_TOAST_ID = 'encoding-error-toast';
+import { ENCODING_TOAST_ID, TIMEOUT_DURATION } from '@/constants/constants';
 
 const safeBtoa = (str: string): string => {
   try {
@@ -163,7 +162,6 @@ export default function ClientPage() {
     requestHeaders: Record<string, string>,
     processedBody: string,
     result: ServerResponse,
-    timeout: number,
   ) => {
     try {
       const requestPayloadSize = processedBody ? new Blob([processedBody]).size : 0;
@@ -184,7 +182,7 @@ export default function ClientPage() {
         headers: requestHeaders,
       };
 
-      const addLogResult = await withTimeout(handleAddLog(logData, tGlobal), timeout);
+      const addLogResult = await handleAddLog(logData, tGlobal);
       return addLogResult;
     } catch (error) {
       dbg(error);
@@ -216,7 +214,6 @@ export default function ClientPage() {
     if (!user) return toast.error('You must be logged in.');
     setLoading(true);
     setResponse(null);
-    const TIMEOUT_DURATION = Number(process.env.NEXT_PUBLIC_FETCH_TIMEOUT_DURATION) || 15000;
 
     const variables = getStoredVariables(user.uid);
 
@@ -258,7 +255,6 @@ export default function ClientPage() {
         requestHeaders,
         processedBody,
         result,
-        TIMEOUT_DURATION,
       );
     } catch (error) {
       const requestEndTime = performance.now();
@@ -282,7 +278,6 @@ export default function ClientPage() {
         requestHeaders,
         processedBody,
         errorResponse,
-        TIMEOUT_DURATION,
       ).catch((error) => dbg('Client-side error calling Server Action:', error));
     } finally {
       setLoading(false);
