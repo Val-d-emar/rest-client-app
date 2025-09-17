@@ -40,6 +40,7 @@
       "title": "Ответ",
       "responseBody": "Тело ответа",
       "responseHeaders": "Заголовки",
+      "responseEmptyHeaders": "Нет заголовков",
       "responsePlaceholder": "Отправьте запрос, чтобы увидеть ответ здесь.",
       "error": "Ошибка"
     },

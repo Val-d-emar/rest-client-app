@@ -40,6 +40,7 @@
       "title": "Response",
       "responseBody": "Response body",
       "responseHeaders": "Headers",
+      "responseEmptyHeaders": "No headers",
       "responsePlaceholder": "Send a request to see the response here.",
       "error": "Error"
     },
