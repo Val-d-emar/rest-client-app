@@ -1,4 +1,4 @@
-class TimeoutError extends Error {
+export class TimeoutError extends Error {
   constructor(duration: number) {
     super(`Operation timed out after ${duration / 1000} seconds`);
     this.name = 'TimeoutError';

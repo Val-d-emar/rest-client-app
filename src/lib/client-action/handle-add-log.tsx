@@ -3,6 +3,8 @@ import { getCurrentUserId } from '@/lib/firebase/config';
 import toast from 'react-hot-toast';
 import { HttpRequestLog, AddLogResult } from '@/type/type';
 import { useTranslations } from 'next-intl';
+import { TIMEOUT_DURATION } from '@/constants/constants';
+import { TimeoutError, withTimeout } from '../utils/timeout';
 
 export const handleAddLog = async (
   logData: HttpRequestLog,
@@ -18,7 +20,7 @@ export const handleAddLog = async (
       userId: currentUserId,
     };
 
-    const result = await addHistoryLogAction(finalLogData);
+    const result = await withTimeout(addHistoryLogAction(finalLogData), TIMEOUT_DURATION);
 
     if (result.success) {
       const message = result.messageCode
@@ -50,14 +52,19 @@ export const handleAddLog = async (
 
     return result;
   } catch (error) {
-    toast.error(`💥 ${t('client.criticalError') || 'Critical error'}`, {
-      id: toastId,
-      duration: 6000,
-      style: {
-        background: '#DC2626',
-        color: 'white',
+    toast.error(
+      error instanceof TimeoutError
+        ? `💥 ${t('HistoryPage.timeoutError') || 'Timeout error'}`
+        : `💥 ${t('client.criticalError') || 'Critical error'}`,
+      {
+        id: toastId,
+        duration: 6000,
+        style: {
+          background: '#DC2626',
+          color: 'white',
+        },
       },
-    });
+    );
     throw error;
   }
 };
