@@ -24,7 +24,7 @@ files.forEach((file: string) => {
     const skip =
       !include.includes(extension) || exclude.some((fragment) => file.includes(fragment));
     if (skip) {
-      console.log('strip-comment skip:', file);
+      console.info('strip-comment skip:', file);
       return;
     }
     const content: string = fs.readFileSync(file, 'utf8');
@@ -44,10 +44,10 @@ files.forEach((file: string) => {
       block: false,
     });
     if (content.length !== strippedContent.length) {
-      console.log('strip-comment fixed:', file);
+      console.info('strip-comment fixed:', file);
       fs.writeFileSync(file, strippedContent, 'utf8');
     } else {
-      console.log('strip-comment checked:', file);
+      console.info('strip-comment checked:', file);
     }
   } catch (error) {
     if (error instanceof Error) {

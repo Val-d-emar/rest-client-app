@@ -21,7 +21,7 @@ const strictConfig = tseslint.config({
   rules: {
     ...reactHooks.configs.recommended.rules,
     eqeqeq: 'error',
-    'no-console': ['warn', { allow: ['warn', 'error'] }],
+    'no-console': ['warn', { allow: ['warn', 'error', 'info'] }],
   },
 });
 
