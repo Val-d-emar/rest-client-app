@@ -2,7 +2,7 @@
 import { err } from '@/log';
 import { HttpMethods } from '@/type/type';
 
-interface RequestPayload {
+export interface RequestPayload {
   userId: string;
   url: string;
   method: HttpMethods;

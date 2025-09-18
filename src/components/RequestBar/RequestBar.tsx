@@ -37,6 +37,7 @@ export default function RequestBar({
         className={classes.input}
         value={url}
         onChange={(e) => setUrl(e.target.value)}
+        data-testid='url-input'
       />
       <button onClick={onSend} disabled={loading}>
         {loading ? t('sendingButton') : t('sendButton')}
