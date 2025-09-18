@@ -12,7 +12,7 @@ vi.mock('next-intl', () => ({
 }));
 
 const BodyPaneMock = vi.hoisted(() =>
-  vi.fn((_props: BodyPaneProps) => <div data-testid='body-pane' />),
+  vi.fn((props: BodyPaneProps) => <div data-testid='body-pane' data-body={props.body} />),
 );
 
 vi.mock('./BodyPane', () => ({
