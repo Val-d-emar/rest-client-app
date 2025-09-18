@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import GlobalNotFound from './not-found';
 
-vi.mock('@/i18n/navigation', () => ({
+vi.mock('@next/link', () => ({
   Link: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => <a {...props} />,
 }));
 
