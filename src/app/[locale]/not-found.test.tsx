@@ -6,6 +6,7 @@ vi.mock('next-intl', async (importOriginal) => {
   const actual = await importOriginal<typeof import('next-intl')>();
 
   return {
+    ...actual,
     useTranslations: () => (key: string) => key,
   };
 });
@@ -14,7 +15,7 @@ vi.mock('@/i18n/navigation', () => ({
   Link: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => <a {...props} />,
 }));
 
-describe.skip('NotFound Page', () => {
+describe('NotFound Page', () => {
   it('should render all key elements correctly', () => {
     render(<NotFoundPage />);
 
