@@ -73,4 +73,15 @@ describe('log utility function', () => {
 
     expect(consoleErrSpy).toHaveBeenCalledWith(message, anotherArg);
   });
+  it('should NOT call console.debug when DEBUG_LOGGING_ENABLED is false', async () => {
+    vi.stubEnv('NEXT_PUBLIC_LOGGING_ENABLED', 'true');
+    vi.stubEnv('NEXT_PUBLIC_DEBUG_LOGGING_ENABLED', 'false');
+    const consoleDebugSpy = vi.spyOn(console, 'debug').mockImplementation(() => {});
+
+    const { dbg } = await import('./log');
+    dbg('This should not be logged');
+
+    expect(consoleDebugSpy).not.toHaveBeenCalled();
+    consoleDebugSpy.mockRestore();
+  });
 });
