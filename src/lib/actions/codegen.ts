@@ -4,8 +4,9 @@ import { err } from '@/log';
 import codeGenerator from 'postman-code-generators';
 import type { Language, PostmanRequest, Options } from 'postman-code-generators';
 import { Request as PostmanRequestSDK } from 'postman-collection';
+import { cache } from 'react';
 
-export async function getAvailableLanguages(): Promise<Language[]> {
+export const getAvailableLanguages = cache(async (): Promise<Language[]> => {
   try {
     const languages: Language[] = codeGenerator.getLanguageList();
     return languages;
@@ -13,7 +14,7 @@ export async function getAvailableLanguages(): Promise<Language[]> {
     err('[SERVER ACTION] Error in getAvailableLanguages:', error);
     throw new Error('Failed to get language list.');
   }
-}
+});
 
 export async function generateCodeSnippet(
   requestData: PostmanRequest,
