@@ -42,15 +42,18 @@ const mockTranslations = {
 let currentLocale = 'en';
 
 vi.mock('next-intl', () => ({
-  useTranslations: (_namespace: string) => (key: string) => {
+  useTranslations: () => (key: string) => {
     const keys = key.split('.');
-    let value: any = mockTranslations[currentLocale as keyof typeof mockTranslations];
+    let value: unknown = mockTranslations[currentLocale as keyof typeof mockTranslations];
 
     for (const k of keys) {
-      value = value?.[k];
+      value =
+        typeof value === 'object' && value !== null
+          ? (value as Record<string, unknown>)[k]
+          : undefined;
     }
 
-    return value || key;
+    return (value as string) || key;
   },
 }));
 

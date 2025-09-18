@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 
 type BodyType = 'json' | 'text';
 
-type Props = {
+export type Props = {
   body: string;
   setBody?: Dispatch<SetStateAction<string>>;
   readonly: boolean;
