@@ -138,12 +138,10 @@ describe('HistoryTable', () => {
       expect(screen.getByText('POST')).toBeInTheDocument();
       expect(screen.getByText('DELETE')).toBeInTheDocument();
 
-      // Check that all status codes are rendered
       expect(screen.getByText('200')).toBeInTheDocument();
       expect(screen.getByText('201')).toBeInTheDocument();
       expect(screen.getByText('500')).toBeInTheDocument();
 
-      // Check that latency values are rendered (now unique)
       expect(screen.getByText('250')).toBeInTheDocument();
       expect(screen.getByText('180')).toBeInTheDocument();
       expect(screen.getByText('450')).toBeInTheDocument();
@@ -174,7 +172,7 @@ describe('HistoryTable', () => {
     it('handles edge case timestamp values', () => {
       const logWithEpochTimestamp = {
         ...mockLogs[0],
-        timestamp: new Date(0), // Unix epoch
+        timestamp: new Date(0),
       };
 
       render(<HistoryTable logs={[logWithEpochTimestamp]} />);
@@ -189,7 +187,7 @@ describe('HistoryTable', () => {
       render(<HistoryTable logs={[mockLogs[0]]} />);
 
       const links = screen.getAllByTestId('history-link');
-      expect(links).toHaveLength(8); // 8 columns = 8 links per row
+      expect(links).toHaveLength(8);
     });
 
     it('calls constructClientUrl with correct parameters', () => {
@@ -262,7 +260,7 @@ describe('HistoryTable', () => {
       render(<HistoryTable logs={[mockLogs[0]]} />);
 
       const links = screen.getAllByTestId('history-link');
-      const errorLink = links[7]; // Last column is error
+      const errorLink = links[7];
       expect(errorLink).toHaveTextContent('');
     });
   });
@@ -363,7 +361,7 @@ describe('HistoryTable', () => {
 
       const row = screen.getByRole('table').querySelector('tbody tr');
       const cells = row?.querySelectorAll('td');
-      expect(cells).toHaveLength(8); // 8 columns
+      expect(cells).toHaveLength(8);
     });
   });
 

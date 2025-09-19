@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, act } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 import Header from './Header';
 import { useAuth } from '@/context/AuthContext';
@@ -34,12 +34,6 @@ vi.mock('../NavLinks/NavLinks', () => ({
   default: () => <div data-testid='nav-links' />,
 }));
 
-vi.mock('next/image', () => ({
-  default: ({ alt, ...rest }: React.ImgHTMLAttributes<HTMLImageElement>) => (
-    <img alt={alt} {...rest} />
-  ),
-}));
-
 vi.mock('./Header.module.css', () => ({
   default: {
     scrolled: 'scrolled',
@@ -68,12 +62,14 @@ describe('Header', () => {
       });
     });
 
-    it('renders logo, locale switcher and auth links but not nav links', () => {
-      render(<Header />);
+    it('renders logo, locale switcher and auth links but not nav links', async () => {
+      await act(async () => {
+        render(<Header />);
+      });
 
       const logo = screen.getByRole('img', { name: dictionary.logoAlt });
       expect(logo).toBeInTheDocument();
-      expect(logo).toHaveAttribute('src', '/logo.png');
+      expect(logo.getAttribute('src')).toContain('logo.png');
 
       expect(screen.getByTestId('locale-switcher')).toBeInTheDocument();
 
@@ -86,29 +82,37 @@ describe('Header', () => {
       expect(screen.queryByTestId('nav-links')).not.toBeInTheDocument();
     });
 
-    it('adds "scrolled" class on window scroll and removes it on scroll to the top', () => {
-      render(<Header />);
+    it('adds "scrolled" class on window scroll and removes it on scroll to the top', async () => {
+      await act(async () => {
+        render(<Header />);
+      });
 
       const header = screen.getByRole('banner');
       expect(header).not.toHaveClass('scrolled');
 
-      fireEvent.scroll(window, { target: { scrollY: 100 } });
+      await act(async () => {
+        fireEvent.scroll(window, { target: { scrollY: 100 } });
+      });
       expect(header).toHaveClass('scrolled');
 
-      fireEvent.scroll(window, { target: { scrollY: 0 } });
+      await act(async () => {
+        fireEvent.scroll(window, { target: { scrollY: 0 } });
+      });
       expect(header).not.toHaveClass('scrolled');
     });
 
-    it('when loading=true shows only logo & LocaleSwitcher', () => {
+    it('when loading=true shows only logo & LocaleSwitcher', async () => {
       (useAuth as Mock).mockReturnValue({
         user: null,
         loading: true,
       });
-      render(<Header />);
+      await act(async () => {
+        render(<Header />);
+      });
 
       const logo = screen.getByRole('img', { name: dictionary.logoAlt });
       expect(logo).toBeInTheDocument();
-      expect(logo).toHaveAttribute('src', '/logo.png');
+      expect(logo.getAttribute('src')).toContain('logo.png');
 
       expect(screen.getByTestId('locale-switcher')).toBeInTheDocument();
       expect(screen.queryByRole('link', { name: dictionary.SignInLabel })).not.toBeInTheDocument();
@@ -135,8 +139,10 @@ describe('Header', () => {
       });
     });
 
-    it('renders NavLinks, MainPage and Sign out)', () => {
-      render(<Header />);
+    it('renders NavLinks, MainPage and Sign out)', async () => {
+      await act(async () => {
+        render(<Header />);
+      });
 
       expect(screen.getByTestId('nav-links')).toBeInTheDocument();
 
@@ -148,10 +154,14 @@ describe('Header', () => {
     });
 
     it('calls signOut and redirects on button click', async () => {
-      render(<Header />);
+      await act(async () => {
+        render(<Header />);
+      });
       const signOutButton = screen.getByRole('button', { name: dictionary.SignOutLabel });
 
-      fireEvent.click(signOutButton);
+      await act(async () => {
+        fireEvent.click(signOutButton);
+      });
 
       expect(mockSignOut).toHaveBeenCalledTimes(1);
       await waitFor(() => {
@@ -162,10 +172,14 @@ describe('Header', () => {
     it('on signOut error shows toast.error', async () => {
       mockSignOut.mockRejectedValue(new Error('Oops'));
 
-      render(<Header />);
+      await act(async () => {
+        render(<Header />);
+      });
       const signOutButton = screen.getByRole('button', { name: dictionary.SignOutLabel });
 
-      fireEvent.click(signOutButton);
+      await act(async () => {
+        fireEvent.click(signOutButton);
+      });
 
       await waitFor(() => {
         expect(toast.error).toHaveBeenCalledWith('Oops', { id: 'id1' });

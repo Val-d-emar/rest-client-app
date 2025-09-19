@@ -1,4 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen, act } from '@testing-library/react';
+import * as React from 'react';
 import * as serverActions from '@/lib/actions/server-actions';
 import * as navigation from 'next/navigation';
 import HistoryPage from './page';
@@ -268,6 +270,167 @@ describe('HistoryPage', () => {
 
       expect(result).toBeDefined();
       expect(typeof result).toBe('object');
+    });
+  });
+
+  describe('JSX rendering', () => {
+    it('renders "no requests yet" section when count is 0', async () => {
+      const mockGetCurrentUserIdAction = vi.mocked(serverActions.getCurrentUserIdAction);
+      const mockGetHistoryByUserAction = vi.mocked(serverActions.getHistoryByUserAction);
+
+      mockGetCurrentUserIdAction.mockResolvedValue('user-123');
+      mockGetHistoryByUserAction.mockResolvedValue({
+        success: true,
+        count: 0,
+        data: [],
+        message: 'No logs found',
+        messageCode: 'NO_LOGS_FOUND',
+      });
+
+      const jsxResult = await HistoryPage({ params: mockParams });
+
+      await act(async () => {
+        render(jsxResult as React.ReactElement);
+      });
+
+      expect(screen.getByText('No requests yet')).toBeInTheDocument();
+      expect(screen.getByTestId('link')).toBeInTheDocument();
+      expect(screen.getByText('Create new request')).toBeInTheDocument();
+
+      const historyComponent = screen.queryByTestId('history-page-client');
+      const spinnerComponent = screen.queryByTestId('spinner');
+      expect(historyComponent || spinnerComponent).toBeInTheDocument();
+    });
+
+    it('renders error section when result is not successful', async () => {
+      const mockGetCurrentUserIdAction = vi.mocked(serverActions.getCurrentUserIdAction);
+      const mockGetHistoryByUserAction = vi.mocked(serverActions.getHistoryByUserAction);
+
+      mockGetCurrentUserIdAction.mockResolvedValue('user-123');
+      mockGetHistoryByUserAction.mockResolvedValue({
+        success: false,
+        messageCode: 'NETWORK_ERROR',
+        message: 'Network failed',
+        count: 5,
+        data: [],
+      });
+
+      const jsxResult = await HistoryPage({ params: mockParams });
+
+      await act(async () => {
+        render(jsxResult as React.ReactElement);
+      });
+
+      expect(
+        screen.getByText((content, element) => {
+          return (
+            element?.tagName.toLowerCase() === 'h2' &&
+            content.includes('No logs available') &&
+            content.includes('Network error occurred')
+          );
+        }),
+      ).toBeInTheDocument();
+
+      expect(screen.getByTestId('link')).toBeInTheDocument();
+      expect(screen.getByText('Create new request')).toBeInTheDocument();
+      expect(screen.getByTestId('history-page-client')).toBeInTheDocument();
+    });
+
+    it('renders error section with fallback message when messageCode is not available', async () => {
+      const mockGetCurrentUserIdAction = vi.mocked(serverActions.getCurrentUserIdAction);
+      const mockGetHistoryByUserAction = vi.mocked(serverActions.getHistoryByUserAction);
+
+      mockGetCurrentUserIdAction.mockResolvedValue('user-123');
+      mockGetHistoryByUserAction.mockResolvedValue({
+        success: false,
+        messageCode: undefined,
+        message: 'Custom error message',
+        count: 5,
+        data: [],
+      });
+
+      const jsxResult = await HistoryPage({ params: mockParams });
+
+      await act(async () => {
+        render(jsxResult as React.ReactElement);
+      });
+
+      expect(
+        screen.getByText((content, element) => {
+          return (
+            element?.tagName.toLowerCase() === 'h2' &&
+            content.includes('No logs available') &&
+            content.includes('Custom error message')
+          );
+        }),
+      ).toBeInTheDocument();
+
+      expect(screen.getByTestId('link')).toBeInTheDocument();
+      expect(screen.getByText('Create new request')).toBeInTheDocument();
+      expect(screen.getByTestId('history-page-client')).toBeInTheDocument();
+    });
+
+    it('renders successful history section with data', async () => {
+      const mockGetCurrentUserIdAction = vi.mocked(serverActions.getCurrentUserIdAction);
+      const mockGetHistoryByUserAction = vi.mocked(serverActions.getHistoryByUserAction);
+
+      const mockHistoryData = {
+        success: true,
+        count: 1,
+        data: [
+          {
+            userId: 'user-123',
+            latency: 100,
+            statusCode: 200,
+            statusText: 'OK',
+            timestamp: new Date(),
+            method: 'GET',
+            requestSize: 0,
+            responseSize: 512,
+            url: 'https://api.example.com',
+            requestBody: '',
+            headers: {},
+          },
+        ],
+        message: 'Success',
+        messageCode: 'SUCCESS',
+      };
+
+      mockGetCurrentUserIdAction.mockResolvedValue('user-123');
+      mockGetHistoryByUserAction.mockResolvedValue(mockHistoryData);
+
+      const jsxResult = await HistoryPage({ params: mockParams });
+
+      await act(async () => {
+        render(jsxResult as React.ReactElement);
+      });
+
+      const historyComponent = screen.queryByTestId('history-page-client');
+      const spinnerComponent = screen.queryByTestId('spinner');
+      expect(historyComponent || spinnerComponent).toBeInTheDocument();
+
+      expect(screen.queryByText('No requests yet')).not.toBeInTheDocument();
+      expect(screen.queryByText(/No logs available/)).not.toBeInTheDocument();
+      expect(screen.queryByText('Server error')).not.toBeInTheDocument();
+    });
+
+    it('renders server error section when exception is thrown', async () => {
+      const mockGetCurrentUserIdAction = vi.mocked(serverActions.getCurrentUserIdAction);
+      const mockGetHistoryByUserAction = vi.mocked(serverActions.getHistoryByUserAction);
+
+      mockGetCurrentUserIdAction.mockResolvedValue('user-123');
+      mockGetHistoryByUserAction.mockRejectedValue(new Error('Database connection failed'));
+
+      const jsxResult = await HistoryPage({ params: mockParams });
+
+      await act(async () => {
+        render(jsxResult as React.ReactElement);
+      });
+
+      expect(screen.getByText('Server error')).toBeInTheDocument();
+      expect(screen.getByTestId('link')).toBeInTheDocument();
+      expect(screen.getByText('Create new request')).toBeInTheDocument();
+      expect(screen.getByTestId('history-page-client')).toBeInTheDocument();
     });
   });
 });
