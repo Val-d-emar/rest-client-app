@@ -1,8 +1,0 @@
-{
-  "extends": "./tsconfig.test.json",
-  "compilerOptions": {
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
-  }
-}
