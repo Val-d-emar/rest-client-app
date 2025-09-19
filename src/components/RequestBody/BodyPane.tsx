@@ -41,9 +41,11 @@ export default function BodyPane({ body, setBody, readonly, status, statusText }
         <div className={classes.controls}>
           <select
             aria-label='Body mode'
+            name='bodyType'
             value={bodyType}
             className={classes.select}
             onChange={(e) => setBodyType(e.target.value as BodyType)}
+            autoComplete='off'
           >
             <option value='json'>JSON</option>
             <option value='text'>Text</option>
@@ -69,6 +71,7 @@ export default function BodyPane({ body, setBody, readonly, status, statusText }
 
       <textarea
         aria-label='Request body editor'
+        name='requestBody'
         placeholder={bodyType === 'json' ? t('JSONPlaceholder') : t('textPlaceholder')}
         value={body}
         onChange={(e) => {
@@ -77,6 +80,7 @@ export default function BodyPane({ body, setBody, readonly, status, statusText }
           }
         }}
         className='mono'
+        autoComplete='off'
       />
     </div>
   );

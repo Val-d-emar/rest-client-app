@@ -56,25 +56,31 @@ export default function RequestHeaders({ headers, setHeaders }: RequestHeadersPr
             <div>
               <input
                 type='checkbox'
+                name={`header-enabled-${header.id}`}
                 checked={header.enabled}
                 className={classes.checkbox}
                 onChange={(e) => onHeaderInputChange(header.id, 'enabled', e.target.checked)}
+                autoComplete='off'
               />
             </div>
             <div>
               <input
                 type='text'
+                name={`header-key-${header.id}`}
                 value={header.key}
                 onChange={(e) => onHeaderInputChange(header.id, 'key', e.target.value)}
                 placeholder={t('headerKeyPlaceholder')}
+                autoComplete='off'
               />
             </div>
             <div>
               <input
                 type='text'
+                name={`header-value-${header.id}`}
                 value={header.value}
                 onChange={(e) => onHeaderInputChange(header.id, 'value', e.target.value)}
                 placeholder={t('headerValuePlaceholder')}
+                autoComplete='off'
               />
             </div>
             <div>
