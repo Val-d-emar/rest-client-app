@@ -14,6 +14,7 @@ export default function MainPage() {
       {!isLoggedIn && (
         <>
           <h1>{t('welcomeUnauth')}</h1>
+          <div className={classes.info}>{t('generalInformation')}</div>
           <div className={classes.controls}>
             <Link href='/auth/signin' className={classes.button}>
               {t('SignInLabel')}
@@ -31,6 +32,7 @@ export default function MainPage() {
               user: user?.displayName ?? user.email?.split('@').at(0) ?? t('defaultUser'),
             })}
           </h1>
+          <div className={classes.info}>{t('generalInformation')}</div>
           <div className={classes.controls}>
             <Link href='/client' className={classes.button}>
               {t('clientLink')}

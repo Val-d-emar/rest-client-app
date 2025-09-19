@@ -15,7 +15,8 @@
     "variablesLink": "Variables",
     "signingOut": "Signing Out...",
     "goodbye": "Goodbye!",
-    "signOutError": "Failed to sign out"
+    "signOutError": "Failed to sign out",
+    "generalInformation": "This is a project for working with APIs. It allows you to send HTTP requests, view responses, save history, and use variables."
   },
   "ClientPage": {
     "title": "REST Client",
