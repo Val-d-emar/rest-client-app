@@ -135,7 +135,15 @@ const FormContent: React.FC<PropsSign> = ({ onSignIn, onSignUp }) => {
         <label htmlFor='email'>
           <span style={{ color: 'red' }}>*</span> {t('email')}:
         </label>
-        <input id='email' type='email' data-testid='email' {...register('email')} tabIndex={1} />
+        <input
+          id='email'
+          type='email'
+          data-testid='email'
+          autoComplete='email'
+          {...register('email')}
+          name='email'
+          tabIndex={1}
+        />
         {errors.email && <p className='error'>{errors.email.message}</p>}
       </div>
       <div className='input-block'>
@@ -147,6 +155,7 @@ const FormContent: React.FC<PropsSign> = ({ onSignIn, onSignUp }) => {
             id='password'
             type={showPassword ? 'text' : 'password'}
             data-testid='password'
+            autoComplete={needsConfirmPassword ? 'new-password' : 'current-password'}
             {...register('password', {
               ...(needsConfirmPassword && {
                 onBlur: () => {
@@ -154,6 +163,7 @@ const FormContent: React.FC<PropsSign> = ({ onSignIn, onSignUp }) => {
                 },
               }),
             })}
+            name='password'
             tabIndex={2}
           />
           <button
@@ -218,6 +228,7 @@ const FormContent: React.FC<PropsSign> = ({ onSignIn, onSignUp }) => {
               id='confirm-password'
               type={showConfirmPassword ? 'text' : 'password'}
               data-testid='confirm-password'
+              autoComplete='new-password'
               {...register('confirmPassword', {
                 onBlur: () => {
                   if (needsConfirmPassword) {
@@ -225,6 +236,7 @@ const FormContent: React.FC<PropsSign> = ({ onSignIn, onSignUp }) => {
                   }
                 },
               })}
+              name='confirmPassword'
               tabIndex={3}
             />
             <button
