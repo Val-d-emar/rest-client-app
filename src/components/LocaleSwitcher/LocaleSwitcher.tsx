@@ -30,6 +30,7 @@ export default function LocaleSwitcher() {
     <label>
       <p className='sr-only'>{t('label')}</p>
       <select
+        id='locale-switcher'
         defaultValue={defaultValue}
         disabled={isPending}
         onChange={onSelectChange}
