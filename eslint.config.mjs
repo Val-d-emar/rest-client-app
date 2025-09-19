@@ -25,7 +25,9 @@ const strictConfig = tseslint.config({
   },
 });
 
-const isStrictMode = process.env.ESLINT_STRICT_MODE === 'true';
+const isStrictMode = process.env.ESLINT_STRICT_MODE
+  ? process.env.ESLINT_STRICT_MODE !== 'false'
+  : true;
 
 const eslintConfig = [
   ...compat.extends('next/core-web-vitals'),

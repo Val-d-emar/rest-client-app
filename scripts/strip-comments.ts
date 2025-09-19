@@ -6,9 +6,7 @@ dotenv.config();
 
 const files: string[] = process.argv.slice(2);
 
-const stripEnabled = process.env.STRIP_COMMENTS
-  ? process.env.STRIP_COMMENTS.startsWith('true')
-  : false;
+const stripEnabled = process.env.STRIP_COMMENTS ? process.env.STRIP_COMMENTS !== 'false' : true;
 
 if (!stripEnabled || files.length === 0) {
   process.exit(0);
