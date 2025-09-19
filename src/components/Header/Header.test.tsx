@@ -3,13 +3,16 @@ import { afterEach, beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 import Header from './Header';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from '@/i18n/navigation';
+import toast from 'react-hot-toast';
 
 vi.mock('@/context/AuthContext');
 
 const dictionary: Record<string, string> = {
-  logoAlt: 'REST Client Logo',
+  logoAlt: 'logo',
   SignInLabel: 'Sign in',
   SignUpLabel: 'Sign up',
+  SignOutLabel: 'Sign out',
+  MainPage: 'Main page',
 };
 
 vi.mock('next-intl', () => ({
@@ -27,12 +30,12 @@ vi.mock('@/components/LocaleSwitcher', () => ({
   default: () => <div data-testid='locale-switcher' />,
 }));
 
+vi.mock('../NavLinks/NavLinks', () => ({
+  default: () => <div data-testid='nav-links' />,
+}));
+
 vi.mock('next/image', () => ({
-  default: ({
-    alt,
-    priority,
-    ...rest
-  }: React.ImgHTMLAttributes<HTMLImageElement> & { priority?: boolean }) => (
+  default: ({ alt, ...rest }: React.ImgHTMLAttributes<HTMLImageElement>) => (
     <img alt={alt} {...rest} />
   ),
 }));
@@ -43,7 +46,20 @@ vi.mock('./Header.module.css', () => ({
   },
 }));
 
+vi.mock('react-hot-toast', () => {
+  const loading = vi.fn(() => 'id1');
+  const success = vi.fn();
+  const error = vi.fn();
+  return {
+    default: { loading, success, error },
+  };
+});
+
 describe('Header', () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   describe('when user is not authenticated', () => {
     beforeEach(() => {
       (useAuth as Mock).mockReturnValue({
@@ -51,7 +67,8 @@ describe('Header', () => {
         loading: false,
       });
     });
-    it('renders logo, title, locale switcher and auth links', () => {
+
+    it('renders logo, locale switcher and auth links but not nav links', () => {
       render(<Header />);
 
       const logo = screen.getByRole('img', { name: dictionary.logoAlt });
@@ -65,6 +82,8 @@ describe('Header', () => {
 
       const signUp = screen.getByRole('link', { name: dictionary.SignUpLabel });
       expect(signUp).toHaveAttribute('href', '/auth/signup');
+
+      expect(screen.queryByTestId('nav-links')).not.toBeInTheDocument();
     });
 
     it('adds "scrolled" class on window scroll and removes it on scroll to the top', () => {
@@ -79,7 +98,28 @@ describe('Header', () => {
       fireEvent.scroll(window, { target: { scrollY: 0 } });
       expect(header).not.toHaveClass('scrolled');
     });
+
+    it('when loading=true shows only logo & LocaleSwitcher', () => {
+      (useAuth as Mock).mockReturnValue({
+        user: null,
+        loading: true,
+      });
+      render(<Header />);
+
+      const logo = screen.getByRole('img', { name: dictionary.logoAlt });
+      expect(logo).toBeInTheDocument();
+      expect(logo).toHaveAttribute('src', '/logo.png');
+
+      expect(screen.getByTestId('locale-switcher')).toBeInTheDocument();
+      expect(screen.queryByRole('link', { name: dictionary.SignInLabel })).not.toBeInTheDocument();
+      expect(screen.queryByRole('link', { name: dictionary.SignUpLabel })).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole('button', { name: dictionary.SignOutLabel }),
+      ).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: dictionary.MainPage })).not.toBeInTheDocument();
+    });
   });
+
   describe('when user is authenticated', () => {
     const mockSignOut = vi.fn();
     const mockRouterPush = vi.fn();
@@ -95,16 +135,19 @@ describe('Header', () => {
       });
     });
 
-    afterEach(() => {
-      vi.clearAllMocks();
-    });
-
-    it.skip('renders Sign Out button', () => {
+    it('renders NavLinks, MainPage and Sign out)', () => {
       render(<Header />);
+
+      expect(screen.getByTestId('nav-links')).toBeInTheDocument();
+
+      expect(screen.getByRole('button', { name: dictionary.MainPage })).toBeInTheDocument();
       expect(screen.getByRole('button', { name: dictionary.SignOutLabel })).toBeInTheDocument();
+
+      expect(screen.queryByRole('link', { name: dictionary.SignInLabel })).not.toBeInTheDocument();
+      expect(screen.queryByRole('link', { name: dictionary.SignUpLabel })).not.toBeInTheDocument();
     });
 
-    it.skip('calls signOut and redirects on button click', async () => {
+    it('calls signOut and redirects on button click', async () => {
       render(<Header />);
       const signOutButton = screen.getByRole('button', { name: dictionary.SignOutLabel });
 
@@ -114,6 +157,21 @@ describe('Header', () => {
       await waitFor(() => {
         expect(mockRouterPush).toHaveBeenCalledWith('/');
       });
+    });
+
+    it('on signOut error shows toast.error', async () => {
+      mockSignOut.mockRejectedValue(new Error('Oops'));
+
+      render(<Header />);
+      const signOutButton = screen.getByRole('button', { name: dictionary.SignOutLabel });
+
+      fireEvent.click(signOutButton);
+
+      await waitFor(() => {
+        expect(toast.error).toHaveBeenCalledWith('Oops', { id: 'id1' });
+      });
+
+      expect(mockRouterPush).not.toHaveBeenCalled();
     });
   });
 });
