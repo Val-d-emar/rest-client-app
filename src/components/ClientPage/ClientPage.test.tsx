@@ -104,6 +104,8 @@ describe('ClientPage', () => {
 
     render(<ClientPage />);
 
+    const urlInput = screen.getByTestId('url-input');
+    fireEvent.change(urlInput, { target: { value: 'https://example.com' } });
     fireEvent.click(await screen.findByRole('button', { name: 'Send' }));
 
     await waitFor(() => {

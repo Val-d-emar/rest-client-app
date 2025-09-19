@@ -39,7 +39,7 @@ export default function RequestBar({
         onChange={(e) => setUrl(e.target.value)}
         data-testid='url-input'
       />
-      <button onClick={onSend} disabled={loading}>
+      <button onClick={onSend} disabled={loading || !url}>
         {loading ? t('sendingButton') : t('sendButton')}
       </button>
     </div>
