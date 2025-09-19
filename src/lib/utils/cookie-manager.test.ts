@@ -62,7 +62,7 @@ describe('CookieManager', () => {
       const userId = 'test-user-123';
       UserCookieManager.setUserId(userId);
 
-      const expectedMaxAge = 60 * 60 * 24 * 365; // 365 days in seconds
+      const expectedMaxAge = 60 * 60 * 24 * 365;
       expect(cookieSetterSpy).toHaveBeenCalledWith(
         expect.stringContaining(`max-age=${expectedMaxAge}`),
       );
@@ -177,7 +177,7 @@ describe('CookieManager', () => {
       mockCookies = `userId=${userId}`;
 
       const result = UserCookieManager.getUserId();
-      expect(result).toBe('user'); // This is the actual behavior
+      expect(result).toBe('user');
     });
   });
 
@@ -222,16 +222,13 @@ describe('CookieManager', () => {
     it('complete workflow: set, get, remove', () => {
       const userId = 'workflow-test-user';
 
-      // Initially no cookie
       expect(UserCookieManager.hasValidUserId()).toBe(false);
       expect(UserCookieManager.getUserId()).toBeNull();
 
-      // Set cookie
       UserCookieManager.setUserId(userId);
       expect(UserCookieManager.hasValidUserId()).toBe(true);
       expect(UserCookieManager.getUserId()).toBe(userId);
 
-      // Remove cookie
       UserCookieManager.removeUserId();
       expect(UserCookieManager.hasValidUserId()).toBe(false);
       expect(UserCookieManager.getUserId()).toBeNull();

@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach, Mock } from 'vitest';
 import { ENCODING_TOAST_ID } from '@/constants/constants';
 import { useAuth } from '@/context/AuthContext';
@@ -55,8 +55,10 @@ describe('ClientPage', () => {
   });
   afterEach(() => vi.clearAllMocks());
 
-  it('renders title', () => {
-    render(<ClientPage />);
+  it('renders title', async () => {
+    await act(async () => {
+      render(<ClientPage />);
+    });
     expect(screen.getByRole('heading', { level: 1, name: 'REST Client' })).toBeInTheDocument();
   });
 
@@ -66,10 +68,14 @@ describe('ClientPage', () => {
       throw new Error('btoa error');
     };
 
-    render(<ClientPage />);
+    await act(async () => {
+      render(<ClientPage />);
+    });
 
     const urlInput = screen.getByTestId('url-input');
-    fireEvent.change(urlInput, { target: { value: 'https://example.com' } });
+    await act(async () => {
+      fireEvent.change(urlInput, { target: { value: 'https://example.com' } });
+    });
 
     await waitFor(() => {
       expect(toast.error).toHaveBeenCalledWith('Failed to encode to base64: btoa error', {
@@ -88,7 +94,9 @@ describe('ClientPage', () => {
 
     searchParams.params = new URLSearchParams('method=GET&url=url&body=body');
 
-    render(<ClientPage />);
+    await act(async () => {
+      render(<ClientPage />);
+    });
 
     await waitFor(() => {
       expect(toast.error).toHaveBeenCalledWith('Failed to decode: atob error', {
@@ -102,11 +110,18 @@ describe('ClientPage', () => {
   it('for unauthenticated user renders "You must be logged in." on send button click', async () => {
     (useAuth as Mock).mockReturnValue({ user: null, loading: false });
 
-    render(<ClientPage />);
+    await act(async () => {
+      render(<ClientPage />);
+    });
 
     const urlInput = screen.getByTestId('url-input');
-    fireEvent.change(urlInput, { target: { value: 'https://example.com' } });
-    fireEvent.click(await screen.findByRole('button', { name: 'Send' }));
+    await act(async () => {
+      fireEvent.change(urlInput, { target: { value: 'https://example.com' } });
+    });
+
+    await act(async () => {
+      fireEvent.click(await screen.findByRole('button', { name: 'Send' }));
+    });
 
     await waitFor(() => {
       expect(toast.error).toHaveBeenCalledWith('You must be logged in.');
@@ -114,16 +129,24 @@ describe('ClientPage', () => {
   });
 
   it('changing method, url, body causes router.replace call with correct parameters', async () => {
-    render(<ClientPage />);
+    await act(async () => {
+      render(<ClientPage />);
+    });
 
     const methodSelect = screen.getAllByRole('combobox')[0] as HTMLSelectElement;
-    fireEvent.change(methodSelect, { target: { value: 'POST' } });
+    await act(async () => {
+      fireEvent.change(methodSelect, { target: { value: 'POST' } });
+    });
 
     const urlInput = screen.getByTestId('url-input');
-    fireEvent.change(urlInput, { target: { value: 'https://example.com' } });
+    await act(async () => {
+      fireEvent.change(urlInput, { target: { value: 'https://example.com' } });
+    });
 
     const bodyArea = screen.getByLabelText('Request body editor') as HTMLTextAreaElement;
-    fireEvent.change(bodyArea, { target: { value: '{"test":"body"}' } });
+    await act(async () => {
+      fireEvent.change(bodyArea, { target: { value: '{"test":"body"}' } });
+    });
 
     await waitFor(() => expect(replaceMock).toHaveBeenCalled());
 
@@ -145,13 +168,19 @@ describe('ClientPage', () => {
       error: null,
     });
 
-    render(<ClientPage />);
+    await act(async () => {
+      render(<ClientPage />);
+    });
 
     const urlInput = screen.getByTestId('url-input');
-    fireEvent.change(urlInput, { target: { value: 'https://example.com' } });
+    await act(async () => {
+      fireEvent.change(urlInput, { target: { value: 'https://example.com' } });
+    });
 
     const sendButton = screen.getByRole('button', { name: 'Send' });
-    fireEvent.click(sendButton);
+    await act(async () => {
+      fireEvent.click(sendButton);
+    });
 
     await waitFor(() => expect(forwardRequestMock).toHaveBeenCalledTimes(1));
     const [payload] = forwardRequestMock.mock.calls[0];
