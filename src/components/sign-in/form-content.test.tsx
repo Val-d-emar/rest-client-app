@@ -160,7 +160,6 @@ describe('FormContent Password Visibility', () => {
     expect(screen.getByTestId('confirm-password')).toBeInTheDocument();
     expect(screen.getByTestId('email')).toBeInTheDocument();
 
-    // Кнопку ищем по тексту
     expect(screen.getByRole('button', { name: /sign up/i })).toBeInTheDocument();
   });
 });
