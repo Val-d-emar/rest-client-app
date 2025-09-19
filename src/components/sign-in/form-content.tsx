@@ -155,7 +155,7 @@ const FormContent: React.FC<PropsSign> = ({ onSignIn, onSignUp }) => {
             id='password'
             type={showPassword ? 'text' : 'password'}
             data-testid='password'
-            autoComplete={needsConfirmPassword ? 'new-password' : 'current-password'}
+            autoComplete='off'
             {...register('password', {
               ...(needsConfirmPassword && {
                 onBlur: () => {
@@ -228,7 +228,7 @@ const FormContent: React.FC<PropsSign> = ({ onSignIn, onSignUp }) => {
               id='confirm-password'
               type={showConfirmPassword ? 'text' : 'password'}
               data-testid='confirm-password'
-              autoComplete='new-password'
+              autoComplete='off'
               {...register('confirmPassword', {
                 onBlur: () => {
                   if (needsConfirmPassword) {

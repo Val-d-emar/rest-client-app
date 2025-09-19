@@ -25,7 +25,12 @@ export default function RequestBar({
   const t = useTranslations('ClientPage.requestBar');
   return (
     <div className={classes.wrapper}>
-      <select value={method} onChange={(e) => setMethod(e.target.value as HttpMethods)}>
+      <select
+        name='method'
+        value={method}
+        onChange={(e) => setMethod(e.target.value as HttpMethods)}
+        autoComplete='off'
+      >
         {METHODS.map((m) => (
           <option key={m} value={m}>
             {m}
@@ -33,11 +38,14 @@ export default function RequestBar({
         ))}
       </select>
       <input
+        id='url-input'
+        name='url'
         placeholder={t('placeholder')}
         className={classes.input}
         value={url}
         onChange={(e) => setUrl(e.target.value)}
         data-testid='url-input'
+        autoComplete='off'
       />
       <button onClick={onSend} disabled={loading || !url}>
         {loading ? t('sendingButton') : t('sendButton')}

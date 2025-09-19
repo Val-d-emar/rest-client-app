@@ -45,17 +45,21 @@ export default function VariablesPage() {
               <div className={classes['inputs-wrapper']}>
                 <input
                   type='text'
+                  name={`variable-key-${variable.id}`}
                   placeholder={t('keyPlaceholder')}
                   value={variable.key}
                   onChange={(e) => handleVariableChange(variable.id, 'key', e.target.value)}
                   style={{ flexGrow: 1 }}
+                  autoComplete='off'
                 />
                 <input
                   type='text'
+                  name={`variable-value-${variable.id}`}
                   placeholder={t('valuePlaceholder')}
                   value={variable.value}
                   onChange={(e) => handleVariableChange(variable.id, 'value', e.target.value)}
                   style={{ flexGrow: 2 }}
+                  autoComplete='off'
                 />
               </div>
               <button
