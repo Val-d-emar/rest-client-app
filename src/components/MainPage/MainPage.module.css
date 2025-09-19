@@ -56,3 +56,7 @@
   color: var(--disabled-color);
   background-color: var(--dark-detail-color);
 }
+
+.info {
+  max-width: 500px;
+}
