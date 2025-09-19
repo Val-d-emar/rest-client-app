@@ -126,9 +126,8 @@ describe('ClientPage', () => {
     await waitFor(() => expect(replaceMock).toHaveBeenCalled());
 
     const replaceArgs = replaceMock.mock.calls.at(-1);
-    expect(replaceArgs).not.toBeUndefined();
 
-    const params = new URLSearchParams((replaceArgs![0] as string).split('?')[1] ?? '');
+    const params = new URLSearchParams((replaceArgs?.[0] ?? ('' as string)).split('?')[1]);
 
     expect(params.get('method')).toBe('POST');
     expect(params.get('url')).toBe(btoa(encodeURIComponent('https://example.com')));
@@ -154,7 +153,6 @@ describe('ClientPage', () => {
 
     await waitFor(() => expect(forwardRequestMock).toHaveBeenCalledTimes(1));
     const [payload] = forwardRequestMock.mock.calls[0];
-    console.log(payload);
 
     expect(payload).toMatchObject({
       userId: 'user1',
