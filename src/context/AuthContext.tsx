@@ -33,22 +33,39 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isSigningOut, setIsSigningOut] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = onIdTokenChanged(auth, async (firebaseUser) => {
-      dbg('Firebase auth state changed:', firebaseUser);
+    let unsubscribe: (() => void) | undefined;
 
-      setUser(firebaseUser);
+    try {
+      unsubscribe = onIdTokenChanged(auth, async (firebaseUser) => {
+        dbg('Firebase auth state changed:', firebaseUser);
 
-      setLoading(false);
+        setUser(firebaseUser);
 
-      if (firebaseUser) {
-        UserCookieManager.setUserId(firebaseUser.uid);
-      } else if (isSigningOut) {
-        UserCookieManager.removeUserId();
-        setIsSigningOut(false);
+        setLoading(false);
+
+        if (firebaseUser) {
+          UserCookieManager.setUserId(firebaseUser.uid);
+        } else if (isSigningOut) {
+          UserCookieManager.removeUserId();
+          setIsSigningOut(false);
+        }
+      });
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        dbg('Firebase auth not available without .env.local');
+        setLoading(false);
+        return;
+      } else {
+        err('Firebase auth initialization error:', error);
+        throw error;
       }
-    });
+    }
 
-    return () => unsubscribe();
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
   }, [isSigningOut]);
 
   const signUp = async (email: string, password: string) => {
@@ -57,6 +74,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       dbg('User signed up successfully:', userCredential.user);
     } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        dbg('Sign up not available without Firebase configuration');
+        throw new Error('Authentication not available in development mode');
+      }
       err('Error signing up:', error);
       throw error;
     }
@@ -67,6 +88,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       dbg('User signed in successfully:', userCredential.user);
     } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        dbg('Sign in not available without Firebase configuration');
+        throw new Error('Authentication not available in development mode');
+      }
       err('Error signing in:', error);
       const translatedError: AuthError = new Error(
         t ? t('signInFailed') : 'Sign in failed. Please try again.',
@@ -82,6 +107,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       await firebaseSignOut(auth);
       dbg('User signed out successfully');
     } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        dbg('Sign out not available without Firebase configuration');
+        setIsSigningOut(false);
+        return;
+      }
       err('Error signing out:', error);
       setIsSigningOut(false);
       throw error;

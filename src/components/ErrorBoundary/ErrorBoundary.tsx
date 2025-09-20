@@ -20,7 +20,20 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
+    if (process.env.NODE_ENV === 'development') {
+      if (
+        error.message.includes('auth/invalid-api-key') ||
+        error.message.includes('Firebase: Error') ||
+        error.message.includes('onIdTokenChanged is not a function') ||
+        error.message.includes('getModularInstance')
+      ) {
+        return;
+      }
+    }
+
+    if (process.env.NODE_ENV === 'production') {
+      console.error('ErrorBoundary caught an error:', error, errorInfo);
+    }
   }
 
   public render() {
