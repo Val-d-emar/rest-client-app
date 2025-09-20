@@ -98,14 +98,17 @@
       "passwordSpecial": "Нужен специальный символ @#$!^%*?&_-",
       "passwordUnicode": "Должен быть в валидном Unicode формате",
       "confirmPasswordRequired": "Подтверждение пароля обязательно",
-      "passwordsMatch": "Пароли не совпадают"
+      "passwordsMatch": "Пароли не совпадают",
+      "AuthFailed": "Ошибка авторизации. Пожалуйста, попробуйте снова."
     },
     "signingIn": "Вход в аккаунт...",
     "welcomeBack": "С возвращением!",
     "signInFailed": "Ошибка входа. Попробуйте еще раз.",
+    "signUpFailed": "Ошибка регистрации. Попробуйте еще раз.",
     "registering": "Регистрация...",
     "registrationSuccess": "Регистрация успешна! Добро пожаловать!",
-    "registrationFailed": "Ошибка регистрации. Попробуйте еще раз."
+    "registrationFailed": "Ошибка регистрации. Попробуйте еще раз.",
+    "firebaseConfigError": "Конфигурация Firebase неправильно настроена"
   },
   "HistoryPage": {
     "title": "История запросов",

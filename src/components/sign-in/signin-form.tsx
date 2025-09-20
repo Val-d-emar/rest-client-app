@@ -20,7 +20,7 @@ const SignInForm: React.FC = () => {
   const handleSignIn = async (userData: SubmitValues) => {
     const toastId = toast.loading(t('signingIn'));
     try {
-      await signIn(userData.email, userData.password, t);
+      await signIn(userData.email, userData.password);
       toast.success(t('welcomeBack'), { id: toastId });
       dbg('Signing in user:', userData);
     } catch (error) {

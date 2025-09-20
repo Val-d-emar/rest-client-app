@@ -11,6 +11,8 @@ import {
 import { auth } from '@/lib/firebase/config';
 import { UserCookieManager } from '@/lib/utils/cookie-manager';
 import { dbg, err } from '@/log';
+import { useTranslations } from 'next-intl';
+import toast from 'react-hot-toast';
 
 interface AuthError extends Error {
   originalError?: unknown;
@@ -20,8 +22,8 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   signUp: (email: string, password: string) => Promise<void>;
-  signIn: (email: string, password: string, t?: (key: string) => string) => Promise<void>;
-  signOut: () => Promise<void>;
+  signIn: (email: string, password: string) => Promise<void>;
+  signOut: (t?: (key: string) => string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -29,6 +31,9 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const t = useTranslations('AuthForm');
+  const tAuthFailed = t ? t('AuthFailed') : 'Auth failed. Please try again.';
+  const tFirebaseConfigError = t ? t('firebaseConfigError') : 'Firebase config error.';
 
   const [isSigningOut, setIsSigningOut] = useState(false);
 
@@ -51,51 +56,53 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
       });
     } catch (error) {
-      if (process.env.NODE_ENV === 'development') {
-        dbg('Firebase auth not available without .env.local');
-        setLoading(false);
-        return;
-      } else {
-        err('Firebase auth initialization error:', error);
-        throw error;
+      dbg('Firebase auth error:', error);
+      setLoading(false);
+      let translatedError = tAuthFailed;
+      if ((error as Error)?.message.includes('is not a function')) {
+        err(tFirebaseConfigError, (error as Error)?.message);
+        translatedError = tFirebaseConfigError;
       }
+      toast.error(translatedError);
     }
-
     return () => {
       if (unsubscribe) {
         unsubscribe();
       }
     };
-  }, [isSigningOut]);
+  }, [isSigningOut, tAuthFailed, tFirebaseConfigError]);
 
   const signUp = async (email: string, password: string) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-
       dbg('User signed up successfully:', userCredential.user);
     } catch (error) {
-      if (process.env.NODE_ENV === 'development') {
-        dbg('Sign up not available without Firebase configuration');
-        throw new Error('Authentication not available in development mode');
+      err('Error signing Up:', error);
+      let translatedError: AuthError = new Error(
+        t ? t('signUpFailed') + (error as Error)?.message : 'Sign Up failed. Please try again.',
+      );
+      if ((error as Error)?.message.includes('is not a function')) {
+        err(tFirebaseConfigError, (error as Error)?.message);
+        translatedError = new Error(tFirebaseConfigError);
       }
-      err('Error signing up:', error);
-      throw error;
+      translatedError.originalError = error;
+      throw translatedError;
     }
   };
 
-  const signIn = async (email: string, password: string, t?: (key: string) => string) => {
+  const signIn = async (email: string, password: string) => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       dbg('User signed in successfully:', userCredential.user);
     } catch (error) {
-      if (process.env.NODE_ENV === 'development') {
-        dbg('Sign in not available without Firebase configuration');
-        throw new Error('Authentication not available in development mode');
-      }
       err('Error signing in:', error);
-      const translatedError: AuthError = new Error(
-        t ? t('signInFailed') : 'Sign in failed. Please try again.',
+      let translatedError: AuthError = new Error(
+        t ? t('signInFailed') + (error as Error)?.message : 'Sign in failed. Please try again.',
       );
+      if ((error as Error)?.message.includes('is not a function')) {
+        err(tFirebaseConfigError, (error as Error)?.message);
+        translatedError = new Error(tFirebaseConfigError);
+      }
       translatedError.originalError = error;
       throw translatedError;
     }
@@ -107,14 +114,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       await firebaseSignOut(auth);
       dbg('User signed out successfully');
     } catch (error) {
-      if (process.env.NODE_ENV === 'development') {
-        dbg('Sign out not available without Firebase configuration');
-        setIsSigningOut(false);
-        return;
-      }
       err('Error signing out:', error);
+      let translatedError: AuthError = new Error(
+        t ? t('signInFailed') + (error as Error)?.message : 'Sign in failed. Please try again.',
+      );
+      if ((error as Error)?.message.includes('is not a function')) {
+        err(tFirebaseConfigError, (error as Error)?.message);
+        translatedError = new Error(tFirebaseConfigError);
+      }
+      translatedError.originalError = error;
+
       setIsSigningOut(false);
-      throw error;
+      throw translatedError;
     }
   };
 

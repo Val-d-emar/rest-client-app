@@ -103,9 +103,12 @@
     "signingIn": "Signing In...",
     "welcomeBack": "Welcome back!",
     "signInFailed": "Sign in failed. Please try again.",
+    "signUpFailed": "Sign Up failed. Please try again.",
     "registering": "Registering...",
     "registrationSuccess": "Registration successful! Welcome!",
-    "registrationFailed": "Registration failed. Please try again."
+    "registrationFailed": "Registration failed. Please try again.",
+    "firebaseConfigError": "Firebase configuration is not correct",
+    "AuthFailed": "Auth failed. Please try again."
   },
   "HistoryPage": {
     "title": "Request History",
