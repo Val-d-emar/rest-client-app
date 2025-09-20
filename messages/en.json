@@ -104,6 +104,7 @@
     "welcomeBack": "Welcome back!",
     "signInFailed": "Sign in failed. Please try again.",
     "signUpFailed": "Sign Up failed. Please try again.",
+    "signOutFailed": "Sign out failed. Please try again.",
     "registering": "Registering...",
     "registrationSuccess": "Registration successful! Welcome!",
     "registrationFailed": "Registration failed. Please try again.",

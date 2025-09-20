@@ -1,3 +1,4 @@
+import { err } from '@/log';
 import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
 import { getAuth, Auth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
@@ -16,11 +17,8 @@ let app: FirebaseApp;
 try {
   app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 } catch (error) {
-  if (process.env.NODE_ENV === 'development') {
-    app = {} as FirebaseApp;
-  } else {
-    throw error;
-  }
+  app = {} as FirebaseApp;
+  err('Firebase config error:', error);
 }
 
 let auth: Auth;
@@ -30,12 +28,9 @@ try {
   auth = getAuth(app);
   db = getFirestore(app);
 } catch (error) {
-  if (process.env.NODE_ENV === 'development') {
-    auth = {} as Auth;
-    db = {} as ReturnType<typeof getFirestore>;
-  } else {
-    throw error;
-  }
+  auth = {} as Auth;
+  db = {} as ReturnType<typeof getFirestore>;
+  err('Firebase config error:', error);
 }
 
 export { app, auth, db };

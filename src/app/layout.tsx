@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { ReactNode } from 'react';
 import { Roboto, Inter, Ubuntu, Fira_Mono } from 'next/font/google';
-import ConsoleErrorSuppressor from '@/components/ConsoleErrorSuppressor/ConsoleErrorSuppressor';
 import './index.css';
 
 const roboto = Roboto({
@@ -55,7 +54,6 @@ export default function RootLayout({ children }: Props) {
   return (
     <html>
       <body className={`${roboto.variable} ${inter.variable} ${ubuntu.variable} ${mono.variable}`}>
-        <ConsoleErrorSuppressor />
         {children}
       </body>
     </html>

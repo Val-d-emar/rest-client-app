@@ -116,7 +116,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } catch (error) {
       err('Error signing out:', error);
       let translatedError: AuthError = new Error(
-        t ? t('signInFailed') + (error as Error)?.message : 'Sign in failed. Please try again.',
+        t ? t('signOutFailed') + (error as Error)?.message : 'Sign out failed. Please try again.',
       );
       if ((error as Error)?.message.includes('is not a function')) {
         err(tFirebaseConfigError, (error as Error)?.message);

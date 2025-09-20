@@ -10,6 +10,8 @@ import {
   UserCredential,
 } from 'firebase/auth';
 import { UserCookieManager } from '@/lib/utils/cookie-manager';
+import { NextIntlClientProvider } from 'next-intl';
+import messages from '../../messages/en.json';
 
 vi.mock('firebase/auth', async (importOriginal) => {
   const actual = await importOriginal<typeof import('firebase/auth')>();
@@ -37,6 +39,13 @@ describe('useAuth hook and AuthProvider', () => {
   const mockedSignOut = vi.mocked(firebaseSignOut);
 
   let idTokenCallback: (user: User | null) => void;
+  const TestWrapper = ({ children }: { children: React.ReactNode }) => {
+    return (
+      <NextIntlClientProvider locale='en' messages={messages}>
+        <AuthProvider>{children}</AuthProvider>
+      </NextIntlClientProvider>
+    );
+  };
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -47,7 +56,6 @@ describe('useAuth hook and AuthProvider', () => {
       return vi.fn();
     });
   });
-
   async function waitForAuthToLoad(result: { current: ReturnType<typeof useAuth> }) {
     act(() => {
       idTokenCallback(null);
@@ -57,7 +65,7 @@ describe('useAuth hook and AuthProvider', () => {
 
   it('should set loading to false and user to null after initial check', () => {
     const { result } = renderHook(() => useAuth(), {
-      wrapper: AuthProvider,
+      wrapper: TestWrapper,
     });
 
     act(() => {
@@ -70,7 +78,7 @@ describe('useAuth hook and AuthProvider', () => {
 
   it('should set the user and call UserCookieManager.setUserId on sign in', () => {
     const { result } = renderHook(() => useAuth(), {
-      wrapper: AuthProvider,
+      wrapper: TestWrapper,
     });
     const mockUser = { uid: '123', email: 'test@example.com' } as User;
 
@@ -85,7 +93,7 @@ describe('useAuth hook and AuthProvider', () => {
 
   it('should clear the user, but not call removeUserId on simple state change to null', () => {
     const { result } = renderHook(() => useAuth(), {
-      wrapper: AuthProvider,
+      wrapper: TestWrapper,
     });
 
     const mockUser = { uid: '123', email: 'test@example.com' } as User;
@@ -105,7 +113,7 @@ describe('useAuth hook and AuthProvider', () => {
 
   it('should call removeUserId when signing out', async () => {
     const { result } = renderHook(() => useAuth(), {
-      wrapper: AuthProvider,
+      wrapper: TestWrapper,
     });
 
     const mockUser = { uid: '123', email: 'test@example.com' } as User;
@@ -128,35 +136,7 @@ describe('useAuth hook and AuthProvider', () => {
 
   describe('signUp function', () => {
     it('should call createUserWithEmailAndPassword on success', async () => {
-      const { result } = renderHook(() => useAuth(), { wrapper: AuthProvider });
-      await waitForAuthToLoad(result);
-
-      mockedCreateUser.mockResolvedValue({ user: { uid: '123' } } as UserCredential);
-
-      await act(async () => {
-        await expect(result.current.signUp('test@test.com', 'password')).resolves.toBeUndefined();
-      });
-
-      expect(mockedCreateUser).toHaveBeenCalledWith(undefined, 'test@test.com', 'password');
-    });
-
-    it('should throw an error if createUserWithEmailAndPassword fails', async () => {
-      const { result } = renderHook(() => useAuth(), { wrapper: AuthProvider });
-
-      await waitForAuthToLoad(result);
-
-      const testError = new Error('Email already in use');
-      mockedCreateUser.mockRejectedValue(testError);
-
-      await act(async () => {
-        await expect(result.current.signUp('test@test.com', 'password')).rejects.toThrow(testError);
-      });
-    });
-  });
-
-  describe('signUp function', () => {
-    it('should call createUserWithEmailAndPassword on success', async () => {
-      const { result } = renderHook(() => useAuth(), { wrapper: AuthProvider });
+      const { result } = renderHook(() => useAuth(), { wrapper: TestWrapper });
 
       await waitForAuthToLoad(result);
 
@@ -168,24 +148,37 @@ describe('useAuth hook and AuthProvider', () => {
 
       expect(mockedCreateUser).toHaveBeenCalledWith(undefined, 'test@test.com', 'password');
     });
-
-    it('should throw an error if createUserWithEmailAndPassword fails', async () => {
-      const { result } = renderHook(() => useAuth(), { wrapper: AuthProvider });
-
+    it('should call createUserWithEmailAndPassword on success', async () => {
+      const { result } = renderHook(() => useAuth(), { wrapper: TestWrapper });
       await waitForAuthToLoad(result);
 
-      const testError = new Error('Email already in use');
-      mockedCreateUser.mockRejectedValue(testError);
+      mockedCreateUser.mockResolvedValue({ user: { uid: '123' } } as UserCredential);
 
       await act(async () => {
-        await expect(result.current.signUp('test@test.com', 'password')).rejects.toThrow(testError);
+        await expect(result.current.signUp('test@test.com', 'password')).resolves.toBeUndefined();
+      });
+
+      expect(mockedCreateUser).toHaveBeenCalledWith(undefined, 'test@test.com', 'password');
+    });
+
+    it('should throw a translated error if createUser fails', async () => {
+      const { result } = renderHook(() => useAuth(), { wrapper: TestWrapper });
+      await waitForAuthToLoad(result);
+
+      const firebaseError = new Error('Email already in use');
+      mockedCreateUser.mockRejectedValue(firebaseError);
+
+      await act(async () => {
+        await expect(result.current.signUp('test@test.com', 'password')).rejects.toThrow(
+          messages.AuthForm.signUpFailed + firebaseError.message,
+        );
       });
     });
   });
 
   describe('signIn function', () => {
     it('should call signInWithEmailAndPassword on success', async () => {
-      const { result } = renderHook(() => useAuth(), { wrapper: AuthProvider });
+      const { result } = renderHook(() => useAuth(), { wrapper: TestWrapper });
 
       await waitForAuthToLoad(result);
 
@@ -198,35 +191,34 @@ describe('useAuth hook and AuthProvider', () => {
       expect(mockedSignIn).toHaveBeenCalledWith(undefined, 'test@test.com', 'password');
     });
 
-    it('should throw a translated error if signInWithEmailAndPassword fails', async () => {
-      const { result } = renderHook(() => useAuth(), { wrapper: AuthProvider });
-
+    it('should throw a translated error if signIn fails', async () => {
+      const { result } = renderHook(() => useAuth(), { wrapper: TestWrapper });
       await waitForAuthToLoad(result);
 
       const firebaseError = new Error('Wrong password');
-      const mockT = vi.fn((key) => `Translated: ${key}`);
       mockedSignIn.mockRejectedValue(firebaseError);
 
       await act(async () => {
-        await expect(result.current.signIn('test@test.com', 'password', mockT)).rejects.toThrow(
-          'Translated: signInFailed',
+        await expect(result.current.signIn('test@test.com', 'password')).rejects.toThrow(
+          messages.AuthForm.signInFailed + firebaseError.message,
         );
       });
-
-      expect(mockT).toHaveBeenCalledWith('signInFailed');
     });
   });
 
-  it('should handle errors during signOut', async () => {
-    const { result } = renderHook(() => useAuth(), { wrapper: AuthProvider });
+  describe('signOut function', () => {
+    it('should handle errors during signOut', async () => {
+      const { result } = renderHook(() => useAuth(), { wrapper: TestWrapper });
+      await waitForAuthToLoad(result);
 
-    await waitForAuthToLoad(result);
+      const testError = new Error('Sign out failed');
+      mockedSignOut.mockRejectedValue(testError);
 
-    const testError = new Error('Sign out failed');
-    mockedSignOut.mockRejectedValue(testError);
-
-    await act(async () => {
-      await expect(result.current.signOut()).rejects.toThrow(testError);
+      await act(async () => {
+        await expect(result.current.signOut()).rejects.toThrow(
+          messages.AuthForm.signOutFailed + testError.message,
+        );
+      });
     });
   });
 });
