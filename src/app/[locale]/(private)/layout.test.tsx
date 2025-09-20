@@ -35,7 +35,7 @@ describe('PrivateLayout', () => {
     expect(screen.getByTestId('spinner')).toBeInTheDocument();
   });
 
-  it('should redirect to signin if user is not authenticated', async () => {
+  it('should redirect to main page if user is not authenticated', async () => {
     (useAuth as Mock).mockReturnValue({
       user: null,
       loading: false,
@@ -49,7 +49,7 @@ describe('PrivateLayout', () => {
     );
 
     await waitFor(() => {
-      expect(mockRouterReplace).toHaveBeenCalledWith('/auth/signin');
+      expect(mockRouterReplace).toHaveBeenCalledWith('/');
     });
   });
 
@@ -77,7 +77,7 @@ describe('PrivateLayout', () => {
     expect(screen.getByText('Child Content')).toBeInTheDocument();
     expect(mockRouterReplace).not.toHaveBeenCalled();
   });
-  it('should sign out and redirect if session verification fails', async () => {
+  it('should sign out and redirect to main if session verification fails', async () => {
     const testError = new Error('Invalid token');
     (useAuth as Mock).mockReturnValue({
       user: { uid: '123', getIdToken: vi.fn().mockRejectedValue(testError) },
@@ -99,7 +99,7 @@ describe('PrivateLayout', () => {
       expect(mockedToastError.mock.calls[0][0]).toContain(expectedMessage);
 
       expect(mockSignOut).toHaveBeenCalledTimes(1);
-      expect(mockRouterReplace).toHaveBeenCalledWith('/auth/signin');
+      expect(mockRouterReplace).toHaveBeenCalledWith('/');
     });
   });
 });

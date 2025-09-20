@@ -21,7 +21,7 @@ export default function PrivateLayout({ children }: { children: React.ReactNode 
     }
 
     if (!user) {
-      router.replace('/auth/signin');
+      router.replace('/');
     }
     const verifySession = async () => {
       try {
@@ -32,7 +32,7 @@ export default function PrivateLayout({ children }: { children: React.ReactNode 
           id: ENCODING_TOAST_ID,
         });
         await signOut();
-        router.replace('/auth/signin');
+        router.replace('/');
       }
     };
 

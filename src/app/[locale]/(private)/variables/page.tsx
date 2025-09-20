@@ -14,7 +14,7 @@ export default function VariablesRoute() {
   const locale = params.locale as string;
 
   if (!user) {
-    redirect({ href: '/signin', locale });
+    redirect({ href: '/', locale });
     return null;
   }
 

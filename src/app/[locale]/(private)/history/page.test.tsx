@@ -52,7 +52,7 @@ describe('HistoryPage', () => {
   });
 
   describe('Authentication', () => {
-    it('redirects to signin when user is not authenticated', async () => {
+    it('redirects to main page when user is not authenticated', async () => {
       const mockGetCurrentUserIdAction = vi.mocked(serverActions.getCurrentUserIdAction);
       const mockRedirect = vi.mocked(navigation.redirect);
 
@@ -60,7 +60,7 @@ describe('HistoryPage', () => {
 
       await HistoryPage({ params: mockParams });
 
-      expect(mockRedirect).toHaveBeenCalledWith('/en/auth/signin');
+      expect(mockRedirect).toHaveBeenCalledWith('/en/');
     });
   });
 
@@ -127,7 +127,7 @@ describe('HistoryPage', () => {
 
       await HistoryPage({ params: mockParamsRu });
 
-      expect(mockRedirect).toHaveBeenCalledWith('/ru/auth/signin');
+      expect(mockRedirect).toHaveBeenCalledWith('/ru/');
     });
 
     it('handles English locale correctly for redirect', async () => {
@@ -139,7 +139,7 @@ describe('HistoryPage', () => {
 
       await HistoryPage({ params: mockParamsEn });
 
-      expect(mockRedirect).toHaveBeenCalledWith('/en/auth/signin');
+      expect(mockRedirect).toHaveBeenCalledWith('/en/');
     });
   });
 
