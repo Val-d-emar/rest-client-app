@@ -31,14 +31,14 @@ describe('VariablesRoute Component', () => {
     mockedUseParams.mockReturnValue({ locale: 'en' });
   });
 
-  it('should redirect to signin if user is not authenticated', () => {
+  it('should redirect to main page if user is not authenticated', () => {
     (useAuth as Mock).mockReturnValue({
       user: null,
     });
 
     render(<VariablesRoute />);
 
-    expect(mockedRedirect).toHaveBeenCalledWith({ href: '/signin', locale: 'en' });
+    expect(mockedRedirect).toHaveBeenCalledWith({ href: '/', locale: 'en' });
   });
 
   it('should render the VariablesPage inside Suspense when user is authenticated', async () => {
