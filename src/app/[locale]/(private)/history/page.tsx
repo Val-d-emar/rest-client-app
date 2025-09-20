@@ -20,7 +20,7 @@ export default async function HistoryPage({ params }: Props) {
   const userId = await getCurrentUserIdAction();
 
   if (!userId) {
-    redirect(`/${locale}/auth/signin`);
+    redirect(`/${locale}/`);
   }
 
   try {
