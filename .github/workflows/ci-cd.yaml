@@ -112,7 +112,7 @@ jobs:
         with:
           name: coverage-report-html
           path: coverage/
-          retention-days: 7 #Store the artifact for 7 days
+          retention-days: 14 #Store the artifact for 14 days
 
       - name: Check repository visibility
         run: |
