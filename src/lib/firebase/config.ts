@@ -1,3 +1,4 @@
+import { err } from '@/log';
 import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
 import { getAuth, Auth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
@@ -11,12 +12,33 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-const app: FirebaseApp = !getApps().length ? initializeApp(firebaseConfig) : getApp(); //singleton
+let app: FirebaseApp;
 
-const auth: Auth = getAuth(app);
-export const db = getFirestore(app);
-export { app, auth };
+try {
+  app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+} catch (error) {
+  app = {} as FirebaseApp;
+  err('Firebase config error:', error);
+}
+
+let auth: Auth;
+let db: ReturnType<typeof getFirestore>;
+
+try {
+  auth = getAuth(app);
+  db = getFirestore(app);
+} catch (error) {
+  auth = {} as Auth;
+  db = {} as ReturnType<typeof getFirestore>;
+  err('Firebase config error:', error);
+}
+
+export { app, auth, db };
 
 export const getCurrentUserId = (): string | null => {
-  return auth.currentUser?.uid || null;
+  try {
+    return auth.currentUser?.uid || null;
+  } catch {
+    return null;
+  }
 };

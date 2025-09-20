@@ -40,11 +40,7 @@ describe('SignInForm', () => {
       await user.click(submitButton);
 
       await waitFor(() => {
-        expect(mockSignIn).toHaveBeenCalledWith(
-          'test@example.com',
-          'Password123!',
-          expect.any(Function),
-        );
+        expect(mockSignIn).toHaveBeenCalledWith('test@example.com', 'Password123!');
 
         expect(toast.success).toHaveBeenCalledWith('welcomeBack', expect.any(Object));
       });

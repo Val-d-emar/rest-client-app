@@ -1,5 +1,6 @@
 'use client';
 
+import { err } from '@/log';
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 
 interface Props {
@@ -20,7 +21,15 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
+    if (
+      error.message.includes('auth/invalid-api-key') ||
+      error.message.includes('Firebase: Error') ||
+      error.message.includes('onIdTokenChanged is not a function') ||
+      error.message.includes('getModularInstance')
+    ) {
+      return;
+    }
+    err('ErrorBoundary caught an error:', error, errorInfo);
   }
 
   public render() {
