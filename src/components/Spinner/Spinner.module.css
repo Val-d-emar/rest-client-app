@@ -2,8 +2,8 @@
   width: 100px;
   height: 100px;
   margin: 5rem auto;
-  border: 10px solid #bdaad9;
-  border-top: 10px solid #4ab607;
+  border: 10px solid rgb(183 183 183);
+  border-top: 10px solid var(--detail-color);
   border-radius: 50%;
 
   animation: spin 1s linear infinite;
