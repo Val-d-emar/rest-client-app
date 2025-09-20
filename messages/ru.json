@@ -104,7 +104,7 @@
     "welcomeBack": "С возвращением!",
     "signInFailed": "Ошибка входа. Попробуйте еще раз.",
     "signUpFailed": "Ошибка регистрации. Попробуйте еще раз.",
-    "signOutFailed": "Sign out failed. Please try again.",
+    "signOutFailed": "Ошибка при выходе. Попробуйте ещё раз.",
     "registering": "Регистрация...",
     "registrationSuccess": "Регистрация успешна! Добро пожаловать!",
     "registrationFailed": "Ошибка регистрации. Попробуйте еще раз.",
