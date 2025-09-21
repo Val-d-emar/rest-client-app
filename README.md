@@ -26,41 +26,76 @@ cd rest-client-app
 npm ci
 ```
 
-### Настройка Firebase
+### Firebase Setup
 
-1. Создание проекта
+#### 1. Creating a project
 
-- [ ] Войдите/зарегистрируйтесь на Firebase.
-- [ ] Создайте проект - нажмите "Add project".
-- [ ] Введите название проекта, например, rest-client-app.
-- [ ] На следующем шаге можно отключить всякие Google предложения, ускорит создание.
-- [ ] Примите условия и дождитесь, пока проект будет создан.
+- [ ] Sign in/register on Firebase.
+- [ ] Create a project - click "Add project".
+- [ ] Enter the project name, for example, rest-client-app.
+- [ ] On the next step, you can disable all Google suggestions, this will speed up the creation.
+- [ ] Accept the terms and wait for the project to be created.
 
-2. Включение провайдера Email/Password
+#### 2. Enabling the Email/Password provider
 
-- [ ] В меню слева выберите "Authentication" (в разделе "Build").
-- [ ] Нажмите кнопку "Get started".
-- [ ] На вкладке "Sign-in method" выберите из списка провайдеров "Email/Password".
-- [ ] Включите первый переключатель "Email/Password". Вход по ссылке без пароля не нужен.
-- [ ] Нажмите "Save".
+- [ ] In the menu on the left, select "Authentication" (in the "Build" section).
+- [ ] Click the "Get started" button.
+- [ ] In the "Sign-in method" tab, select "Email/Password" from the list of providers.
+- [ ] Enable the first "Email/Password" toggle. Passwordless sign-in is not needed.
+- [ ] Click "Save".
 
-3. Получение ключей для веб-приложения
+#### 3. Configuring Firestore (for `history` storage)
 
-- [ ] Вернитесь на главную страницу своего проекта в Firebase (кликнув на его название).
-- [ ] Нажмите на иконку "Project Settings" (шестеренка) в левом верхнем меню.
-- [ ] Во вкладке "General" пролистайте вниз до секции "Your apps".
-- [ ] Нажмите на иконку веб-приложения </>.
-- [ ] Придумайте "App nickname" (псевдоним), например, rest-client-web.
-- [ ] Нажмите "Register app".
-- [ ] Вы увидите объект `firebaseConfig`.
-- [ ] Скопируйте в локальной папке проекта файл `.env.example` в `.env.local`
-- [ ] Скопируйте ключи из объекта firebaseConfig в `.env.local `в соответствующие переменные окружения `NEXT_PUBLIC_FIREBASE_*`
+- [ ] In the menu on the left, select **Build → Firestore Database**.
+- [ ] Click **"Create database"**.
+- [ ] **Select edition** - Choose **"Start in test mode"**.
+- [ ] **Database ID & location** - Select a **region** (for example, `eur3 (europe-west)`). Click "Enable".
+- [ ] **Configure** - Select "Start in test mode".
+- [ ] Click "Create".
+- [ ] In the database menu under the "Database" heading, select "Indexes", click "Create index".
+- [ ] Enter the information to build the indexes (be careful, case matters): Collection Id: `history`; Field path: `userId` Ascending; Field path: `timestamp` Descending; Query scopes: Collection;
+- [ ] Click "Create". Wait until the index status is `enabled`.
+- [ ] Run the application, make any request. A collection will be created in the database based on the result of the request.
+- [ ] Go to the Firebase console, select "Firestore Database" to view the `history` collection.
 
-### To run the app locally:
+#### 4. Getting keys for the web application
+
+- [ ] Return to your project's main page in Firebase (by clicking on its name).
+- [ ] Click on the "Project Settings" icon (the gear) in the top-left menu.
+- [ ] In the "General" tab, scroll down to the "Your apps" section.
+- [ ] Click on the web app icon `</>`.
+- [ ] Come up with an "App nickname", for example, `rest-client-web`.
+- [ ] Click "Register app".
+- [ ] You will see a `firebaseConfig` object.
+- [ ] In your local project folder, copy the `.env.example` file to `.env.local`.
+- [ ] Copy the keys from the `firebaseConfig` object into `.env.local` into the corresponding environment variables:
+  ```
+  NEXT_PUBLIC_FIREBASE_API_KEY="AIzaSy..."
+  NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN="..."
+  NEXT_PUBLIC_FIREBASE_PROJECT_ID="..."
+  NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET="..."
+  NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID="..."
+  NEXT_PUBLIC_FIREBASE_APP_ID="..."
+  ```
+
+**_NOTE:_** _If you are the Reviewer and you don't want to create your own database, you can request us ours file .env.local with the db settings for the local checking this project by [RS App](https://app.rs.school/profile?githubId=val-d-emar), [Discord](https://discordapp.com/users/1182354659659227216) or [Telegram](https://t.me/Vladimir_901)_
+
+### Run the app locally in development mode
 
 ```bash
 npm run dev
 ```
+
+### Or run the app locally in production mode
+
+```bash
+npm run build
+npm run start
+```
+
+### Open the corresponding URL (usually http://localhost:3000) in a web browser
+
+## 🔥 [Deployment link](https://rest-client-app-phi.vercel.app/ru)
 
 ## 👨‍🚀 Team
 
