@@ -80,11 +80,20 @@ npm ci
 
 **_NOTE:_** _If you are the Reviewer and you don't want to create your own database, you can request us ours file .env.local with the db settings for the local checking this project by [RS App](https://app.rs.school/profile?githubId=val-d-emar), [Discord](https://discordapp.com/users/1182354659659227216) or [Telegram](https://t.me/Vladimir_901)_
 
-### To run the app locally:
+### Run the app locally in development mode
 
 ```bash
 npm run dev
 ```
+
+### Or run the app locally in production mode
+
+```bash
+npm run build
+npm run start
+```
+
+### Open the corresponding URL (usually http://localhost:3000) in a web browser
 
 ## 👨‍🚀 Team
 
