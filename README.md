@@ -95,6 +95,8 @@ npm run start
 
 ### Open the corresponding URL (usually http://localhost:3000) in a web browser
 
+## 🔥 [Deployment link](https://rest-client-app-phi.vercel.app/ru)
+
 ## 👨‍🚀 Team
 
 - 👨‍💻 [Vladimir](https://github.com/Val-d-emar)
