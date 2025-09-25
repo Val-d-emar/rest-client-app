@@ -2,6 +2,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, afterEach, expect, vi } from 'vitest';
 import RequestBar from './RequestBar';
 import { HttpMethods } from '@/type';
+import { METHODS as CONST_METHODS } from '@/constants';
 
 const dictionary: Record<string, string> = {
   placeholder: 'Enter URL',
@@ -14,7 +15,7 @@ vi.mock('next-intl', () => ({
 }));
 
 vi.mock('@/constants/constants', () => ({
-  METHODS: ['GET', 'POST', 'DELETE'],
+  METHODS: CONST_METHODS as readonly string[],
 }));
 
 const mockSetMethod = vi.fn();
@@ -41,7 +42,7 @@ describe('RequestBar', () => {
     const options = screen.getAllByRole('option');
 
     expect(select.value).toBe('GET');
-    expect(options.map((option) => option.textContent)).toEqual(['GET', 'POST', 'DELETE']);
+    expect(options.map((option) => option.textContent)).toEqual(CONST_METHODS);
   });
 
   it('changes selected method on change event', () => {
