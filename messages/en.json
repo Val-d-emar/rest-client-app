@@ -1,0 +1,157 @@
+{
+  "HomePage": {
+    "title": "REST Client App",
+    "SignInLabel": "Sign In",
+    "SignUpLabel": "Sign Up",
+    "SignOutLabel": "Sign Out",
+    "MainPage": "Main Page",
+    "logoAlt": "logo",
+    "welcomeUnauth": "Welcome!",
+    "welcomeAuth": "Welcome back, {user}!",
+    "defaultUser": "user",
+    "clientLink": "REST Client",
+    "clientNavLink": "Client",
+    "historyLink": "History",
+    "variablesLink": "Variables",
+    "signingOut": "Signing Out...",
+    "goodbye": "Goodbye!",
+    "signOutError": "Failed to sign out",
+    "generalInformation": "This is a project for working with APIs. It allows you to send HTTP requests, view responses, save history, and use variables."
+  },
+  "ClientPage": {
+    "title": "REST Client",
+    "requestBar": {
+      "placeholder": "Enter URL",
+      "sendButton": "Send",
+      "sendingButton": "Sending"
+    },
+    "requestHeaders": {
+      "title": "HTTP headers",
+      "headerKeyPlaceholder": "Header",
+      "headerValuePlaceholder": "Value"
+    },
+    "requestBody": {
+      "title": "Request body",
+      "prettifyButton": "Prettify",
+      "JSONPlaceholder": "Enter JSON",
+      "textPlaceholder": "Enter plain text",
+      "prettifyError": "Invalid JSON format"
+    },
+    "response": {
+      "title": "Response",
+      "responseBody": "Response body",
+      "responseHeaders": "Headers",
+      "responseEmptyHeaders": "No headers",
+      "responsePlaceholder": "Send a request to see the response here.",
+      "error": "Error"
+    },
+    "FailedToLoad": "Could not load code generators.",
+    "EnterURL": "Enter a URL to generate code.",
+    "ErrorGenerating": "Error generating code snippet.",
+    "FailedToEncode": "Failed to encode to base64: ",
+    "FailedToDecode": "Failed to decode from base64: ",
+    "errorSessionExpired": "Your session has expired. Please sign in again."
+  },
+  "NotFoundPage": {
+    "title": "Page not found",
+    "sorry": "Sorry, the page you are looking for does not exist.",
+    "btn": "Return to Home"
+  },
+  "LocaleSwitcher": {
+    "en": "EN",
+    "ru": "RU",
+    "label": "Language"
+  },
+  "Footer": {
+    "developedBy": "Developed by"
+  },
+  "VariablesPage": {
+    "title": "Variables",
+    "description": "Create and manage variables for your requests.",
+    "addButton": "+",
+    "keyPlaceholder": "Key",
+    "valuePlaceholder": "Value",
+    "deleteButton": "-"
+  },
+  "AuthForm": {
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "signIn": "Continue",
+    "signUp": "Continue",
+    "submit": "Submit",
+    "submitting": "Submitting...",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "showConfirmPassword": "Show confirm password",
+    "hideConfirmPassword": "Hide confirm password",
+    "signInTitle": "Sign In to Your Account",
+    "signUpTitle": "Create Your Account",
+    "validation": {
+      "emailRequired": "Email is required",
+      "emailIncorrect": "Incorrect email",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "At least 8 characters",
+      "passwordUppercase": "Need at least one uppercase letter",
+      "passwordLowercase": "Need at least one lowercase letter",
+      "passwordDigit": "Need at least one digit",
+      "passwordSpecial": "Need special character @#$!^%*?&_-",
+      "passwordUnicode": "Must be in valid Unicode format",
+      "confirmPasswordRequired": "Confirm password is required",
+      "passwordsMatch": "Passwords don't match"
+    },
+    "signingIn": "Signing In...",
+    "welcomeBack": "Welcome back!",
+    "signInFailed": "Sign in failed. Please try again.",
+    "signUpFailed": "Sign Up failed. Please try again.",
+    "signOutFailed": "Sign out failed. Please try again.",
+    "registering": "Registering...",
+    "registrationSuccess": "Registration successful! Welcome!",
+    "registrationFailed": "Registration failed. Please try again.",
+    "firebaseConfigError": "Firebase configuration is not correct",
+    "AuthFailed": "Auth failed. Please try again."
+  },
+  "HistoryPage": {
+    "title": "Request History",
+    "table": {
+      "method": "Method",
+      "url": "URL",
+      "status": "Status",
+      "latency": "Time (ms)",
+      "timestamp": "Date",
+      "requestSize": "Request Size (bytes)",
+      "responseSize": "Response Size (bytes)",
+      "error": "Error"
+    },
+    "refreshButton": "Refresh Logs",
+    "refreshing": "Updating...",
+    "loading": "Loading...",
+    "noData": "N/A",
+    "userLogs": "Logs for user ({user}) - {count} entries",
+    "notAuthorized": "You are not authorized.",
+    "signIn": "Sign In",
+    "authRequired": "Authorization is necessary to view history.",
+    "noRequestsYet": "You have not made any requests yet.",
+    "createNewRequest": "Create a new request",
+    "noLogsAvailable": "No logs available.",
+    "serverError": "No logs available due to a server error.",
+    "refreshError": "Error refreshing logs",
+    "networkError": "Network error. Please check your internet connection.",
+    "timeoutError": "Network timeout error."
+  },
+  "client": {
+    "recording": "Recording...",
+    "criticalError": "Critical error"
+  },
+  "serverMessages": {
+    "LOG_ADDED_SUCCESS": "Log successfully added",
+    "LOG_ADD_ERROR": "Error adding log",
+    "LOGS_RECEIVED": "Received {count} entries",
+    "LOGS_GET_ERROR": "Error getting logs"
+  },
+  "codeGenerator": {
+    "codeGenerationTitle": "Code generation",
+    "codeCopied": "Code copied to clipboard!",
+    "SelectLanguage": "Select language to see generated code..."
+  }
+}

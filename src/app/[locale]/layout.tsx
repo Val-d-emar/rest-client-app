@@ -1,0 +1,42 @@
+import { NextIntlClientProvider, hasLocale } from 'next-intl';
+import { notFound } from 'next/navigation';
+import { setRequestLocale } from 'next-intl/server';
+import { getMessages } from 'next-intl/server';
+import Footer from '@/components/footer/footer';
+import { routing } from '@/i18n/routing';
+import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary';
+import Header from '@/components/Header';
+import { AuthProvider } from '@/context/AuthContext';
+import { ClientProviders } from '@/components/providers/ClientProviders';
+
+type Props = {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+};
+
+export default async function LocaleLayout({ children, params }: Props) {
+  const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
+
+  setRequestLocale(locale);
+
+  const messages = await getMessages();
+
+  return (
+    <NextIntlClientProvider locale={locale} messages={messages}>
+      <ErrorBoundary>
+        <AuthProvider>
+          <ClientProviders>
+            <Header />
+            <main className='container'>{children}</main>
+            <footer>
+              <Footer />
+            </footer>
+          </ClientProviders>
+        </AuthProvider>
+      </ErrorBoundary>
+    </NextIntlClientProvider>
+  );
+}

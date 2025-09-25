@@ -1,0 +1,325 @@
+'use client';
+import RequestBar from '@/components/RequestBar';
+import RequestHeaders from '@/components/RequestHeaders';
+import classes from './ClientPage.module.css';
+import { useTranslations } from 'next-intl';
+import { useEffect, useRef, useState } from 'react';
+import { HeaderItem } from '@/components/RequestHeaders/RequestHeaders';
+import { forwardRequest, ServerResponse } from '@/lib/actions/request';
+import { v4 as uuidv4 } from 'uuid';
+import ResponseSection from '@/components/ResponseSection/ResponseSection';
+import RequestBody from '@/components/RequestBody/RequestBody';
+import { useAuth } from '@/context/AuthContext';
+import { usePathname, useRouter } from '@/i18n/navigation';
+import { useSearchParams } from 'next/navigation';
+import toast from 'react-hot-toast';
+import { dbg, err } from '@/log';
+import { getStoredVariables, substituteVariables } from '@/lib/utils/variables';
+import { handleAddLog } from '@/lib/client-action/handle-add-log';
+import { HttpRequestLog, HttpMethods } from '@/type';
+import { generateCodeSnippet, getAvailableLanguages } from '@/lib/actions/codegen';
+import { Language } from 'postman-code-generators';
+import type { PostmanRequest } from 'postman-code-generators';
+import Spinner from '@/components/Spinner/Spinner';
+import CodeGenerationSection from '@/components/CodeGenerationSection/CodeGenerationSection';
+import { withTimeout } from '@/lib/utils/timeout';
+import { ENCODING_TOAST_ID, TIMEOUT_DURATION } from '@/constants';
+
+const safeBtoa = (str: string): string => {
+  try {
+    return btoa(encodeURIComponent(str));
+  } catch (e) {
+    toast.error('Failed to encode to base64: ' + (e as Error)?.message, {
+      id: ENCODING_TOAST_ID,
+    });
+    return '';
+  }
+};
+
+export default function ClientPage() {
+  const t = useTranslations('ClientPage');
+  const tGlobal = useTranslations();
+
+  const { user } = useAuth();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const isInitialLoad = useRef(true);
+
+  const safeAtob = (str: string | null): string => {
+    if (!str) return '';
+    try {
+      return decodeURIComponent(atob(str));
+    } catch (e) {
+      toast.error(t('FailedToDecode') + (e as Error)?.message, {
+        id: ENCODING_TOAST_ID,
+      });
+      return '';
+    }
+  };
+
+  const getInitialState = (searchParams: URLSearchParams) => {
+    const method = (searchParams.get('method') as HttpMethods) || 'GET';
+    const url = safeAtob(searchParams.get('url'));
+    const body = safeAtob(searchParams.get('body'));
+
+    const headers: HeaderItem[] = [];
+
+    searchParams.forEach((value, key) => {
+      if (!['method', 'url', 'body'].includes(key)) {
+        headers.push({ id: uuidv4(), enabled: true, key, value });
+      }
+    });
+
+    if (headers.length === 0) {
+      headers.push({ id: uuidv4(), enabled: true, key: 'Content-Type', value: 'application/json' });
+    }
+
+    return {
+      method,
+      url: url.length
+        ? url
+        : process.env.NEXT_PUBLIC_FETCH_DEBUG_URL
+          ? process.env.NEXT_PUBLIC_FETCH_DEBUG_URL
+          : url,
+      body,
+      headers,
+    };
+  };
+
+  const [initialState] = useState(() => getInitialState(searchParams));
+  const [method, setMethod] = useState<HttpMethods>(initialState.method);
+  const [url, setUrl] = useState(initialState.url);
+  const [body, setBody] = useState(initialState.body);
+  const [headers, setHeaders] = useState<HeaderItem[]>(initialState.headers);
+
+  const [response, setResponse] = useState<ServerResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const [languages, setLanguages] = useState<Language[]>([]);
+  const [selectedLanguage, setSelectedLanguage] = useState('cURL,cURL');
+  const [generatedCode, setGeneratedCode] = useState('');
+
+  useEffect(() => {
+    getAvailableLanguages()
+      .then((langs) => {
+        if (langs && langs.length > 0) {
+          setLanguages(langs);
+          const defaultLang = langs[1] ?? langs[0];
+          const defaultVariant = defaultLang.variants[0];
+          setSelectedLanguage(`${defaultLang.key},${defaultVariant.key}`);
+        } else {
+          err('Language list is empty.');
+        }
+      })
+      .catch((error) => {
+        err('Failed to load code generators:', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    const variables = getStoredVariables(user?.uid || null);
+    const processedUrl = substituteVariables(url, variables);
+    const processedBody = substituteVariables(body, variables);
+    const processedHeaders = headers.map((h) => ({
+      ...h,
+      value: substituteVariables(h.value, variables),
+    }));
+
+    if (!processedUrl) {
+      setGeneratedCode(t('EnterURL'));
+      return;
+    }
+
+    const request: PostmanRequest = {
+      method: method,
+      url: processedUrl,
+      header: processedHeaders
+        .filter((h) => h.enabled && h.key)
+        .map((h) => ({ key: h.key, value: h.value })),
+      body: processedBody ? { mode: 'raw', raw: processedBody } : undefined,
+    };
+
+    const [langKey, langVariant] = selectedLanguage.split(',');
+
+    if (!langKey || !langVariant) return;
+
+    generateCodeSnippet(request, langKey, langVariant)
+      .then((snippet) => {
+        setGeneratedCode(snippet);
+      })
+      .catch((error) => {
+        setGeneratedCode(t('ErrorGenerating'));
+        err(error);
+      });
+  }, [method, url, body, headers, selectedLanguage, t, user]);
+
+  const createAndSaveLog = async (
+    startTime: number,
+    endTime: number,
+    processedUrl: string,
+    method: HttpMethods,
+    requestHeaders: Record<string, string>,
+    processedBody: string,
+    result: ServerResponse,
+  ) => {
+    try {
+      const requestPayloadSize = processedBody ? new Blob([processedBody]).size : 0;
+      const responsePayloadSize = result.body ? new Blob([JSON.stringify(result.body)]).size : 0;
+
+      const logData: HttpRequestLog = {
+        userId: user?.uid || 'anonymous',
+        latency: Math.round(endTime - startTime),
+        statusCode: result.status || 0,
+        statusText: result.statusText || 'Unknown',
+        timestamp: new Date(),
+        method: method,
+        requestSize: requestPayloadSize,
+        responseSize: responsePayloadSize,
+        errorDetails: result.error || undefined,
+        url: processedUrl,
+        requestBody: processedBody || undefined,
+        headers: requestHeaders,
+      };
+
+      const addLogResult = await handleAddLog(logData, tGlobal);
+      return addLogResult;
+    } catch (error) {
+      dbg(error);
+      return null;
+    }
+  };
+  useEffect(() => {
+    if (isInitialLoad.current) {
+      isInitialLoad.current = false;
+      return;
+    }
+
+    const newSearchParams = new URLSearchParams();
+
+    newSearchParams.set('method', method);
+    if (url) newSearchParams.set('url', safeBtoa(url));
+    if (body) newSearchParams.set('body', safeBtoa(body));
+
+    headers.forEach((h) => {
+      if (h.enabled && h.key) {
+        newSearchParams.set(h.key, h.value);
+      }
+    });
+
+    router.replace(`${pathname}?${newSearchParams.toString()}`, { scroll: false });
+  }, [method, url, body, headers, router, pathname]);
+
+  const handleSendRequest = async () => {
+    if (!user) return toast.error('You must be logged in.');
+    setLoading(true);
+    setResponse(null);
+
+    const variables = getStoredVariables(user.uid);
+
+    const processedUrl = substituteVariables(url, variables);
+    const processedBody = substituteVariables(body, variables);
+
+    const requestHeaders = headers.reduce(
+      (acc, header) => {
+        if (header.enabled && header.key) {
+          acc[header.key] = substituteVariables(header.value, variables);
+        }
+        return acc;
+      },
+      {} as Record<string, string>,
+    );
+
+    const requestStartTime = performance.now();
+
+    try {
+      const result = await withTimeout(
+        forwardRequest({
+          userId: user.uid,
+          url: processedUrl,
+          method,
+          headers: requestHeaders,
+          body: processedBody,
+        }),
+        TIMEOUT_DURATION,
+      );
+
+      const requestEndTime = performance.now();
+      setResponse(result);
+
+      await createAndSaveLog(
+        requestStartTime,
+        requestEndTime,
+        processedUrl,
+        method,
+        requestHeaders,
+        processedBody,
+        result,
+      );
+    } catch (error) {
+      const requestEndTime = performance.now();
+      dbg('Client-side error calling Server Action:', error);
+
+      const errorResponse: ServerResponse = {
+        status: null,
+        headers: null,
+        body: null,
+        error: (error as Error)?.message || 'An unknown client-side error occurred.',
+        statusText: null,
+      };
+
+      setResponse(errorResponse);
+
+      await createAndSaveLog(
+        requestStartTime,
+        requestEndTime,
+        processedUrl,
+        method,
+        requestHeaders,
+        processedBody,
+        errorResponse,
+      ).catch((error) => dbg('Client-side error calling Server Action:', error));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className={classes.wrapper}>
+      <h1>{t('title')}</h1>
+      <div className={classes['request-wrapper']}>
+        <RequestBar
+          method={method}
+          setMethod={setMethod}
+          url={url}
+          setUrl={setUrl}
+          onSend={handleSendRequest}
+          loading={loading}
+        />
+        <div className={classes['panels-wrapper']}>
+          <section className={classes.panel}>
+            <RequestHeaders headers={headers} setHeaders={setHeaders} />
+            <RequestBody body={body} setBody={setBody} />
+            {languages.length > 0 ? (
+              <CodeGenerationSection
+                languages={languages}
+                selectedLanguage={selectedLanguage}
+                setSelectedLanguage={setSelectedLanguage}
+                generatedCode={generatedCode}
+              />
+            ) : (
+              <div>
+                <Spinner />
+              </div>
+            )}
+          </section>
+          <div className={classes.divider}></div>
+          <section className={classes.panel}>
+            <ResponseSection response={response} loading={loading} />
+          </section>
+        </div>
+      </div>
+    </div>
+  );
+}

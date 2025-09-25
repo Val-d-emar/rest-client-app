@@ -13,23 +13,25 @@
 *.js text eol=lf
 *.ts text eol=lf
 *.tsx text eol=lf
+*.jsx text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+*.xml text eol=lf
 # The above will handle all files NOT found below
 #
 # These files are text and should be normalized (Convert crlf => lf)
-*.css           text
-*.html          text
 *.java          text
 *.js            text
 *.json          text
 *.properties    text
 *.txt           text
-*.xml           text
 # for Qt
 *.cpp           text
 *.h           text
 *.ui           text
 *.pro           text
-*.ts            text
 # These files are binary and should be left untouched
 # (binary is macro for -text -diff)
 *.class         binary

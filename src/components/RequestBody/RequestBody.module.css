@@ -1,0 +1,46 @@
+.container {
+  margin-bottom: 16px;
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--white-color);
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-start;
+
+  margin-bottom: 8px;
+}
+
+.select {
+  padding: 0.1rem;
+  font-size: 14px;
+}
+
+.status-neutral {
+  --status-fg: var(--status-neutral-color);
+}
+
+.status-ok {
+  --status-fg: var(--status-ok-color);
+}
+
+.status-error {
+  --status-fg: var(--status-error-color);
+}
+
+.status {
+  display: inline-flex;
+
+  margin-bottom: 8px;
+  padding: 0.3rem;
+  border-radius: 4px;
+
+  font-weight: 600;
+  line-height: 1;
+  color: var(--status-fg);
+
+  background: color-mix(in srgb, var(--status-fg) 40%, var(--white-color) 60%);
+}

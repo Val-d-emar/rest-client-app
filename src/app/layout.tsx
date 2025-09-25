@@ -1,0 +1,61 @@
+import type { Metadata, Viewport } from 'next';
+import { ReactNode } from 'react';
+import { Roboto, Inter, Ubuntu, Fira_Mono } from 'next/font/google';
+import './index.css';
+
+const roboto = Roboto({
+  variable: '--font-roboto',
+  subsets: ['latin', 'cyrillic'],
+  weight: ['100', '300', '400', '500', '700', '900'],
+  style: ['normal', 'italic'],
+});
+
+const inter = Inter({
+  variable: '--font-inter',
+  subsets: ['latin', 'cyrillic'],
+  weight: ['100', '300', '400', '500', '700', '900'],
+  style: ['normal', 'italic'],
+});
+
+const ubuntu = Ubuntu({
+  variable: '--font-ubuntu',
+  subsets: ['latin', 'cyrillic'],
+  weight: ['300', '400', '500', '700'],
+  style: ['normal', 'italic'],
+});
+
+const mono = Fira_Mono({
+  variable: '--font-mono',
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+  style: ['normal'],
+});
+
+export const metadata: Metadata = {
+  title: 'REST Client App',
+  description: 'Client for working with REST API',
+  other: {
+    language: 'en,ru',
+    'app:commit': process.env.NEXT_PUBLIC_GIT_COMMIT_SHA ?? 'unknown',
+    'app:build-time': process.env.NEXT_PUBLIC_BUILD_TIMESTAMP ?? 'unknown',
+  },
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1.0,
+};
+
+type Props = {
+  children: ReactNode;
+};
+
+export default function RootLayout({ children }: Props) {
+  return (
+    <html>
+      <body className={`${roboto.variable} ${inter.variable} ${ubuntu.variable} ${mono.variable}`}>
+        {children}
+      </body>
+    </html>
+  );
+}
