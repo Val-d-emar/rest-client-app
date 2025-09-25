@@ -20,16 +20,15 @@ export default function BodyPane({ body, setBody, readonly, status, statusText }
 
   const [bodyType, setBodyType] = useState<BodyType>('json');
 
-  const statusClass =
-    status === undefined
-      ? classes['status-neutral']
-      : status < 200
-        ? classes['status-neutral']
-        : status < 300
-          ? classes['status-ok']
-          : status < 400
-            ? classes['status-neutral']
-            : classes['status-error'];
+  const getStatusClass = (status?: number) => {
+    if (status === undefined) return classes['status-neutral'];
+    if (status < 200) return classes['status-neutral'];
+    if (status < 300) return classes['status-ok'];
+    if (status < 400) return classes['status-neutral'];
+    return classes['status-error'];
+  };
+
+  const statusClass = getStatusClass(status);
 
   return (
     <div className={classes.container}>
