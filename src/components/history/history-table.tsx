@@ -1,6 +1,6 @@
 'use client';
 
-import { HttpMethods, HttpRequestLog, isHttpMethod } from '@/type/type';
+import { HttpMethods, HttpRequestLog, isHttpMethod } from '@/type';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { constructClientUrl } from '@/lib/utils/url-constructor';

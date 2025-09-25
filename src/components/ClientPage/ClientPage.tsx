@@ -16,14 +16,14 @@ import toast from 'react-hot-toast';
 import { dbg, err } from '@/log';
 import { getStoredVariables, substituteVariables } from '@/lib/utils/variables';
 import { handleAddLog } from '@/lib/client-action/handle-add-log';
-import { HttpRequestLog, HttpMethods } from '@/type/type';
+import { HttpRequestLog, HttpMethods } from '@/type';
 import { generateCodeSnippet, getAvailableLanguages } from '@/lib/actions/codegen';
 import { Language } from 'postman-code-generators';
 import type { PostmanRequest } from 'postman-code-generators';
 import Spinner from '@/components/Spinner/Spinner';
 import CodeGenerationSection from '@/components/CodeGenerationSection/CodeGenerationSection';
 import { withTimeout } from '@/lib/utils/timeout';
-import { ENCODING_TOAST_ID, TIMEOUT_DURATION } from '@/constants/constants';
+import { ENCODING_TOAST_ID, TIMEOUT_DURATION } from '@/constants';
 
 const safeBtoa = (str: string): string => {
   try {

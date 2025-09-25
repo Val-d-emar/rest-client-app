@@ -2,8 +2,8 @@
 import { useTranslations } from 'next-intl';
 import classes from './RequestBar.module.css';
 import { Dispatch, SetStateAction } from 'react';
-import { METHODS } from '@/constants/constants';
-import { HttpMethods } from '@/type/type';
+import { METHODS } from '@/constants';
+import { HttpMethods } from '@/type';
 
 type RequestBarProps = {
   method: HttpMethods;

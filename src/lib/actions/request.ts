@@ -1,6 +1,6 @@
 'use server';
 import { err } from '@/log';
-import { HttpMethods } from '@/type/type';
+import { HttpMethods } from '@/type';
 
 export interface RequestPayload {
   userId: string;

@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, afterEach, expect, vi } from 'vitest';
 import RequestBar from './RequestBar';
-import { HttpMethods } from '@/type/type';
+import { HttpMethods } from '@/type';
 
 const dictionary: Record<string, string> = {
   placeholder: 'Enter URL',

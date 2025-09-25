@@ -8,7 +8,7 @@ import {
   getHistoryByUserAction,
   getCurrentUserIdAction,
 } from './server-actions';
-import { HttpRequestLog } from '@/type/type';
+import { HttpRequestLog } from '@/type';
 import { db } from '@/lib/firebase/config';
 
 vi.mock('firebase/firestore');

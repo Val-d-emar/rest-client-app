@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { forwardRequest } from './request';
-import { HttpMethods } from '@/type/type';
+import { HttpMethods } from '@/type';
 
 vi.mock('@/log', () => ({
   err: vi.fn(),
