@@ -1,0 +1,28 @@
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.input {
+  flex-grow: 1;
+}
+
+@media (width <= 600px) {
+  .wrapper {
+    gap: 0.25rem;
+  }
+
+  .wrapper select {
+    order: 2;
+  }
+
+  .input {
+    order: 1;
+    min-width: 100%;
+  }
+
+  .wrapper button {
+    order: 3;
+  }
+}

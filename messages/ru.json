@@ -1,0 +1,157 @@
+{
+  "HomePage": {
+    "title": "REST Клиент",
+    "SignInLabel": "Войти",
+    "SignUpLabel": "Регистрация",
+    "SignOutLabel": "Выйти",
+    "MainPage": "Главная страница",
+    "logoAlt": "Логотип",
+    "welcomeUnauth": "Добро пожаловать!",
+    "welcomeAuth": "С возвращением, {user}!",
+    "defaultUser": "пользователь",
+    "clientLink": "REST клиент",
+    "clientNavLink": "Клиент",
+    "historyLink": "История",
+    "variablesLink": "Переменные",
+    "signingOut": "Выход из аккаунта...",
+    "goodbye": "До свидания!",
+    "signOutError": "Ошибка выхода из аккаунта",
+    "generalInformation": "Это проект для работы с API. Он позволяет отправлять HTTP-запросы, просматривать ответы, сохранять историю и использовать переменные."
+  },
+  "ClientPage": {
+    "title": "REST Клиент",
+    "requestBar": {
+      "placeholder": "Введите URL",
+      "sendButton": "Отправить",
+      "sendingButton": "Отправляется"
+    },
+    "requestHeaders": {
+      "title": "HTTP заголовки",
+      "headerKeyPlaceholder": "Заголовок",
+      "headerValuePlaceholder": "Значение"
+    },
+    "requestBody": {
+      "title": "Тело запроса",
+      "prettifyButton": "Форматировать",
+      "JSONPlaceholder": "Введите JSON",
+      "textPlaceholder": "Введите текст",
+      "prettifyError": "Неверный формат JSON"
+    },
+    "response": {
+      "title": "Ответ",
+      "responseBody": "Тело ответа",
+      "responseHeaders": "Заголовки",
+      "responseEmptyHeaders": "Нет заголовков",
+      "responsePlaceholder": "Отправьте запрос, чтобы увидеть ответ здесь.",
+      "error": "Ошибка"
+    },
+    "FailedToLoad": "Не удалось загрузить генераторы кода.",
+    "EnterURL": "Введите URL-адрес для генерации кода.",
+    "ErrorGenerating": "Ошибка при генерации фрагмента кода.",
+    "FailedToEncode": "Не удалось закодировать в base64: ",
+    "FailedToDecode": "Не удалось декодировать из base64: ",
+    "errorSessionExpired": "Ваша сессия истекла. Пожалуйста, войдите снова."
+  },
+  "NotFoundPage": {
+    "title": "Страница не найдена",
+    "sorry": "Извините, страница, которую вы ищете, не существует.",
+    "btn": "Вернуться на главную"
+  },
+  "LocaleSwitcher": {
+    "en": "EN",
+    "ru": "RU",
+    "label": "Язык"
+  },
+  "Footer": {
+    "developedBy": "Разработано"
+  },
+  "VariablesPage": {
+    "title": "Переменные",
+    "description": "Создавайте и управляйте переменными для ваших запросов.",
+    "addButton": "+",
+    "keyPlaceholder": "Ключ",
+    "valuePlaceholder": "Значение",
+    "deleteButton": "-"
+  },
+  "AuthForm": {
+    "email": "Электронная почта",
+    "password": "Пароль",
+    "confirmPassword": "Подтвердите пароль",
+    "signIn": "Продолжить",
+    "signUp": "Продолжить",
+    "submit": "Отправить",
+    "submitting": "Отправка...",
+    "showPassword": "Показать пароль",
+    "hidePassword": "Скрыть пароль",
+    "showConfirmPassword": "Показать подтверждение пароля",
+    "hideConfirmPassword": "Скрыть подтверждение пароля",
+    "signInTitle": "Войти в аккаунт",
+    "signUpTitle": "Создать аккаунт",
+    "validation": {
+      "emailRequired": "Электронная почта обязательна",
+      "emailIncorrect": "Неверный формат электронной почты",
+      "passwordRequired": "Пароль обязателен",
+      "passwordMinLength": "Минимум 8 символов",
+      "passwordUppercase": "Нужна минимум одна заглавная буква",
+      "passwordLowercase": "Нужна минимум одна строчная буква",
+      "passwordDigit": "Нужна минимум одна цифра",
+      "passwordSpecial": "Нужен специальный символ @#$!^%*?&_-",
+      "passwordUnicode": "Должен быть в валидном Unicode формате",
+      "confirmPasswordRequired": "Подтверждение пароля обязательно",
+      "passwordsMatch": "Пароли не совпадают"
+    },
+    "signingIn": "Вход в аккаунт...",
+    "welcomeBack": "С возвращением!",
+    "signInFailed": "Ошибка входа. Попробуйте еще раз.",
+    "signUpFailed": "Ошибка регистрации. Попробуйте еще раз.",
+    "signOutFailed": "Ошибка при выходе. Попробуйте ещё раз.",
+    "registering": "Регистрация...",
+    "registrationSuccess": "Регистрация успешна! Добро пожаловать!",
+    "registrationFailed": "Ошибка регистрации. Попробуйте еще раз.",
+    "firebaseConfigError": "Конфигурация Firebase неправильно настроена",
+    "AuthFailed": "Ошибка авторизации. Пожалуйста, попробуйте снова."
+  },
+  "HistoryPage": {
+    "title": "История запросов",
+    "table": {
+      "method": "Метод",
+      "url": "URL",
+      "status": "Статус",
+      "latency": "Время (мс)",
+      "timestamp": "Дата",
+      "requestSize": "Размер запроса (байт)",
+      "responseSize": "Размер ответа (байт)",
+      "error": "Ошибка"
+    },
+    "refreshButton": "Обновить логи",
+    "refreshing": "Обновление...",
+    "loading": "Загрузка...",
+    "noData": "н/д",
+    "userLogs": "Логи пользователя ({user}) - {count} записей",
+    "notAuthorized": "Вы не авторизованы.",
+    "signIn": "Войти",
+    "authRequired": "Авторизация необходима для просмотра истории.",
+    "noRequestsYet": "Вы еще не сделали ни одного запроса.",
+    "createNewRequest": "Создать новый запрос",
+    "noLogsAvailable": "Логи недоступны.",
+    "serverError": "Логи недоступны из-за ошибки сервера.",
+    "refreshError": "Ошибка обновления логов",
+    "networkError": "Ошибка сети. Проверьте подключение к интернету.",
+    "timeoutError": "Ошибка таймаута сети."
+  },
+  "client": {
+    "recording": "Записываем...",
+    "criticalError": "Критическая ошибка"
+  },
+  "serverMessages": {
+    "LOG_ADDED_SUCCESS": "Лог успешно добавлен",
+    "LOG_ADD_ERROR": "Ошибка добавления лога",
+    "LOGS_RECEIVED": "Получено {count} записей",
+    "LOGS_GET_ERROR": "Ошибка получения логов"
+  },
+  "codeGenerator": {
+    "codeGenerationTitle": "Генерация кода",
+    "codeCopied": "Код скопирован в буфер обмена!",
+    "SelectLanguage": "Выберите язык для генерации кода..."
+  }
+}

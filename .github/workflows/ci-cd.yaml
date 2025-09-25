@@ -1,0 +1,166 @@
+name: CI/CD Pipeline
+
+# Triggers: run the workflow on push to the 'main' branch and on PR to all.
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['*']
+  # Allows you to manually trigger this workflow from the Actions tab in GitHub.
+  workflow_dispatch:
+
+permissions:
+  contents: read #The right to read the contents of the repository (for checkout)
+  pull-requests: write # The right to write in Pull Requests (for commenting)
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Cloning the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Settings Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+
+      # Installing dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # Linting and formatting check
+      - name: Run linter and check format
+        run: |
+          npm run lint
+          npm run format:check
+
+      # Launching tests
+      - name: Run tests
+        run: npm run test:run
+
+      # Generation of coverage report
+      - name: Run tests and generate coverage summary
+        id: coverage
+        env:
+          NO_COLOR: true # Disable colored output for better readability in comments.
+
+        # Running tests with coverage and saving the results to a file
+        run: npm run test:coverage:run | tee coverage-summary.txt
+
+      # Removing old comment with coverage in PR
+      - name: Delete old coverage comment
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const botCommentIdentifier = "## 🧪 Test Coverage Report";
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const oldComment = comments.find(comment => 
+              comment.user.login === 'github-actions[bot]' && 
+              comment.body.startsWith(botCommentIdentifier)
+            );
+
+            if (oldComment) {
+              console.log(`Found old comment with id: ${oldComment.id}. Deleting...`);
+              await github.rest.issues.deleteComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: oldComment.id,
+              });
+              console.log('Old comment deleted.');
+            } else {
+              console.log('No old coverage comment found.');
+            }
+      # Publication of a comment with results in the PR
+      - name: Post coverage summary to PR
+
+        # Run only for pull_request events
+        if: github.event_name == 'pull_request'
+
+        uses: actions/github-script@v7
+        with:
+          #This token is provided by GitHub automatically and has rights to comment.
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const summary = fs.readFileSync('coverage-summary.txt', 'utf8');
+
+            const body = `## 🧪 Test Coverage Report\n\n\`\`\`\n${summary}\n\`\`\``;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: body
+            });
+
+      # Uploading the full HTML report as an artifact
+      - name: Upload full coverage report as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report-html
+          path: coverage/
+          retention-days: 7 #Store the artifact for 7 days
+
+      - name: Check repository visibility
+        run: |
+          echo "Value of github.event.repository.private is: ${{ github.event.repository.private }}"
+
+  deploy-preview:
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    if: (github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch') && github.event.repository.private
+
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Deploy to Vercel and Capture URL
+        id: deploy
+        run: echo "preview_url=$(vercel deploy --token=${{ secrets.VERCEL_TOKEN }})" >> $GITHUB_OUTPUT
+
+      - name: Wait for Deployment Readiness
+        id: wait-for-deployment
+        run: |
+          export STATUS=$(vercel inspect ${{ steps.deploy.outputs.preview_url }} --token=${{ secrets.VERCEL_TOKEN }} --wait --timeout 3m --no-color -l 2>&1 | grep status |  awk '{print $3}')
+          echo "Deployment status is $STATUS"
+
+          if [ "$STATUS" == "Ready" ]; then
+            echo "✅ Deployment is ready!"
+            echo "status=✅ready" >> $GITHUB_OUTPUT
+            exit 0
+          else
+            echo "❌ Deployment failed with status $STATUS."
+            echo "status=❌failed" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          echo "⚠️Timed out after 2 minutes waiting for deployment."
+          echo "status=⚠️timeout" >> $GITHUB_OUTPUT
+          exit 0
+
+      - name: Post Preview URL to PR
+        if: github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          message: |
+            🚀 **Vercel Preview is** here: ${{ steps.deploy.outputs.preview_url }}
+            🚀 Status: `${{ steps.wait-for-deployment.outputs.status }}`
