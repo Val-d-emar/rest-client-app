@@ -1,9 +1,9 @@
 import { addHistoryLogAction } from '@/lib/actions/server-actions';
 import { getCurrentUserId } from '@/lib/firebase/config';
 import toast from 'react-hot-toast';
-import { HttpRequestLog, AddLogResult } from '@/type/type';
+import { HttpRequestLog, AddLogResult } from '@/type';
 import { useTranslations } from 'next-intl';
-import { TIMEOUT_DURATION } from '@/constants/constants';
+import { TIMEOUT_DURATION } from '@/constants';
 import { TimeoutError, withTimeout } from '../utils/timeout';
 
 export const handleAddLog = async (

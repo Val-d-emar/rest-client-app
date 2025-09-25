@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { handleGetLogUserById } from '@/lib/client-action/handle-getlog-user';
-import { GetLogsResult } from '@/type/type';
+import { GetLogsResult } from '@/type';
 import HistoryTable from '@/components/history/history-table';
 import { useTranslations } from 'next-intl';
 import toast from 'react-hot-toast';

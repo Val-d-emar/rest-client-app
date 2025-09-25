@@ -2,7 +2,7 @@
 
 import { collection, addDoc, Timestamp, query, where, getDocs, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase/config';
-import { HttpRequestLog, AddLogResult, GetLogsResult } from '@/type/type';
+import { HttpRequestLog, AddLogResult, GetLogsResult } from '@/type';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { dbg } from '@/log';

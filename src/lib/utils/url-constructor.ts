@@ -1,4 +1,4 @@
-import { HttpMethods } from '@/type/type';
+import { HttpMethods } from '@/type';
 
 const safeBtoa = (str: string): string => btoa(encodeURIComponent(str));
 

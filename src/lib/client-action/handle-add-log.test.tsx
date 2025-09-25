@@ -4,8 +4,8 @@ import { addHistoryLogAction } from '@/lib/actions/server-actions';
 import { getCurrentUserId } from '@/lib/firebase/config';
 import toast from 'react-hot-toast';
 import { TimeoutError, withTimeout } from '../utils/timeout';
-import { TIMEOUT_DURATION } from '@/constants/constants';
-import { HttpRequestLog, AddLogResult } from '@/type/type';
+import { TIMEOUT_DURATION } from '@/constants';
+import { HttpRequestLog, AddLogResult } from '@/type';
 import { useTranslations } from 'next-intl';
 
 vi.mock('firebase/firestore', () => ({

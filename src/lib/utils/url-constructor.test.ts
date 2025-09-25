@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { constructClientUrl } from './url-constructor';
-import { HttpMethods } from '@/type/type';
+import { HttpMethods } from '@/type';
 
 const safeBtoa = (str: string): string => btoa(encodeURIComponent(str));
 

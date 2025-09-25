@@ -5,7 +5,7 @@ import { useAuth } from '@/context/AuthContext';
 import * as clientActions from '@/lib/client-action/handle-getlog-user';
 import { useTranslations } from 'next-intl';
 import toast from 'react-hot-toast';
-import { GetLogsResult, HttpRequestLog } from '@/type/type';
+import { GetLogsResult, HttpRequestLog } from '@/type';
 import { User } from 'firebase/auth';
 
 vi.mock('@/context/AuthContext', () => ({

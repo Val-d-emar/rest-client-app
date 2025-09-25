@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach, Mock } from 'vitest';
-import { ENCODING_TOAST_ID } from '@/constants/constants';
+import { ENCODING_TOAST_ID } from '@/constants';
 import { useAuth } from '@/context/AuthContext';
 import toast from 'react-hot-toast';
 import ClientPage from './ClientPage';

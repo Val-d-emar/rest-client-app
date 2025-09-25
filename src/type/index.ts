@@ -1,4 +1,4 @@
-import { METHODS } from '@/constants/constants';
+import { METHODS } from '@/constants';
 
 export interface HttpRequestLog {
   userId: string;

@@ -2,8 +2,8 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { handleGetLogUserById } from './handle-getlog-user';
 import { getHistoryByUserAction } from '@/lib/actions/server-actions';
 import { TimeoutError, withTimeout } from '../utils/timeout';
-import { TIMEOUT_DURATION } from '@/constants/constants';
-import { GetLogsResult, HttpRequestLog } from '@/type/type';
+import { TIMEOUT_DURATION } from '@/constants';
+import { GetLogsResult, HttpRequestLog } from '@/type';
 
 vi.mock('firebase/firestore', () => ({
   collection: vi.fn(),

@@ -1,6 +1,6 @@
-import { TIMEOUT_DURATION } from '@/constants/constants';
+import { TIMEOUT_DURATION } from '@/constants';
 import { getHistoryByUserAction } from '@/lib/actions/server-actions';
-import { GetLogsResult } from '@/type/type';
+import { GetLogsResult } from '@/type';
 import { TimeoutError, withTimeout } from '../utils/timeout';
 
 export const handleGetLogUserById = async (

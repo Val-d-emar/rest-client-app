@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import HistoryTable from './history-table';
 import { useTranslations } from 'next-intl';
-import { HttpRequestLog } from '@/type/type';
+import { HttpRequestLog } from '@/type';
 import * as urlConstructor from '@/lib/utils/url-constructor';
 
 vi.mock('next-intl', () => ({
